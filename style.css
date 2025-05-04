@@ -518,6 +518,7 @@ a {
 }
 .project-section-title {
   font-size: 1em;
+  font-weight: bold;
   margin-bottom: 10px;
 }
 .project-description {
