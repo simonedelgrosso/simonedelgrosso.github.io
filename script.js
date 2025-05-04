@@ -10,14 +10,21 @@ window.onload = function() {
   navbar.style.position = "fixed";
 
   function goToHome() {
-    window.scroll(0, 0);
-    window.onscrollend = () => {
+    function transition() {
       main.style.position = "fixed";
       navbar.style.transform = "translateY(0px)";
       main.style.transform = "translateY(0px)";
       home.style.transform = "translateY(0px)";
-      window.onscrollend = () => {};
-    };
+    }
+    if (window.scrollY == 0) {
+      transition();
+    } else {
+      window.scroll(0, 0);
+      window.onscrollend = () => {
+        transition();
+        window.onscrollend = () => {};
+      };
+    }
   }
 
   function goToAbout() {
