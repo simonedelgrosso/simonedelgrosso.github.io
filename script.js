@@ -107,18 +107,19 @@ window.onload = function() {
   window.addEventListener("scroll", () => {
     if (window.scrollY == 0) {
       backButton.style.display = "none";
-    } else if (window.scrollY < (main.offsetTop + about.offsetHeight)) {
+    }
+    if (window.scrollY < portfolio.offsetTop) {
       backButton.style.display = "flex";
       navbarButtons.forEach((button) => {
         button.classList.remove("active");
       });
       navbarButtons[1].classList.add("active");
-    } else if (window.scrollY >= (about.offsetTop + about.offsetHeight - navbar.offsetHeight) && window.scrollY < (portfolio.offsetTop + portfolio.offsetHeight - navbar.offsetHeight)) {
+    } else if (window.scrollY < contact.offsetTop) {
       navbarButtons.forEach((button) => {
             button.classList.remove("active");
       });
       navbarButtons[2].classList.add("active");
-    } else if (window.scrollY >= (portfolio.offsetTop + portfolio.offsetHeight - navbar.offsetHeight) && window.scrollY < (contact.offsetTop + contact.offsetHeight - navbar.offsetHeight)) {
+    } else {
       navbarButtons.forEach((button) => {
             button.classList.remove("active");
       });
