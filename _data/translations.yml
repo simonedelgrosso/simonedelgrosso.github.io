@@ -1,0 +1,65 @@
+it:
+  nav:
+    title: "Navigazione"
+    home: "Home"
+    about: "Chi sono"
+    portfolio: "Portfolio"
+    contact: "Contatti"
+  home:
+    title: "Benvenuti"
+  about:
+    role: "Sviluppatore Full‑stack"
+    presentation: "Sono Simone, uno sviluppatore full‑stack appassionato di algoritmi, intelligenza artificiale e software open‑source."
+    from_label: "Da:"
+    from_value: "Roma, Italia"
+    age_label: "Età:"
+    current: "Oggi"
+    experience: "Esperienza"
+    education: "Istruzione"
+    education_bachelor: "Laurea Triennale in Informatica"
+    education_university: "Università di Roma Tor Vergata"
+    education_diploma: "Liceo Scientifico"
+    education_highschool: "I.I.S. Edoardo Amaldi Roma"
+    certifications: "Certificazioni"
+    skills: "Competenze"
+  portfolio:
+    android_title: "Progetti Android"
+    stack_subtitle: "Stack del progetto"
+    pillolapp:
+      description-1: "Realizzata per aiutare gli utenti a gestire promemoria per i loro farmaci giornalieri."
+      description-2: "Si possono aggiungere e gestire medicinali, impostare programmi ricorrenti, ricevere promemoria e monitorare se si sono prese le dosi."
+  contact:
+    title: "Contattami"
+
+en:
+  nav:
+    title: "Navigation"
+    home: "Home"
+    about: "About"
+    projects: "Portfolio"
+    contact: "Contact"
+  home:
+    title: "Welcome"
+  about:
+    role: "Full‑stack Developer"
+    presentation: "I'm Simone, a full‑stack developer passionate about algorithms, artificial intelligence and open‑source software."
+    from_label: "From:"
+    from_value: "Rome, Italy"
+    age_label: "Age:"
+    current: "Current"
+    experience: "Experience"
+    education: "Education"
+    education_bachelor: "Bachelor of Computer Science"
+    education_university: "University of Rome Tor Vergata"
+    education_diploma: "Scientific High-school"
+    education_highschool: "I.I.S. Edoardo Amaldi Roma"
+    certifications: "Certifications"
+    skills: "Skills"
+  portfolio:
+    android_title: "Android Projects"
+    stack_subtitle: "Project Stack"
+    pillolapp:
+      description-1: "Made to help users manage their daily medication reminders."
+      description-2: "You can add and manage your medicines, set recurring schedules, receive reminders and track whether you have taken your doses."
+  contact:
+    title: "Reach out"

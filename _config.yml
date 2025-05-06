@@ -1,0 +1,17 @@
+title: Portfolio
+email: simdlg@outlook.it
+description: Portfolio - Simone Del Grosso - Full stack developer
+baseurl: ""
+url: "https://simdlg.github.io"
+twitter_username: simdlg
+github_username:  simdlg
+
+defaults:
+  - scope:
+      path: "en"
+    values:
+      lang: "en"
+  - scope:
+      path: "it"
+    values:
+      lang: "it"
