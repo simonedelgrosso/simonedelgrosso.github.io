@@ -1,5 +1,7 @@
 # Portfolio
 
+> [Clicca qui](README.md) per la versione in inglese
+
 Repository del mio sito portfolio personale, disponibile all'indirizzo:  
 **[https://simdlg.github.io](https://simdlg.github.io)**
 
