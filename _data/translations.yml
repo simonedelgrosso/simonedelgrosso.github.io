@@ -24,10 +24,13 @@ it:
     skills: "Competenze"
   portfolio:
     android_title: "Progetti Android"
+    web_title: "Progetti Web"
     stack_subtitle: "Stack del progetto"
     pillolapp:
       description-1: "Realizzata per aiutare gli utenti a gestire promemoria per i loro farmaci giornalieri."
       description-2: "Si possono aggiungere e gestire medicinali, impostare programmi ricorrenti, ricevere promemoria e monitorare se si sono prese le dosi."
+    portfolio:
+      description-1: "Sito personale multilingua per presentare i miei progetti, esperienze e competenze. Responsive e ottimizzato per SEO."
   contact:
     title: "Contattami"
 
@@ -36,7 +39,7 @@ en:
     title: "Navigation"
     home: "Home"
     about: "About"
-    projects: "Portfolio"
+    portfolio: "Portfolio"
     contact: "Contact"
   home:
     title: "Welcome"
@@ -57,9 +60,12 @@ en:
     skills: "Skills"
   portfolio:
     android_title: "Android Projects"
+    web_title: "Web Projects"
     stack_subtitle: "Project Stack"
     pillolapp:
       description-1: "Made to help users manage their daily medication reminders."
       description-2: "You can add and manage your medicines, set recurring schedules, receive reminders and track whether you have taken your doses."
+    portfolio:
+      description-1: "Multi‑language personal website showcasing my projects, experience and skills. Fully responsive and SEO‑optimized."
   contact:
     title: "Reach out"

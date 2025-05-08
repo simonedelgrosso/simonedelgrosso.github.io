@@ -134,8 +134,8 @@
         <p class="section-title">Portfolio</p>
         <div id="portfolio-card">
           <h1>{{ t.portfolio.android_title }}</h1>
-          <div id="projects-container">
-            <div class="flip-card">
+          <div class="projects-container">
+            <div class="flip-card-android">
               <div class="flip-card-inner">
                 <div class="flip-card-front">
                   <a href="https://github.com/simdlg/pillol-app-info" class="project-title accent"><i class="fab fa-github" style="color: #000; margin-right: 10px;"></i>Pillol App</a>
@@ -160,7 +160,40 @@
                     <p class="project-description">{{ t.portfolio.pillolapp.description-1 }}</p>
                     <p class="project-description">{{ t.portfolio.pillolapp.description-2 }}</p>
                     <p class="project-section-title accent">{{ t.portfolio.stack_subtitle }}</p>
-                    <p class="project-description">Android Studio, Java, XML, Room</p>
+                    <p class="project-description">Android Studio, Java, XML, Room.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h1>{{ t.portfolio.web_title }}</h1>
+          <div class="projects-container">
+            <div class="flip-card-web">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                  <a href="https://github.com/simdlg/simdlg.github.io" class="project-title accent"><i class="fab fa-github" style="color: #000; margin-right: 10px;"></i>Portfolio</a>
+                  <button class="flip-btn"><i class="fa-solid fa-rotate-left"></i></button>
+                  <div class="carousel desktop">
+                    <img src="/assets/imgs/{{page.lang}}/portfolio/desktop/screenshot-1.png" class="carousel-image active" alt="Screenshot 1">
+                    <img src="/assets/imgs/{{page.lang}}/portfolio/desktop/screenshot-2.png" class="carousel-image" alt="Screenshot 2">
+                  </div>
+                  <div class="carousel mobile">
+                    <img src="/assets/imgs/{{page.lang}}/portfolio/mobile/screenshot-1.png" class="carousel-image active" alt="Screenshot 1">
+                    <img src="/assets/imgs/{{page.lang}}/portfolio/mobile/screenshot-2.png" class="carousel-image" alt="Screenshot 2">
+                  </div>
+                  <div class="carousel-actions">
+                    <button class="carousel-btn left"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="carousel-dots"></div>
+                    <button class="carousel-btn right"><i class="fa-solid fa-chevron-right"></i></button>
+                  </div>
+                </div>
+                <div class="flip-card-back">
+                  <button class="flip-btn"><i class="fa-solid fa-rotate-right"></i></button>
+                  <div class="project-details">
+                    <a href="https://github.com/simdlg/simdlg.github.io" target="_blank" class="project-title accent"><i class="fab fa-github" style="color: #000; margin-right: 10px;"></i>Portfolio</a>
+                    <p class="project-description">{{ t.portfolio.portfolio.description-1 }}</p>
+                    <p class="project-section-title accent">{{ t.portfolio.stack_subtitle }}</p>
+                    <p class="project-description">HTML, CSS, JavaScript, Jekyll, GitHub Pages.</p>
                   </div>
                 </div>
               </div>

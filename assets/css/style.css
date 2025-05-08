@@ -370,7 +370,7 @@ a {
   margin: 0px auto;
   padding: 20px;
 }
-#projects-container {
+.projects-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -378,10 +378,18 @@ a {
   justify-content: center;
   width: 100%;
 }
-.flip-card {
-  background-color: transparent;
+.flip-card-android {
   width: 300px;
   height: 500px;
+  background-color: transparent;
+  margin: 20px;
+  border-radius: 20px;
+  perspective: 1000px;
+}
+.flip-card-web {
+  width: 750px;
+  height: 500px;
+  background-color: transparent;
   margin: 20px;
   border-radius: 20px;
   perspective: 1000px;
@@ -440,18 +448,30 @@ a {
   padding: 10px;
   transform: rotateY(180deg);
 }
-.carousel {
+.flip-card-android .carousel {
   position: relative;
   width: 200px;
   height: 400px;
   margin: 0px auto;
 }
+.flip-card-web .carousel {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  margin: 0px auto;
+}
+.carousel.desktop {
+  display: block;
+}
+.carousel.mobile {
+  display: none;
+}
 .carousel-image {
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 200px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   opacity: 0;
 }
@@ -611,6 +631,18 @@ footer hr {
   }
   #about-info, #about-education, #about-experience {
     width: 100%;
+  }
+}
+@media screen and (max-width: 650px) {
+  .flip-card-web {
+    width: 300px;
+
+    .carousel.desktop {
+      display: none;
+    }
+    .carousel.mobile {
+      display: block;
+    }
   }
 }
 @media screen and (max-width: 550px) {

@@ -1,4 +1,5 @@
 window.onload = function() {
+  const isMobile = window.matchMedia("(max-width: 650px)").matches;
   const home = document.getElementById("home");
   const main = document.getElementById("main-container");
   const about = document.getElementById("about");
@@ -62,12 +63,27 @@ window.onload = function() {
 
   document.querySelectorAll('.flip-card-inner').forEach(flipCard => {
     const card = flipCard.querySelector('.flip-card-front');
-    const images = card.querySelectorAll('.carousel-image');
+
+    let index = 0;
+
+    let activeCarousel;
+    let desktopCarousel = card.querySelector(".carousel.desktop");
+    let mobileCarousel = card.querySelector(".carousel.mobile");
+
+    if (desktopCarousel && mobileCarousel) {
+      if (isMobile) {
+        activeCarousel = mobileCarousel;
+      } else {
+        activeCarousel = desktopCarousel;
+      }
+    } else {
+      activeCarousel = card.querySelector(".carousel");
+    }
+
+    const images = activeCarousel.querySelectorAll('.carousel-image') ;
     const btnLeft = card.querySelector('.carousel-btn.left');
     const btnRight = card.querySelector('.carousel-btn.right');
     const dotsContainer = card.querySelector('.carousel-dots');
-
-    let index = 0;
 
     images.forEach((_, i) => {
       const dot = document.createElement('span');
