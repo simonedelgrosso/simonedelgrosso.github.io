@@ -384,7 +384,7 @@ a {
   background-color: transparent;
   margin: 20px;
   border-radius: 20px;
-  perspective: 1000px;
+  perspective: 3000px;
 }
 .flip-card-web {
   width: 750px;
@@ -392,7 +392,7 @@ a {
   background-color: transparent;
   margin: 20px;
   border-radius: 20px;
-  perspective: 1000px;
+  perspective: 3000px;
 }
 .flip-card-inner {
   position: relative;
