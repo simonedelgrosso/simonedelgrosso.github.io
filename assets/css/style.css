@@ -490,7 +490,10 @@ a {
 }
 .carousel-dots {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
+  row-gap: 5px;
 }
 .carousel-dot {
   width: 15px;
