@@ -8,9 +8,9 @@ it:
   home:
     title: "Benvenuti"
   about:
-    role: "Sviluppatore Full‑stack"
+    role: "Full‑stack Developer"
     presentation: "Sono Simone, uno sviluppatore full‑stack appassionato di algoritmi, intelligenza artificiale e software open‑source."
-    from_label: "Da:"
+    from_label: "Sede:"
     from_value: "Roma, Italia"
     age_label: "Età:"
     current: "Oggi"
