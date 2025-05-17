@@ -18,6 +18,21 @@ body {
   font-family: 'Verdana', sans-serif;
   font-size: 20px;
 }
+#nav-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 101;
+  top: 10px;
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  color: #fff;
+  background-color: #404040;
+  border-radius: 50%;
+  cursor: pointer;
+}
 nav {
   position: relative;
   z-index: 101;
@@ -649,8 +664,13 @@ footer hr {
   }
 }
 @media screen and (max-width: 550px) {
+  #nav-btn {
+    display: flex;
+  }
   nav > ul {
     display: none;
+    height: fit-content;
+    flex-direction: column;
   }
   nav > ul > li {
     width: 100%;

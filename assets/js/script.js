@@ -7,8 +7,12 @@ window.onload = function() {
   const navbar = document.getElementById("navbar");
   const navbarButtons = document.querySelectorAll(".nav-btn");
   const backButton = document.getElementById("scroll-back-btn");
+  const navButton = document.getElementById("nav-btn");
 
   navbar.style.position = "fixed";
+  if (isMobile) {
+    navbar.style.display = "none";
+  }
 
   function goToHome() {
     function transition() {
@@ -16,6 +20,9 @@ window.onload = function() {
       navbar.style.transform = "translateY(0px)";
       main.style.transform = "translateY(0px)";
       home.style.transform = "translateY(0px)";
+    }
+    if (isMobile) {
+      navbar.style.display = "none";
     }
     if (window.scrollY == 0) {
       transition();
@@ -29,14 +36,23 @@ window.onload = function() {
   }
 
   function goToAbout() {
+    if (isMobile) {
+      navbar.style.display = "none";
+    }
     window.scroll(0, about.offsetTop-navbar.offsetHeight);
   }
 
   function goToPortfolio() {
+    if (isMobile) {
+      navbar.style.display = "none";
+    }
     window.scroll(0, portfolio.offsetTop-navbar.offsetHeight);
   }
   
   function goToContact() {
+    if (isMobile) {
+      navbar.style.display = "none";
+    }
     window.scroll(0, contact.offsetTop-navbar.offsetHeight);
   }
 
@@ -51,6 +67,14 @@ window.onload = function() {
   document.getElementById("footer-btn-contact").addEventListener("click", goToContact);
 
   backButton.addEventListener("click", goToHome);
+
+  navButton.addEventListener("click", () => {
+    if (navbar.style.display == "none") {
+      navbar.style.display = "flex";
+    } else {
+      navbar.style.display = "none";
+    }
+  });
 
   document.getElementById("btn-enter").addEventListener("click", () => {
     navbar.style.transform = "translateY(-100vh)";
@@ -121,8 +145,8 @@ window.onload = function() {
   });
   
   window.addEventListener("scroll", () => {
-    if (window.scrollY == 0) {
-      backButton.style.display = "none";
+    if (isMobile) {
+      navbar.style.display = "none";
     }
     if (window.scrollY < portfolio.offsetTop) {
       backButton.style.display = "flex";
