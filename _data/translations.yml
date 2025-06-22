@@ -27,8 +27,11 @@ it:
     web_title: "Progetti Web"
     stack_subtitle: "Stack del progetto"
     pillolapp:
-      description-1: "Realizzata per aiutare gli utenti a gestire promemoria per i loro farmaci giornalieri."
+      description-1: "App Android realizzata per aiutare gli utenti a gestire promemoria per i loro farmaci giornalieri."
       description-2: "Si possono aggiungere e gestire medicinali, impostare programmi ricorrenti, ricevere promemoria e monitorare se si sono prese le dosi."
+    altira:
+      description-1: "App Android sviluppata per mostrare bussola e altimetro in tempo reale, con un'interfaccia personalizzata e fluida."
+      description-2: "Utilizza dati GPS corretti con modello geoidale (EGM) per fornire altitudini accurate."
     portfolio:
       description-1: "Sito personale multilingua per presentare i miei progetti, esperienze e competenze. Responsive e ottimizzato per SEO."
   contact:
@@ -65,6 +68,9 @@ en:
     pillolapp:
       description-1: "Made to help users manage their daily medication reminders."
       description-2: "You can add and manage your medicines, set recurring schedules, receive reminders and track whether you have taken your doses."
+    altira:
+      description-1: "An Android app developed to display a real-time compass and altimeter, featuring a custom and fluid interface."
+      description-2: "It uses GPS data corrected with a geoidal model (EGM) to provide accurate altitude readings."
     portfolio:
       description-1: "Multi‑language personal website showcasing my projects, experience and skills. Fully responsive and SEO‑optimized."
   contact:
