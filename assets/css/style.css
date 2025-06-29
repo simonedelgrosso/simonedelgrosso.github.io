@@ -112,6 +112,8 @@ a {
 }
 
 .theme-toggle-btn {
+  position: absolute;
+  right: 0px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -824,6 +826,10 @@ footer hr {
   #nav-btn {
     display: flex;
   }
+
+  .theme-toggle-btn {
+    top: 50px; 
+  };
 
   nav > ul {
     display: none;
