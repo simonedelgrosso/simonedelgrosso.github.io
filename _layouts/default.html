@@ -31,6 +31,11 @@
         <li id="nav-btn-portfolio" class="nav-btn" style="cursor: pointer">{{ t.nav.portfolio }}</li>
         <li id="nav-btn-contact" class="nav-btn" style="cursor: pointer">{{ t.nav.contact }}</li>
         <li class="nav-spacer"></li>
+        <div class="theme-toggle-btn" id="theme-toggle">
+          <div class="toggle">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+        </div>
       </ul>
     </nav>
     <div id="nav-btn"><i class="fa fa-bars"></i></div>
@@ -117,7 +122,7 @@
                   </ul>
                 </div>
                 <div>
-                  <h2>Back-end</h2>
+                  <h1>Back-end</h1>
                   <ul>
                     <li><i class="fab fa-microsoft" style="margin-right: 10px;"></i>C# (.NET)</li>
                     <li><i class="fab fa-java" style="margin-right: 10px;"></i>Java</li>
@@ -273,5 +278,23 @@
       </footer>
     </div>
     <script src="/assets/js/script.js"></script>
+    <script>
+      const toggle = document.getElementById('theme-toggle');
+      const slider = toggle.querySelector('.toggle')
+      const sliderIcon = slider.querySelector('i');
+
+      toggle.addEventListener('click', () => {
+        let theme = document.documentElement.getAttribute('data-theme');
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'light');
+          sliderIcon.classList.remove('fa-moon');
+          sliderIcon.classList.add('fa-sun');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          sliderIcon.classList.remove('fa-sun');
+          sliderIcon.classList.add('fa-moon');
+        }
+      });
+    </script>
   </body>
 </html>
