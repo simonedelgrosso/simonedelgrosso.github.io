@@ -9,7 +9,7 @@ it:
     title: "Benvenuti"
   about:
     role: "Full‑stack Developer"
-    presentation: "Sono Simone, uno sviluppatore full‑stack appassionato di algoritmi, intelligenza artificiale e software open‑source."
+    presentation: "Sono Simone, uno sviluppatore full‑stack appassionato di intelligenza artificiale e software open‑source."
     from_label: "Sede:"
     from_value: "Roma, Italia"
     age_label: "Età:"
@@ -48,7 +48,7 @@ en:
     title: "Welcome"
   about:
     role: "Full‑stack Developer"
-    presentation: "I'm Simone, a full‑stack developer passionate about algorithms, artificial intelligence and open‑source software."
+    presentation: "I'm Simone, a full‑stack developer passionate about artificial intelligence and open‑source software."
     from_label: "From:"
     from_value: "Rome, Italy"
     age_label: "Age:"
