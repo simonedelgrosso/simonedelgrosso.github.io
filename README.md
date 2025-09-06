@@ -3,7 +3,7 @@
 > [Click here](README.it.md) for the italian version
 
 This is the repository of my personal portfolio website, available at:  
-**[https://simdlg.github.io](https://simdlg.github.io)**
+**[https://simonedelgrosso.github.io](https://simonedelgrosso.github.io)**
 
 ## ✨ Features
 
