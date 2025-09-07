@@ -398,7 +398,8 @@ a {
 #about-info > p {
   margin: 20px 0px;
   padding: 10px;
-  background-color: var(--accent-bg);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-bg) 92%, transparent) 0%, var(--accent-bg) 100%);
+  box-shadow: 0 1px 2px var(--shadow);
   border-radius: 20px;
 }
 
@@ -459,22 +460,35 @@ a {
 #about-education ul .about-list-item,
 #about-experience ul .about-list-item,
 #about-certifications ul .about-list-item {
-  margin: 10px 10px 0px 80px;
-  padding: 10px 10px 0px;
-  background-color: var(--accent-bg);
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  margin-bottom: 10px;
 }
 
 #about-education ul .about-list-place,
 #about-experience ul .about-list-place,
 #about-certifications ul .about-list-place {
-  margin: 0px 10px 0px 80px;
-  padding: 10px;
   font-size: 16px;
-  background-color: var(--accent-bg);
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+}
+
+.about-entry {
+  margin: 20px 10px 0px 80px;
+  padding: 10px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-bg) 92%, transparent) 0%, var(--accent-bg) 100%);
+  box-shadow: 0 1px 2px var(--shadow);
+  border-radius: 20px;
+}
+
+.about-entry > .about-list-item {
+  margin: 0 0 6px 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.about-entry > .about-list-place {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
 }
 
 #about-skills ul > :last-child::after {
@@ -538,7 +552,7 @@ a {
   border-radius: 20px;
   transition: transform 1s, box-shadow 300ms ease, translate 300ms ease;
   transform-style: preserve-3d;
-  box-shadow: 0 8px 24px var(--shadow);
+  box-shadow: 0 1px 2px var(--shadow);
 }
 
 .flip-card-inner.flipped {
@@ -738,7 +752,7 @@ a {
 
 .flip-card-android .flip-card-inner:hover,
 .flip-card-web .flip-card-inner:hover {
-  box-shadow: 0 12px 32px var(--shadow);
+  box-shadow: 0 2px 4px var(--shadow);
   translate: 0 -2px;
 }
 
