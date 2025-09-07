@@ -14,7 +14,14 @@
                 <button class="flip-btn"><i class="fa-solid fa-rotate-left"></i></button>
                 <div class="carousel">
                   {% for screenshot in project.screenshots %}
-                    <img src="/assets/imgs/{{ project.id }}/{{ page.lang }}/{{ screenshot.path }}" class="carousel-image {% if forloop.first %}active{% endif %}" alt="{{ t[screenshot.alt_text_key] }}" loading="lazy">
+                    {% assign alt_parts = screenshot.alt_text_key | split: '.' %}
+                    {% assign k0 = alt_parts[0] %}
+                    {% assign k1 = alt_parts[1] %}
+                    {% assign k2 = alt_parts[2] %}
+                    {% assign t_l1 = t[k0] %}
+                    {% assign t_l2 = t_l1[k1] %}
+                    {% assign alt_text = t_l2[k2] %}
+                    <img src="/assets/imgs/{{ project.id }}/{{ page.lang }}/{{ screenshot.path }}" class="carousel-image {% if forloop.first %}active{% endif %}" alt="{{ alt_text }}" loading="lazy">
                   {% endfor %}
                 </div>
                 <div class="carousel-actions">
@@ -27,8 +34,22 @@
                 <button class="flip-btn"><i class="fa-solid fa-rotate-right"></i></button>
                 <div class="project-details">
                   <a href="{{ project.github_url }}" target="_blank" class="project-title accent"><i class="fab fa-github github-icon"></i>{{ project.title }}</a>
+                  {% if project.tags %}
+                  <div class="project-tags">
+                    {% for tag in project.tags %}
+                      <span class="project-tag">{{ tag }}</span>
+                    {% endfor %}
+                  </div>
+                  {% endif %}
                   {% for description_key in project.description_keys %}
-                    <p class="project-description">{{ t[description_key] }}</p>
+                    {% assign desc_parts = description_key | split: '.' %}
+                    {% assign d0 = desc_parts[0] %}
+                    {% assign d1 = desc_parts[1] %}
+                    {% assign d2 = desc_parts[2] %}
+                    {% assign dt_l1 = t[d0] %}
+                    {% assign dt_l2 = dt_l1[d1] %}
+                    {% assign desc_text = dt_l2[d2] %}
+                    <p class="project-description">{{ desc_text }}</p>
                   {% endfor %}
                   <p class="project-section-title accent">{{ t.portfolio.stack_subtitle }}</p>
                   <p class="project-description">{{ project.stack }}</p>
@@ -50,12 +71,26 @@
                 <button class="flip-btn"><i class="fa-solid fa-rotate-left"></i></button>
                 <div class="carousel desktop">
                   {% for screenshot in project.screenshots.desktop %}
-                    <img src="/assets/imgs/{{ project.id }}/{{ page.lang }}/desktop/{{ screenshot.path }}" class="carousel-image {% if forloop.first %}active{% endif %}" alt="{{ t[screenshot.alt_text_key] }}" loading="lazy">
+                    {% assign alt_parts = screenshot.alt_text_key | split: '.' %}
+                    {% assign k0 = alt_parts[0] %}
+                    {% assign k1 = alt_parts[1] %}
+                    {% assign k2 = alt_parts[2] %}
+                    {% assign t_l1 = t[k0] %}
+                    {% assign t_l2 = t_l1[k1] %}
+                    {% assign alt_text = t_l2[k2] %}
+                    <img src="/assets/imgs/{{ project.id }}/{{ page.lang }}/desktop/{{ screenshot.path }}" class="carousel-image {% if forloop.first %}active{% endif %}" alt="{{ alt_text }}" loading="lazy">
                   {% endfor %}
                 </div>
                 <div class="carousel mobile">
                   {% for screenshot in project.screenshots.mobile %}
-                    <img src="/assets/imgs/{{ project.id}}/{{ page.lang }}/mobile/{{ screenshot.path }}" class="carousel-image {% if forloop.first %}active{% endif %}" alt="{{ t[screenshot.alt_text_key] }}" loading="lazy">
+                    {% assign alt_parts = screenshot.alt_text_key | split: '.' %}
+                    {% assign k0 = alt_parts[0] %}
+                    {% assign k1 = alt_parts[1] %}
+                    {% assign k2 = alt_parts[2] %}
+                    {% assign t_l1 = t[k0] %}
+                    {% assign t_l2 = t_l1[k1] %}
+                    {% assign alt_text = t_l2[k2] %}
+                    <img src="/assets/imgs/{{ project.id}}/{{ page.lang }}/mobile/{{ screenshot.path }}" class="carousel-image {% if forloop.first %}active{% endif %}" alt="{{ alt_text }}" loading="lazy">
                   {% endfor %}
                 </div>
                 <div class="carousel-actions">
@@ -68,8 +103,22 @@
                 <button class="flip-btn"><i class="fa-solid fa-rotate-right"></i></button>
                 <div class="project-details">
                   <a href="{{ project.github_url }}" target="_blank" class="project-title accent"><i class="fab fa-github github-icon"></i>{{ project.title }}</a>
+                  {% if project.tags %}
+                  <div class="project-tags">
+                    {% for tag in project.tags %}
+                      <span class="project-tag">{{ tag }}</span>
+                    {% endfor %}
+                  </div>
+                  {% endif %}
                   {% for description_key in project.description_keys %}
-                    <p class="project-description">{{ t[description_key] }}</p>
+                    {% assign desc_parts = description_key | split: '.' %}
+                    {% assign d0 = desc_parts[0] %}
+                    {% assign d1 = desc_parts[1] %}
+                    {% assign d2 = desc_parts[2] %}
+                    {% assign dt_l1 = t[d0] %}
+                    {% assign dt_l2 = dt_l1[d1] %}
+                    {% assign desc_text = dt_l2[d2] %}
+                    <p class="project-description">{{ desc_text }}</p>
                   {% endfor %}
                   <p class="project-section-title accent">{{ t.portfolio.stack_subtitle }}</p>
                   <p class="project-description">{{ project.stack }}</p>

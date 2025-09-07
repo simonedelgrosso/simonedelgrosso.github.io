@@ -9,6 +9,9 @@
     <meta name="description" content="{{ page.description }}">
     <title>{{ page.title }}</title>
     {% seo %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="alternate" hreflang="en" href="https://simonedelgrosso.github.io/en/" />
     <link rel="alternate" hreflang="it" href="https://simonedelgrosso.github.io/it/" />
     <link rel="alternate" hreflang="x-default" href="https://simonedelgrosso.github.io/" />
@@ -41,10 +44,6 @@
       {% include contact_section.html %}
       {% include footer_section.html %}
     </div>
-    <script>
-      const birthDateString = "{{ p.birth_date }}";
-      console.log(birthDateString);
-      </script>
     <script src="/assets/js/script.js"></script>
   </body>
 </html>

@@ -2,6 +2,9 @@ projects:
   - title: "Altira"
     id: "altira"
     github_url: "https://github.com/simonedelgrosso/altira-info"
+    tags:
+      - Android
+      - Java
     screenshots:
       - path: "screenshot-1.jpg"
         alt_text_key: "portfolio.altira.screenshot_1_alt_text"
@@ -12,13 +15,17 @@ projects:
       - path: "screenshot-4.jpg"
         alt_text_key: "portfolio.altira.screenshot_4_alt_text"
     description_keys:
-      - "portfolio.altira.description-1"
-      - "portfolio.altira.description-2"
+      - "portfolio.altira.description_1"
+      - "portfolio.altira.description_2"
     stack: "Android Studio, Java, XML."
     type: "android"
   - title: "Pillol App"
     id: "pillolapp"
     github_url: "https://github.com/simonedelgrosso/pillol-app-info"
+    tags:
+      - Android
+      - Java
+      - Room DB
     screenshots:
       - path: "screenshot-1.png"
         alt_text_key: "portfolio.pillolapp.screenshot_1_alt_text"
@@ -41,13 +48,17 @@ projects:
       - path: "screenshot-10.png"
         alt_text_key: "portfolio.pillolapp.screenshot_10_alt_text"
     description_keys:
-      - "portfolio.pillolapp.description-1"
-      - "portfolio.pillolapp.description-2"
+      - "portfolio.pillolapp.description_1"
+      - "portfolio.pillolapp.description_2"
     stack: "Android Studio, Java, XML, Room."
     type: "android"
   - title: "Portfolio"
     id: "portfolio"
     github_url: "https://github.com/simonedelgrosso/simonedelgrosso.github.io"
+    tags:
+      - Web
+      - Jekyll
+      - GitHub Pages
     screenshots:
       desktop:
         - path: "screenshot-1.png"
@@ -60,6 +71,6 @@ projects:
         - path: "screenshot-2.png"
           alt_text_key: "portfolio.portfolio.mobile_screenshot_2_alt_text"
     description_keys:
-      - "portfolio.portfolio.description-1"
+      - "portfolio.portfolio.description_1"
     stack: "HTML, CSS, JavaScript, Jekyll, GitHub Pages."
     type: "web"
