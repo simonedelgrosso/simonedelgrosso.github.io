@@ -1,10 +1,16 @@
+# Site settings
 title: Portfolio
-email: simdlg@outlook.it
 description: Portfolio - Simone Del Grosso - Full stack developer
 baseurl: ""
-url: "https://simdlg.github.io"
-twitter_username: simdlg
-github_username:  simdlg
+url: "https://simonedelgrosso.github.io"
+
+# Build settings
+markdown: kramdown
+timezone: Europe/Rome
+plugins:
+  - jekyll-feed # Example plugin, you might want to add others like jekyll-sitemap, jekyll-seo-tag etc.
+  - jekyll-sitemap
+  - jekyll-seo-tag
 
 defaults:
   - scope:

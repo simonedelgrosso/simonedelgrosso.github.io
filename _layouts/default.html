@@ -1,300 +1,50 @@
 {% assign t = site.data.translations[page.lang] %}
+{% assign s = site.data.social %}
 <!DOCTYPE html>
 <html lang="{{ page.lang }}">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8RCS18K2T"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'G-H8RCS18K2T');
-    </script>
+    {% include google_analytics.html %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ page.description }}">
     <title>{{ page.title }}</title>
-    <link rel="alternate" hreflang="en" href="https://simdlg.github.io/en/" />
-    <link rel="alternate" hreflang="it" href="https://simdlg.github.io/it/" />
-    <link rel="alternate" hreflang="x-default" href="https://simdlg.github.io/" />
+    {% seo %}
+    <link rel="alternate" hreflang="en" href="https://simonedelgrosso.github.io/en/" />
+    <link rel="alternate" hreflang="it" href="https://simonedelgrosso.github.io/it/" />
+    <link rel="alternate" hreflang="x-default" href="https://simonedelgrosso.github.io/" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/assets/css/style.css" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
   </head>
   <body>
     <nav>
-      <ul id="navbar" style="display:flex;">
+      <ul id="navbar">
         <li class="nav-spacer"></li>
-        <li id="nav-btn-home" class="nav-btn active" style="cursor: pointer">{{ t.nav.home }}</li>
-        <li id="nav-btn-about" class="nav-btn" style="cursor: pointer">{{ t.nav.about }}</li>
-        <li id="nav-btn-portfolio" class="nav-btn" style="cursor: pointer">{{ t.nav.portfolio }}</li>
-        <li id="nav-btn-contact" class="nav-btn" style="cursor: pointer">{{ t.nav.contact }}</li>
+        <li id="nav-btn-home" class="nav-btn active cursor-pointer" role="button" tabindex="0" aria-label="Home page navigation button">{{ t.nav.home }}</li>
+        <li id="nav-btn-about" class="nav-btn cursor-pointer" role="button" tabindex="0" aria-label="About page navigation button">{{ t.nav.about }}</li>
+        <li id="nav-btn-portfolio" class="nav-btn cursor-pointer" role="button" tabindex="0" aria-label="Portfolio page navigation button">{{ t.nav.portfolio }}</li>
+        <li id="nav-btn-contact" class="nav-btn cursor-pointer" role="button" tabindex="0" aria-label="Contact page navigation button">{{ t.nav.contact }}</li>
         <li class="nav-spacer"></li>
-        <div class="theme-toggle-btn" id="theme-toggle">
+        <div class="theme-toggle-btn" id="theme-toggle" role="button" tabindex="0" aria-label="Toggle theme">
           <div class="toggle">
             <i class="fa-solid fa-sun"></i>
           </div>
         </div>
       </ul>
     </nav>
-    <div id="nav-btn"><i class="fa fa-bars"></i></div>
-    <div id="scroll-back-btn"><i class="fa fa-chevron-up"></i></div>
-    <section id="home">
-      <img src="/assets/imgs/banner.jpg"/>
-      <div id="home-card">
-        <p>{{ t.home.title }}</p>
-        <div id="btn-enter"><i class="fa fa-chevron-down"></i></div>
-      </div>
-    </section>
+    <div id="nav-btn" role="button" tabindex="0" aria-label="Open navigation menu"><i class="fa fa-bars"></i></div>
+    <div id="scroll-back-btn" role="button" tabindex="0" aria-label="Scroll back to top"><i class="fa fa-chevron-up"></i></div>
+    {% include home_section.html %}
     <div id="main-container">
-      <section id="about">
-        <p class="section-title">{{ t.nav.about }}</p>
-      	<div id="about-card">
-          <div id="about-intro">
-            <div id="about-img">
-              <img class="image" src="/assets/imgs/photo.jpg" />
-            </div>
-            <div id="about-info">
-              <h1 id="about-name">Simone Del Grosso</h1>
-              <h2 id="about-role" class="accent">{{ t.about.role }}</h2>
-              <p id="about-text">{{ t.about.presentation }}</p>
-              <ul>
-                <li><strong>{{ t.about.from_label }}</strong> {{ t.about.from_value }}</li>
-                <li><strong>{{ t.about.age_label }}</strong> <span id="about-age">27</span></li>
-              </ul>
-            </div>
-          </div>
-          <div id="about-more">
-            <div id="about-experience">
-              <h1>{{ t.about.experience }}</h1>
-              <ul>
-                <li>
-                  <p class="about-list-label">2023 - {{ t.about.current }}</p>
-                  <p class="about-list-item">Consultant</p>
-                  <p class="accent about-list-place">Cluster Reply Rome IT</p>
-                </li>
-              </ul>
-            </div>
-            <div id="about-education">
-              <h1>{{ t.about.education }}</h1>
-              <ul>
-                <li>
-                  <p class="about-list-label">2017 - 2023</p>
-                  <p class="about-list-item">{{ t.about.education_bachelor}}</p>
-                  <p class="accent about-list-place">{{ t.about.education_university }}</p>
-                </li>
-                <li>
-                  <p class="about-list-label">2012 - 2017</p>
-                  <p class="about-list-item">{{ t.about.education_diploma }}</p>
-                  <p class="accent about-list-place">{{ t.about.education_highschool }}</p>
-                </li>                
-              </ul>
-            </div>
-            <div id="about-certifications">
-              <h1>{{ t.about.certifications }}</h1>
-              <ul>
-                <li>
-                  <p class="about-list-label">2025</p>
-                  <p class="about-list-item">Microsoft Certified: Azure AI Engineer Associate (AI-102)</p>
-                  <p class="accent about-list-place">Microsoft</p>
-                </li>
-                <li>
-                  <p class="about-list-label">2024</p>
-                  <p class="about-list-item">Microsoft Certified: Azure Developer Associate (AZ-204)</p>
-                  <p class="accent about-list-place">Microsoft</p>
-                  <p class="about-list-item">Microsoft Certified: Azure Fundamentals (AZ-900)</p>
-                  <p class="accent about-list-place">Microsoft</p>
-                </li>
-              </ul>
-            </div>
-            <div id="about-skills">
-              <p class="section-title">{{ t.about.skills }}</p>
-              <div id="about-skills-container">
-                <div>
-                  <h1>Front-end</h1>
-                  <ul>
-                    <li><i class="fab fa-html5" style="margin-right: 10px;"></i>HTML</li>
-                    <li><i class="fab fa-css3-alt" style="margin-right: 10px;"></i>CSS</li>
-                    <li><i class="fab fa-js-square" style="margin-right: 10px;"></i>JavaScript</li>
-                    <li><i class="fab fa-angular" style="margin-right: 10px;"></i>Angular</li>
-                    <li><i class="fab fa-react" style="margin-right: 10px;"></i>React</li>
-                  </ul>
-                </div>
-                <div>
-                  <h1>Back-end</h1>
-                  <ul>
-                    <li><i class="fab fa-microsoft" style="margin-right: 10px;"></i>C# (.NET)</li>
-                    <li><i class="fab fa-java" style="margin-right: 10px;"></i>Java</li>
-                    <li><i class="fab fa-python" style="margin-right: 10px;"></i>Python</li>
-                    <li><i class="fas fa-server" style="margin-right: 10px;"></i>SQL</li>
-                    <li><i class="fab fa-node-js" style="margin-right: 10px;"></i>Node.js</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section id="portfolio">
-        <p class="section-title">Portfolio</p>
-        <div id="portfolio-card">
-          <h1>{{ t.portfolio.android_title }}</h1>
-          <div class="projects-container">
-            <div class="flip-card-android">
-              <div class="flip-card-inner">
-                <div class="flip-card-front">
-                  <a href="https://github.com/simdlg/pillol-app-info" class="project-title accent"><i class="fab fa-github" style="color: #000; margin-right: 10px;"></i>Pillol App</a>
-                  <button class="flip-btn"><i class="fa-solid fa-rotate-left"></i></button>
-                  <div class="carousel">
-                    <img src="/assets/imgs/pillolapp/{{page.lang}}/screenshot-1.png" class="carousel-image active" alt="Screenshot 1">
-                    <img src="/assets/imgs/pillolapp/{{page.lang}}/screenshot-2.png" class="carousel-image" alt="Screenshot 2">
-                    <img src="/assets/imgs/pillolapp/{{page.lang}}/screenshot-3.png" class="carousel-image" alt="Screenshot 3">
-                    <img src="/assets/imgs/pillolapp/{{page.lang}}/screenshot-4.png" class="carousel-image" alt="Screenshot 4">
-                    <img src="/assets/imgs/pillolapp/{{page.lang}}/screenshot-5.png" class="carousel-image" alt="Screenshot 5">
-                    <img src="/assets/imgs/pillolapp/{{page.lang}}/screenshot-6.png" class="carousel-image" alt="Screenshot 6">
-                    <img src="/assets/imgs/pillolapp/{{page.lang}}/screenshot-7.png" class="carousel-image" alt="Screenshot 7">
-                    <img src="/assets/imgs/pillolapp/{{page.lang}}/screenshot-8.png" class="carousel-image" alt="Screenshot 8">
-                    <img src="/assets/imgs/pillolapp/{{page.lang}}/screenshot-9.png" class="carousel-image" alt="Screenshot 9">
-                    <img src="/assets/imgs/pillolapp/{{page.lang}}/screenshot-10.png" class="carousel-image" alt="Screenshot 10">
-                  </div>
-                  <div class="carousel-actions">
-                    <button class="carousel-btn left"><i class="fa-solid fa-chevron-left"></i></button>
-                    <div class="carousel-dots" style="width: 140px;"></div>
-                    <button class="carousel-btn right"><i class="fa-solid fa-chevron-right"></i></button>
-                  </div>
-                </div>
-                <div class="flip-card-back">
-                  <button class="flip-btn"><i class="fa-solid fa-rotate-right"></i></button>
-                  <div class="project-details">
-                    <a href="https://github.com/simdlg/pillol-app-info" target="_blank" class="project-title accent"><i class="fab fa-github" style="color: #000; margin-right: 10px;"></i>Pillol App</a>
-                    <p class="project-description">{{ t.portfolio.pillolapp.description-1 }}</p>
-                    <p class="project-description">{{ t.portfolio.pillolapp.description-2 }}</p>
-                    <p class="project-section-title accent">{{ t.portfolio.stack_subtitle }}</p>
-                    <p class="project-description">Android Studio, Java, XML, Room.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="flip-card-android">
-              <div class="flip-card-inner">
-                <div class="flip-card-front">
-                  <a href="https://github.com/simdlg/altira-info" class="project-title accent"><i class="fab fa-github" style="color: #000; margin-right: 10px;"></i>Altira</a>
-                  <button class="flip-btn"><i class="fa-solid fa-rotate-left"></i></button>
-                  <div class="carousel">
-                    <img src="/assets/imgs/altira/screenshot-1.jpg" class="carousel-image active" alt="Screenshot 1">
-                    <img src="/assets/imgs/altira/screenshot-2.jpg" class="carousel-image" alt="Screenshot 2">
-                    <img src="/assets/imgs/altira/screenshot-3.jpg" class="carousel-image" alt="Screenshot 3">
-                    <img src="/assets/imgs/altira/screenshot-4.jpg" class="carousel-image" alt="Screenshot 4">
-                  </div>
-                  <div class="carousel-actions">
-                    <button class="carousel-btn left"><i class="fa-solid fa-chevron-left"></i></button>
-                    <div class="carousel-dots" style="width: 140px;"></div>
-                    <button class="carousel-btn right"><i class="fa-solid fa-chevron-right"></i></button>
-                  </div>
-                </div>
-                <div class="flip-card-back">
-                  <button class="flip-btn"><i class="fa-solid fa-rotate-right"></i></button>
-                  <div class="project-details">
-                    <a href="https://github.com/simdlg/altira-info" target="_blank" class="project-title accent"><i class="fab fa-github" style="color: #000; margin-right: 10px;"></i>Altira</a>
-                    <p class="project-description">{{ t.portfolio.altira.description-1 }}</p>
-                    <p class="project-description">{{ t.portfolio.altira.description-2 }}</p>
-                    <p class="project-section-title accent">{{ t.portfolio.stack_subtitle }}</p>
-                    <p class="project-description">Android Studio, Java, XML.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <h1>{{ t.portfolio.web_title }}</h1>
-          <div class="projects-container">
-            <div class="flip-card-web">
-              <div class="flip-card-inner">
-                <div class="flip-card-front">
-                  <a href="https://github.com/simdlg/simdlg.github.io" class="project-title accent"><i class="fab fa-github" style="color: #000; margin-right: 10px;"></i>Portfolio</a>
-                  <button class="flip-btn"><i class="fa-solid fa-rotate-left"></i></button>
-                  <div class="carousel desktop">
-                    <img src="/assets/imgs/portfolio/{{page.lang}}/desktop/screenshot-1.png" class="carousel-image active" alt="Screenshot 1">
-                    <img src="/assets/imgs/portfolio/{{page.lang}}/desktop/screenshot-2.png" class="carousel-image" alt="Screenshot 2">
-                  </div>
-                  <div class="carousel mobile">
-                    <img src="/assets/imgs/portfolio/{{page.lang}}/mobile/screenshot-1.png" class="carousel-image active" alt="Screenshot 1">
-                    <img src="/assets/imgs/portfolio/{{page.lang}}/mobile/screenshot-2.png" class="carousel-image" alt="Screenshot 2">
-                  </div>
-                  <div class="carousel-actions">
-                    <button class="carousel-btn left"><i class="fa-solid fa-chevron-left"></i></button>
-                    <div class="carousel-dots"></div>
-                    <button class="carousel-btn right"><i class="fa-solid fa-chevron-right"></i></button>
-                  </div>
-                </div>
-                <div class="flip-card-back">
-                  <button class="flip-btn"><i class="fa-solid fa-rotate-right"></i></button>
-                  <div class="project-details">
-                    <a href="https://github.com/simdlg/simdlg.github.io" target="_blank" class="project-title accent"><i class="fab fa-github" style="color: #000; margin-right: 10px;"></i>Portfolio</a>
-                    <p class="project-description">{{ t.portfolio.portfolio.description-1 }}</p>
-                    <p class="project-section-title accent">{{ t.portfolio.stack_subtitle }}</p>
-                    <p class="project-description">HTML, CSS, JavaScript, Jekyll, GitHub Pages.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section id="contact">
-        <p class="section-title">{{ t.nav.contact }}</p>
-        <div id="contact-card">
-          <h1>{{ t.contact.title }}</h1>
-          <ul>
-            <li><a href="https://www.github.com/simonedelgrosso"><i class="fab fa-github" style="margin-right: 10px;"></i><span class="accent">GitHub</span></a></li>
-            <li><a href="https://www.linkedin.com/in/simdlg"><i class="fab fa-linkedin" style="margin-right: 10px;"></i><span class="accent">LinkedIn</span></a></li>
-            <li><a href="https://t.me/simonedelgrosso"><i class="fab fa-telegram" style="margin-right: 10px;"></i><span class="accent">Telegram</span></a></li>
-          </ul>
-        </div>
-      </section>
-      <footer>
-        <div id="footer-container">
-          <div>
-            <h1>{{ t.nav.title }}</h1>
-            <hr/>
-            <ul>
-              <li id="footer-btn-home" class="accent" style="cursor: pointer">{{ t.nav.home }}</li>
-              <li id="footer-btn-about" class="accent" style="cursor: pointer">{{ t.nav.about }}</li>
-              <li id="footer-btn-portfolio" class="accent" style="cursor: pointer">{{ t.nav.portfolio }}</li>
-              <li id="footer-btn-contact" class="accent" style="cursor: pointer">{{ t.nav.contact }}</li>
-            </ul>
-          </div>
-          <div>
-            <h1>{{ t.nav.contact }}</h1>
-            <hr/>
-            <ul>
-              <li class="accent"><a href="https://www.github.com/simonedelgrosso">GitHub</a></li>
-              <li class="accent"><a href="https://www.linkedin.com/in/simdlg">LinkedIn</a></li>
-              <li class="accent"><a href="https://t.me/simonedelgrosso">Telegram</a></li>
-            </ul>
-          </div>
-        </div>
-        <p style="font-size:10px; margin-top:5px;">This template was recreated from scratch and customized.<br/>Original design by <a class="accent" href="https://macodeid.com">MACode ID</a>, all rights reserved to them.</p>
-      </footer>
+      {% include about_section.html %}
+      {% include portfolio_section.html %}
+      {% include contact_section.html %}
+      {% include footer_section.html %}
     </div>
-    <script src="/assets/js/script.js"></script>
     <script>
-      const toggle = document.getElementById('theme-toggle');
-      const slider = toggle.querySelector('.toggle')
-      const sliderIcon = slider.querySelector('i');
-
-      toggle.addEventListener('click', () => {
-        let theme = document.documentElement.getAttribute('data-theme');
-        if (theme === 'dark') {
-          document.documentElement.setAttribute('data-theme', 'light');
-          sliderIcon.classList.remove('fa-moon');
-          sliderIcon.classList.add('fa-sun');
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          sliderIcon.classList.remove('fa-sun');
-          sliderIcon.classList.add('fa-moon');
-        }
-      });
-    </script>
+      const birthDateString = "{{ p.birth_date }}";
+      console.log(birthDateString);
+      </script>
+    <script src="/assets/js/script.js"></script>
   </body>
 </html>

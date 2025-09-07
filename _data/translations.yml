@@ -7,9 +7,11 @@ it:
     contact: "Contatti"
   home:
     title: "Benvenuti"
+    banner_alt_text: "Sfondo del sito"
   about:
     role: "Full‑stack Developer"
     presentation: "Sono Simone, uno sviluppatore full‑stack appassionato di intelligenza artificiale e software open‑source."
+    photo_alt_text: "Foto di Simone Del Grosso"
     from_label: "Sede:"
     from_value: "Roma, Italia"
     age_label: "Età:"
@@ -29,11 +31,29 @@ it:
     pillolapp:
       description-1: "App Android realizzata per aiutare gli utenti a gestire promemoria per i loro farmaci giornalieri."
       description-2: "Si possono aggiungere e gestire medicinali, impostare programmi ricorrenti, ricevere promemoria e monitorare se si sono prese le dosi."
+      screenshot_1_alt_text: "Screenshot 1 dell'app Pillol"
+      screenshot_2_alt_text: "Screenshot 2 dell'app Pillol"
+      screenshot_3_alt_text: "Screenshot 3 dell'app Pillol"
+      screenshot_4_alt_text: "Screenshot 4 dell'app Pillol"
+      screenshot_5_alt_text: "Screenshot 5 dell'app Pillol"
+      screenshot_6_alt_text: "Screenshot 6 dell'app Pillol"
+      screenshot_7_alt_text: "Screenshot 7 dell'app Pillol"
+      screenshot_8_alt_text: "Screenshot 8 dell'app Pillol"
+      screenshot_9_alt_text: "Screenshot 9 dell'app Pillol"
+      screenshot_10_alt_text: "Screenshot 10 dell'app Pillol"
     altira:
       description-1: "App Android sviluppata per mostrare bussola e altimetro in tempo reale, con un'interfaccia personalizzata e fluida."
       description-2: "Utilizza dati GPS corretti con modello geoidale (EGM) per fornire altitudini accurate."
+      screenshot_1_alt_text: "Screenshot 1 dell'app Altira"
+      screenshot_2_alt_text: "Screenshot 2 dell'app Altira"
+      screenshot_3_alt_text: "Screenshot 3 dell'app Altira"
+      screenshot_4_alt_text: "Screenshot 4 dell'app Altira"
     portfolio:
       description-1: "Sito personale multilingua per presentare i miei progetti, esperienze e competenze. Responsive e ottimizzato per SEO."
+      desktop_screenshot_1_alt_text: "Screenshot 1 del portfolio desktop"
+      desktop_screenshot_2_alt_text: "Screenshot 2 del portfolio desktop"
+      mobile_screenshot_1_alt_text: "Screenshot 1 del portfolio mobile"
+      mobile_screenshot_2_alt_text: "Screenshot 2 del portfolio mobile"
   contact:
     title: "Contattami"
 
@@ -46,9 +66,11 @@ en:
     contact: "Contact"
   home:
     title: "Welcome"
+    banner_alt_text: "Website background"
   about:
     role: "Full‑stack Developer"
     presentation: "I'm Simone, a full‑stack developer passionate about artificial intelligence and open‑source software."
+    photo_alt_text: "Photo of Simone Del Grosso"
     from_label: "From:"
     from_value: "Rome, Italy"
     age_label: "Age:"
@@ -68,10 +90,28 @@ en:
     pillolapp:
       description-1: "Made to help users manage their daily medication reminders."
       description-2: "You can add and manage your medicines, set recurring schedules, receive reminders and track whether you have taken your doses."
+      screenshot_1_alt_text: "Screenshot 1 of Pillol app"
+      screenshot_2_alt_text: "Screenshot 2 of Pillol app"
+      screenshot_3_alt_text: "Screenshot 3 of Pillol app"
+      screenshot_4_alt_text: "Screenshot 4 of Pillol app"
+      screenshot_5_alt_text: "Screenshot 5 of Pillol app"
+      screenshot_6_alt_text: "Screenshot 6 of Pillol app"
+      screenshot_7_alt_text: "Screenshot 7 of Pillol app"
+      screenshot_8_alt_text: "Screenshot 8 of Pillol app"
+      screenshot_9_alt_text: "Screenshot 9 of Pillol app"
+      screenshot_10_alt_text: "Screenshot 10 of Pillol app"
     altira:
       description-1: "An Android app developed to display a real-time compass and altimeter, featuring a custom and fluid interface."
       description-2: "It uses GPS data corrected with a geoidal model (EGM) to provide accurate altitude readings."
+      screenshot_1_alt_text: "Screenshot 1 of Altira app"
+      screenshot_2_alt_text: "Screenshot 2 of Altira app"
+      screenshot_3_alt_text: "Screenshot 3 of Altira app"
+      screenshot_4_alt_text: "Screenshot 4 of Altira app"
     portfolio:
       description-1: "Multi‑language personal website showcasing my projects, experience and skills. Fully responsive and SEO‑optimized."
+      desktop_screenshot_1_alt_text: "Screenshot 1 of desktop portfolio"
+      desktop_screenshot_2_alt_text: "Screenshot 2 of desktop portfolio"
+      mobile_screenshot_1_alt_text: "Screenshot 1 of mobile portfolio"
+      mobile_screenshot_2_alt_text: "Screenshot 2 of mobile portfolio"
   contact:
     title: "Reach out"

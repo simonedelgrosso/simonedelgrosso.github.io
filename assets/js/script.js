@@ -10,8 +10,15 @@ window.onload = function() {
   const navButton = document.getElementById("nav-btn");
 
   navbar.style.position = "fixed";
+
+  function hideNavbarOnMobile() {
+    if (isMobile) {
+      navbar.style.display = "none";
+    }
+  }
+
   if (isMobile) {
-    navbar.style.display = "none";
+    hideNavbarOnMobile();
   }
 
   function goToHome() {
@@ -36,23 +43,17 @@ window.onload = function() {
   }
 
   function goToAbout() {
-    if (isMobile) {
-      navbar.style.display = "none";
-    }
+    hideNavbarOnMobile();
     window.scroll(0, about.offsetTop-navbar.offsetHeight);
   }
 
   function goToPortfolio() {
-    if (isMobile) {
-      navbar.style.display = "none";
-    }
+    hideNavbarOnMobile();
     window.scroll(0, portfolio.offsetTop-navbar.offsetHeight);
   }
   
   function goToContact() {
-    if (isMobile) {
-      navbar.style.display = "none";
-    }
+    hideNavbarOnMobile();
     window.scroll(0, contact.offsetTop-navbar.offsetHeight);
   }
 
@@ -144,10 +145,21 @@ window.onload = function() {
     });
   });
   
-  window.addEventListener("scroll", () => {
-    if (isMobile) {
-      navbar.style.display = "none";
-    }
+  const throttle = (func, limit) => {
+    let inThrottle;
+    return function() {
+      const args = arguments;
+      const context = this;
+      if (!inThrottle) {
+        func.apply(context, args);
+        inThrottle = true;
+        setTimeout(() => (inThrottle = false), limit);
+      }
+    };
+  };
+
+  window.addEventListener("scroll", throttle(() => {
+    hideNavbarOnMobile();
     if (window.scrollY < portfolio.offsetTop) {
       backButton.style.display = "flex";
       navbarButtons.forEach((button) => {
@@ -165,10 +177,10 @@ window.onload = function() {
       });
       navbarButtons[3].classList.add("active");
     }
-  });
+  }, 100)); // Throttled to run at most every 100ms
 
   const today = new Date();
-  const birthDate = new Date("1998-02-01");
+  const birthDate = new Date(1998, 2, 1);
   let age = today.getFullYear() - birthDate.getFullYear();
   let m = today.getMonth() - birthDate.getMonth();
   if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
@@ -176,3 +188,20 @@ window.onload = function() {
   }
   document.getElementById("about-age").innerText = age;
 };
+
+const toggle = document.getElementById('theme-toggle');
+const slider = toggle.querySelector('.toggle')
+const sliderIcon = slider.querySelector('i');
+
+toggle.addEventListener('click', () => {
+  let theme = document.documentElement.getAttribute('data-theme');
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    sliderIcon.classList.remove('fa-moon');
+    sliderIcon.classList.add('fa-sun');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    sliderIcon.classList.remove('fa-sun');
+    sliderIcon.classList.add('fa-moon');
+  }
+});

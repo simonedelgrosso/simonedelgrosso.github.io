@@ -38,6 +38,128 @@
   color: var(--accent-fg);
 }
 
+.bullet-list {
+  list-style: none;
+}
+
+.bullet-list > li {
+  position: relative;
+}
+
+.bullet-list > li::before {
+  content: "";
+  display: inline-block;
+  z-index: 1;
+  width: 11px;
+  height: 11px;
+  margin-right: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-fg);
+  background-color: var(--background);
+}
+
+.bullet-list > li::after {
+  content: "";
+  display: inline-block;
+  z-index: -1;
+  position: absolute;
+  left: 7px;
+  top: 12px;
+  width: 1px;
+  height: 100%;
+  border-left: 1px solid var(--border-color);
+}
+
+.bullet-list > :last-child::after {
+  display: none;
+}
+
+.timeline-list {
+  list-style: none;
+}
+
+.timeline-list > li {
+  position: relative;
+  margin: 20px;
+}
+
+.timeline-list > li::before {
+  content: "";
+  position: relative;
+  top: 4px;
+  left: 2px;
+  display: inline-block;
+  z-index: 1;
+  width: 15px;
+  height: 15px;
+  background-color: #777;
+  background-clip: content-box;
+  border-radius: 50%;
+  padding: 3px;
+  margin-right: 20px;
+}
+
+.timeline-list > li:first-child::before {
+  background-color: var(--accent-fg);
+  border: 2px solid var(--accent-fg);
+  left: 0px;
+}
+
+.timeline-list > li::after {
+  content: "";
+  display: inline-block;
+  z-index: -1;
+  position: absolute;
+  top: 35px;
+  left: 12px;
+  width: 1px;
+  height: 100%;
+  border-left: 1px solid var(--border-color);
+}
+
+.timeline-list > :last-child::after {
+  display: none;
+}
+
+.skills-list {
+  list-style: none;
+  margin: 20px;
+}
+
+.skills-list > li {
+  position: relative;
+}
+
+.skills-list > li::before {
+  content: "";
+  position: relative;
+  top: 7px;
+  display: inline-block;
+  z-index: 1;
+  width: 15px;
+  height: 15px;
+  margin: 5px 20px 5px 5px;
+  background-color: var(--background);
+  border: 2px solid var(--accent-fg);
+  border-radius: 50%;
+}
+
+.skills-list > li::after {
+  content: "";
+  display: inline-block;
+  z-index: -100;
+  position: absolute;
+  top: 20px;
+  left: 14px;
+  width: 1px;
+  height: 100%;
+  border-left: 1px solid var(--border-color);
+}
+
+.skills-list > :last-child::after {
+  display: none;
+}
+
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
@@ -79,14 +201,18 @@ nav > ul {
   display: flex;
   align-items: center;
   list-style: none;
-  backdrop-filter: blur(6px);
   background-color: #404040;
   color: #aaa;
   transition: transform 0.5s linear;
 }
 
 nav > ul > li {
-  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 10px;
+  transition: color 300ms linear, background-color 300ms linear;
 }
 
 .nav-spacer {
@@ -98,11 +224,12 @@ nav > ul > li {
 }
 
 nav > ul > li.active {
-  color: #fff;
+  color: var(--accent-fg);
 }
 
 nav > ul > li:hover {
-  color: #ddd;
+  color: rgba(255, 255, 255, 1);
+  background-color: rgba(130, 130, 130, 0.2);
   cursor: pointer;
 }
 
@@ -209,7 +336,7 @@ a {
   top: 100vh;
   z-index: 100;
   width: 100%;
-  padding-top: 60px;
+  padding-top: 80px;
   transition: transform 0.5s linear;
   background-color: var(--background);
 }
@@ -275,39 +402,6 @@ a {
 
 #about-info > ul {
   position: relative;
-  list-style: none;
-}
-
-#about-info > ul > li {
-  position: relative;
-}
-
-#about-info > ul > li::before {
-  content: "";
-  display: inline-block;
-  z-index: 1;
-  width: 11px;
-  height: 11px;
-  margin-right: 20px;
-  border-radius: 50%;
-  border: 2px solid var(--accent-fg);
-  background-color: var(--background);
-}
-
-#about-info > ul > li::after {
-  content: "";
-  display: inline-block;
-  z-index: -1;
-  position: absolute;
-  left: 7px;
-  top: 12px;
-  width: 1px;
-  height: 100%;
-  border-left: 1px solid var(--border-color);
-}
-
-#about-info > ul > :last-child::after {
-  display: none;
 }
 
 #about-more {
@@ -360,59 +454,6 @@ a {
   background-color: var(--accent-fg);
 }
 
-#about-education ul > li::after,
-#about-experience ul > li::after,
-#about-certifications ul > li::after {
-  content: "";
-  display: inline-block;
-  z-index: -1;
-  position: absolute;
-  top: 35px;
-  left: 12px;
-  width: 1px;
-  height: 100%;
-  border-left: 1px solid var(--border-color);
-}
-
-#about-education ul > :last-child::after,
-#about-experience ul > :last-child::after,
-#about-certifications ul > :last-child::after {
-  display: none;
-}
-
-#about-education ul > li::before,
-#about-experience ul > li::before,
-#about-certifications ul > li::before {
-  content: "";
-  position: relative;
-  top: 4px;
-  left: 2px;
-  display: inline-block;
-  z-index: 1;
-  width: 15px;
-  height: 15px;
-  background-color: #777;
-  background-clip: content-box;
-  border-radius: 50%;
-  padding: 3px;
-  margin-right: 20px;
-}
-
-#about-education ul > :first-child::before,
-#about-experience ul > :first-child::before,
-#about-certifications ul > :first-child::before {
-  background-color: var(--accent-fg);
-  border: 2px solid var(--accent-fg);
-  left: 0px;
-}
-
-#about-education ul > li,
-#about-experience ul > li,
-#about-certifications ul > li {
-  position: relative;
-  margin: 20px;
-}
-
 #about-education ul .about-list-item,
 #about-experience ul .about-list-item,
 #about-certifications ul .about-list-item {
@@ -432,41 +473,6 @@ a {
   background-color: var(--accent-bg);
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-}
-
-#about-skills ul {
-  list-style: none;
-  margin: 20px;
-}
-
-#about-skills ul > li {
-  position: relative;
-}
-
-#about-skills ul > li::before {
-  content: "";
-  position: relative;
-  top: 7px;
-  display: inline-block;
-  z-index: 1;
-  width: 15px;
-  height: 15px;
-  margin: 5px 20px 5px 5px;
-  background-color: var(--background);
-  border: 2px solid var(--accent-fg);
-  border-radius: 50%;
-}
-
-#about-skills ul > li::after {
-  content: "";
-  display: inline-block;
-  z-index: -100;
-  position: absolute;
-  top: 20px;
-  left: 14px;
-  width: 1px;
-  height: 100%;
-  border-left: 1px solid var(--border-color);
 }
 
 #about-skills ul > :last-child::after {
@@ -719,36 +725,6 @@ a {
   position: relative;
 }
 
-#contact-card > ul > li::before {
-  content: "";
-  position: relative;
-  top: 7px;
-  display: inline-block;
-  z-index: 1;
-  width: 15px;
-  height: 15px;
-  margin: 5px 20px 5px 5px;
-  background-color: var(--background);
-  border: 2px solid var(--accent-fg);
-  border-radius: 50%;
-}
-
-#contact-card > ul > li::after {
-  content: "";
-  display: inline-block;
-  z-index: -100;
-  position: absolute;
-  top: 20px;
-  left: 14px;
-  width: 1px;
-  height: 100%;
-  border-left: 1px solid var(--border-color);
-}
-
-#contact-card > ul > :last-child::after {
-  display: none;
-}
-
 footer {
   padding: 10px;
   background-color: #303030;
@@ -784,6 +760,28 @@ footer hr {
 
 #footer-container ul > li {
   margin: 5px 0px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.github-icon {
+  color: var(--text-color);
+  margin-right: 10px;
+}
+
+.carousel-dots {
+  width: 140px;
+}
+
+.footer-text {
+  font-size: 10px;
+  margin-top: 5px;
+}
+
+.skills-list li .fab {
+  margin-right: 10px;
 }
 
 @media screen and (max-width: 750px) {
