@@ -21,5 +21,5 @@ This is the repository of my personal portfolio website, available at:
 
 ## 📷 Screenshots
 
-![Screenshot 1](assets/imgs/en/portfolio/desktop/screenshot-1.png)  
-![Screenshot 2](assets/imgs/en/portfolio/desktop/screenshot-2.png)
+![Screenshot 1](assets/imgs/portfolio/en/desktop/screenshot-1.png)  
+![Screenshot 2](assets/imgs/portfolio/en/desktop/screenshot-2.png)

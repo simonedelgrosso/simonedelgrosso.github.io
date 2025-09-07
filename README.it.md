@@ -21,5 +21,5 @@ Repository del mio sito portfolio personale, disponibile all'indirizzo:
 
 ## 📷 Screenshots
 
-![Screenshot 1](assets/imgs/it/portfolio/desktop/screenshot-1.png)  
-![Screenshot 2](assets/imgs/it/portfolio/desktop/screenshot-2.png)
+![Screenshot 1](assets/imgs/portfolio/it/desktop/screenshot-1.png)  
+![Screenshot 2](assets/imgs/portfolio/it/desktop/screenshot-2.png)
