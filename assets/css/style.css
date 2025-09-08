@@ -1647,6 +1647,10 @@ section:nth-child(even) {
   .nav-menu li {
     margin: var(--space-16) 0;
   }
+
+  .hero-container {
+    padding-top: 70px;
+  }
   
   .hero-content {
     grid-template-columns: 1fr;
