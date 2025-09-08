@@ -1,0 +1,28 @@
+{% assign edu = site.data.education[page.lang] %}
+<!-- Education Section -->
+<section id="education" class="education">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">{{ edu.title }}</h2>
+            <p class="section-subtitle">{{ edu.subtitle }}</p>
+        </div>
+        <div class="timeline">
+            {% for item in edu.items %}
+            <div class="timeline-item" data-year="{{ edu.period }}">
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h3>{{ item.school }}</h3>
+                        <span class="timeline-period">{{ item.period }}</span>
+                    </div>
+                    <div class="timeline-body">
+                        <p class="timeline-degree">{{ item.degree }}</p>
+                        {% if item.grade %}
+                        <p class="timeline-grade">{{ item.grade }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

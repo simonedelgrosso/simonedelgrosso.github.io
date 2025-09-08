@@ -1,0 +1,31 @@
+{% assign t = site.data.skills.translations[page.lang] %}
+{% assign items = site.data.skills.items %}
+<!-- Skills Section -->
+<section id="skills" class="skills">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">{{ t.title }}</h2>
+            <p class="section-subtitle">{{ t.subtitle }}</p>
+        </div>
+        <div class="skills-grid">
+            {% for section_key in t.sections %}
+            {% assign section_name = section_key[0] %}
+            {% assign section_label = section_key[1] %}
+            {% assign section_items = items[section_name] %}
+            <div class="skill-category">
+            <h3>{{ section_label }}</h3>
+            <div class="skills-list">
+                {% for subitem in section_items %}
+                <div class="skill-item">
+                    <span class="skill-name">{{ subitem.name }}</span>
+                    <div class="skill-bar">
+                    <div class="skill-progress" data-skill="{{ subitem.value }}"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

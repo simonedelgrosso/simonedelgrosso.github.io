@@ -1,0 +1,42 @@
+items:
+  programming_languages:
+    - name: "JavaScript"
+      value: 90
+    - name: "C#"
+      value: 85
+    - name: "Java"
+      value: 70
+    - name: "Python"
+      value: 75
+    - name: "SQL"
+      value: 85
+  frameworks:
+    - name: "Angular"
+      value: 90
+    - name: "React.js"
+      value: 80
+    - name: ".NET"
+      value: 85
+  markup:
+    - name: "HTML"
+      value: 90
+    - name: "CSS"
+      value: 85
+    - name: "XML"
+      value: 75
+
+translations:
+  it:
+    title: "Competenze"
+    subtitle: "Le tecnologie che padroneggio"
+    sections:
+      programming_languages: "Linguaggi di Programmazione"
+      frameworks: "Frameworks & Librerie"
+      markup: "Markup & Styling"
+  en:
+    title: "Skills"
+    subtitle: "Technologies I work with"
+    sections:
+      programming_languages: "Programming Languages"
+      frameworks: "Frameworks & Libraries"
+      markup: "Markup & Styling"

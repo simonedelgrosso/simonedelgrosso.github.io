@@ -1,0 +1,45 @@
+{% assign info = site.data.personal_info %}
+{% assign hero = site.data.hero[page.lang] %}
+<!-- Hero Section -->
+<section id="home" class="hero">
+    <div class="hero-container">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">{{ hero.title }}</h1>
+                <div class="typing-container">
+                    <span class="typing-text" id="typing-text">{{ info.role }}</span>
+                    <span class="cursor"></span>
+                </div>
+                <p class="hero-subtitle">
+                    {{ hero.subtitle }}
+                </p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn--primary" id="contact-me">{{ hero.contact_button }}</a>
+                    <a href="#" class="btn btn--outline" id="download-cv">{{ hero.cv_button }}</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img class="profile-image" src="../assets/imgs/photo.jpg" alt="Profile image" />
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-number" data-target="2">0</span>
+                <span class="stat-label">{{ hero.experience }}</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" data-target="3">0</span>
+                <span class="stat-label">{{ hero.projects }}</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" data-target="3">0</span>
+                <span class="stat-label">{{ hero.certifications }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-indicator">
+        <div class="scroll-arrow">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
+</section>

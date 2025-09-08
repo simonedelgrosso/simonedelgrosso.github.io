@@ -1,0 +1,24 @@
+it:
+  title: "Formazione"
+  subtitle: "Il mio percorso educativo e accademico"
+  items:
+    - school: "Università di Roma Tor Vergata"
+      period: "2017-2023"
+      degree: "Laurea in Scienze e Tecnologie Informatiche"
+      grade: "Voto: <strong>107/110</strong>"
+    - school: "I. I. S. Edoardo Amaldi Roma"
+      period: "2012-2017"
+      degree: "Diploma di Liceo Scientifico"
+      grade: "Voto: <strong>81/100</strong>"
+en:
+  title: "Education"
+  subtitle: "My educational and academic journey"
+  items:
+    - school: "University of Rome Tor Vergata"
+      period: "2017-2023"
+      degree: "Bachelor of Computer Science"
+      grade: "Grade: <strong>107/110</strong>"
+    - school: "I. I. S. Edoardo Amaldi Rome"
+      period: "2012/2017"
+      degree: "Scientific Highschool Diploma"
+      grade: "Grade: <strong>81/100</strong>"

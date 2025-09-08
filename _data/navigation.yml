@@ -1,0 +1,18 @@
+it:
+  home: "Home"
+  about: "Chi sono"
+  education: "Formazione"
+  certifications: "Certificazioni"
+  experience: "Esperienza"
+  skills: "Competenze"
+  projects: "Progetti"
+  contact: "Contatti"
+en:
+  home: "Home"
+  about: "About"
+  education: "Education"
+  certifications: "Certifications"
+  experience: "Experience"
+  skills: "Skills"
+  projects: "Projects"
+  contact: "Contact"

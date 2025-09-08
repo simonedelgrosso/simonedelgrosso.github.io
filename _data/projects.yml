@@ -1,76 +1,74 @@
-projects:
-  - title: "Altira"
-    id: "altira"
-    github_url: "https://github.com/simonedelgrosso/altira-info"
-    tags:
-      - Android
-      - Java
-    screenshots:
-      - path: "screenshot-1.jpg"
-        alt_text_key: "portfolio.altira.screenshot_1_alt_text"
-      - path: "screenshot-2.jpg"
-        alt_text_key: "portfolio.altira.screenshot_2_alt_text"
-      - path: "screenshot-3.jpg"
-        alt_text_key: "portfolio.altira.screenshot_3_alt_text"
-      - path: "screenshot-4.jpg"
-        alt_text_key: "portfolio.altira.screenshot_4_alt_text"
-    description_keys:
-      - "portfolio.altira.description_1"
-      - "portfolio.altira.description_2"
-    stack: "Android Studio, Java, XML."
-    type: "android"
-  - title: "Pillol App"
-    id: "pillolapp"
-    github_url: "https://github.com/simonedelgrosso/pillol-app-info"
-    tags:
-      - Android
-      - Java
-      - Room DB
-    screenshots:
-      - path: "screenshot-1.png"
-        alt_text_key: "portfolio.pillolapp.screenshot_1_alt_text"
-      - path: "screenshot-2.png"
-        alt_text_key: "portfolio.pillolapp.screenshot_2_alt_text"
-      - path: "screenshot-3.png"
-        alt_text_key: "portfolio.pillolapp.screenshot_3_alt_text"
-      - path: "screenshot-4.png"
-        alt_text_key: "portfolio.pillolapp.screenshot_4_alt_text"
-      - path: "screenshot-5.png"
-        alt_text_key: "portfolio.pillolapp.screenshot_5_alt_text"
-      - path: "screenshot-6.png"
-        alt_text_key: "portfolio.pillolapp.screenshot_6_alt_text"
-      - path: "screenshot-7.png"
-        alt_text_key: "portfolio.pillolapp.screenshot_7_alt_text"
-      - path: "screenshot-8.png"
-        alt_text_key: "portfolio.pillolapp.screenshot_8_alt_text"
-      - path: "screenshot-9.png"
-        alt_text_key: "portfolio.pillolapp.screenshot_9_alt_text"
-      - path: "screenshot-10.png"
-        alt_text_key: "portfolio.pillolapp.screenshot_10_alt_text"
-    description_keys:
-      - "portfolio.pillolapp.description_1"
-      - "portfolio.pillolapp.description_2"
-    stack: "Android Studio, Java, XML, Room."
-    type: "android"
-  - title: "Portfolio"
-    id: "portfolio"
-    github_url: "https://github.com/simonedelgrosso/simonedelgrosso.github.io"
-    tags:
-      - Web
-      - Jekyll
-      - GitHub Pages
-    screenshots:
-      desktop:
-        - path: "screenshot-1.png"
-          alt_text_key: "portfolio.portfolio.desktop_screenshot_1_alt_text"
-        - path: "screenshot-2.png"
-          alt_text_key: "portfolio.portfolio.desktop_screenshot_2_alt_text"
-      mobile:
-        - path: "screenshot-1.png"
-          alt_text_key: "portfolio.portfolio.mobile_screenshot_1_alt_text"
-        - path: "screenshot-2.png"
-          alt_text_key: "portfolio.portfolio.mobile_screenshot_2_alt_text"
-    description_keys:
-      - "portfolio.portfolio.description_1"
-    stack: "HTML, CSS, JavaScript, Jekyll, GitHub Pages."
-    type: "web"
+it:
+  title: "Progetti"
+  subtitle: "Alcuni dei miei progetti personali"
+  filter_label: "Filtra progetti"
+  filter_1: "Tutti"
+  filter_2: "Mobile"
+  filter_3: "Web"
+  items:
+    - data_category: "mobile"
+      link: "https://github.com/simonedelgrosso/altira-info"
+      category: "Mobile App"
+      title: "Altira"
+      description: "App Android che mostra una bussola e un altimetro, correzione dell'altitudine con GPS e modello geoidale EGM."
+      technologies:
+        - text: "Android Studio"
+        - text: "Java"
+        - text: "XML"
+    - data_category: "mobile"
+      link: "https://github.com/simonedelgrosso/medivy-info"
+      category: "Mobile App"
+      title: "Medivy"
+      description: "App Android che permette di registrare medicinali e terapie, e di ricevere notifiche per ricordare di prendere le dosi."
+      technologies:
+        - text: "Android Studio"
+        - text: "Java"
+        - text: "XML"
+        - text: "Room DB"
+    - data_category: "web"
+      link: "https://github.com/simonedelgrosso/simonedelgrosso.github.io"
+      category: "Web Application"
+      title: "Portfolio"
+      description: "Questo portfolio web, creato con tecnologie web moderne per mostrare competenze e progetti."
+      technologies:
+        - text: "HTML"
+        - text: "CSS"
+        - text: "JavaScript"
+        - text: "Jekyll"
+en:
+  title: "Projects"
+  subtitle: "Some of my personal projects"
+  filter_label: "Filter projects"
+  filter_1: "All"
+  filter_2: "Mobile"
+  filter_3: "Web"
+  items:
+    - data_category: "mobile"
+      link: "https://github.com/simonedelgrosso/altira-info"
+      category: "Mobile App"
+      title: "Altira"
+      description: "Android app that displays a compass and an altimeter, with altitude correction using GPS and the EGM geoid model."
+      technologies:
+        - text: "Android Studio"
+        - text: "Java"
+        - text: "XML"
+    - data_category: "mobile"
+      link: "https://github.com/simonedelgrosso/medivy-info"
+      category: "Mobile App"
+      title: "Medivy"
+      description: "Android app that allows recording medicines and therapies, and receiving notifications to remember taking doses."
+      technologies:
+        - text: "Android Studio"
+        - text: "Java"
+        - text: "XML"
+        - text: "Room DB"
+    - data_category: "web"
+      link: "https://github.com/simonedelgrosso/simonedelgrosso.github.io"
+      category: "Web Application"
+      title: "Portfolio"
+      description: "This web portfolio, built with modern web technologies to showcase skills and projects."
+      technologies:
+        - text: "HTML"
+        - text: "CSS"
+        - text: "JavaScript"
+        - text: "Jekyll"

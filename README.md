@@ -18,8 +18,3 @@ This is the repository of my personal portfolio website, available at:
 - **Jekyll** – static site generator
 - **HTML5, CSS3, JavaScript** – for layout and interactivity
 - **GitHub Pages** – for free hosting and continuous deployment
-
-## 📷 Screenshots
-
-![Screenshot 1](assets/imgs/portfolio/en/desktop/screenshot-1.png)  
-![Screenshot 2](assets/imgs/portfolio/en/desktop/screenshot-2.png)

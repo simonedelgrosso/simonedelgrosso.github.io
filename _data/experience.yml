@@ -1,0 +1,26 @@
+it:
+  title: "Esperienza"
+  subtitle: "Il mio percorso professionale"
+  items:
+    - company: "Cluster Reply Rome IT"
+      period: "2023 - Presente"
+      role: "Consultant - Full-Stack Developer"
+      location: "Roma, Italia"
+      description: "Sviluppo di applicazioni web full-stack utilizzando tecnologie moderne. Collaborazione con team multidisciplinari per la creazione di soluzioni innovative per clienti enterprise."
+      achievements:
+        - text: "Sviluppo di applicazioni web scalabili utilizzando ASP.NET, React.js e Angular"
+        - text: "Implementazione di API REST con .NET e C#"
+        - text: "Integrazione con servizi Microsoft Azure"
+en:
+  title: "Experience"
+  subtitle: "My professional journey"
+  items:
+    - company: "Cluster Reply Rome IT"
+      period: "2023 - Current"
+      role: "Consultant - Full-Stack Developer"
+      location: "Rome, Italy"
+      description: "Full-stack web application development using modern technologies. Collaboration with multidisciplinary teams to create innovative solutions for enterprise clients."
+      achievements:
+        - text: "Development of scalable web applications using ASP.NET, React.js, and Angular"
+        - text: "Implementation of REST APIs with .NET and C#"
+        - text: "Integration with Microsoft Azure services"

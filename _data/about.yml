@@ -1,0 +1,13 @@
+it:
+  title: "Chi sono"
+  subtitle: "Sviluppatore appassionato con focus su soluzioni innovative"
+  text_1: Sono un <strong>Full-Stack Developer</strong> di <span class="age"></span> anni con sede a Roma, Italia. La mia passione per la tecnologia mi ha portato a specializzarmi nello sviluppo di applicazioni web moderne e scalabili.
+  text_2: Con una solida formazione accademica in Scienze e Tecnologie Informatiche e certificazioni Microsoft Azure, porto un approccio metodico e innovativo a ogni progetto. Mi piace lavorare con tecnologie all'avanguardia e sono sempre alla ricerca di nuove sfide che mi permettano di crescere professionalmente.
+  location: "Roma, Italia"
+  age: "anni"
+en:
+  title: "About"
+  text_1: I am a <span class="age"></span> years old <strong>Full-Stack Developer</strong> based in Rome, Italy. My passion for technology led me to specialize in the development of modern and scalable web applications.
+  text_2: With a solid academic background in Computer Science and Microsoft Azure certifications, I bring a methodical and innovative approach to every project. I like working with cutting-edge technologies and I am always looking for new challenges that allow me to grow professionally.
+  location: "Rome, Italy"
+  age: "years old"

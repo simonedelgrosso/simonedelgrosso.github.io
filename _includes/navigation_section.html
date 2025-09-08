@@ -1,0 +1,25 @@
+{% assign info = site.data.personal_info %}
+{% assign nav = site.data.navigation[page.lang] %}
+<!-- Navigation -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <span>{{ info.fullname }}</span>
+        </div>
+        <ul class="nav-menu" id="nav-menu">
+            <li><a href="#home" class="nav-link">{{ nav.home }}</a></li>
+            <li><a href="#about" class="nav-link">{{ nav.about }}</a></li>
+            <li><a href="#education" class="nav-link">{{ nav.education }}</a></li>
+            <li><a href="#certifications" class="nav-link">{{ nav.certifications }}</a></li>
+            <li><a href="#experience" class="nav-link">{{ nav.experience }}</a></li>
+            <li><a href="#skills" class="nav-link">{{ nav.skills }}</a></li>
+            <li><a href="#projects" class="nav-link">{{ nav.projects }}</a></li>
+            <li><a href="#contact" class="nav-link">{{ nav.contact }}</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+    </div>
+</nav>

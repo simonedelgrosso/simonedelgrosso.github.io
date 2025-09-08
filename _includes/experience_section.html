@@ -1,0 +1,30 @@
+{% assign exp = site.data.experience[page.lang] %}
+<!-- Experience Section -->
+<section id="experience" class="experience">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">{{ exp.title }}</h2>
+            <p class="section-subtitle">{{ exp.subtitle }}</p>
+        </div>
+        {% for item in exp.items %}
+        <div class="experience-item">
+            <div class="experience-header">
+                <div class="experience-company">
+                    <h3>{{ item.company }}</h3>
+                    <span class="experience-period">{{ item.period }}</span>
+                </div>
+                <div class="experience-role">{{ item.role }}</div>
+                <div class="experience-location">{{ item.location }}</div>
+            </div>
+            <div class="experience-description">
+                <p>{{ item.description }}</p>
+                <ul class="experience-achievements">
+                    {% for achievement in item.achievements %}
+                    <li>{{ achievement.text }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>

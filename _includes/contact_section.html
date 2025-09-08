@@ -1,11 +1,45 @@
-<section id="contact">
-  <p class="section-title">{{ t.nav.contact }}</p>
-  <div id="contact-card">
-    <h1>{{ t.contact.title }}</h1>
-    <ul class="bullet-list">
-      <li><a href="https://www.github.com/{{ s.github_username }}"><i class="fab fa-github github-icon"></i><span class="accent">GitHub</span></a></li>
-      <li><a href="https://www.linkedin.com/in/{{ s.linkedin_username }}"><i class="fab fa-linkedin github-icon"></i><span class="accent">LinkedIn</span></a></li>
-      <li><a href="https://t.me/{{ s.telegram_username }}"><i class="fab fa-telegram github-icon"></i><span class="accent">Telegram</span></a></li>
-    </ul>
-  </div>
+{% assign contact = site.data.contact.translations[page.lang] %}
+{% assign items = site.data.contact.items %}
+<!-- Contact Section -->
+<section id="contact" class="contact">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">{{ contact.title }}</h2>
+            <p class="section-subtitle">{{ contact.subtitle }}</p>
+        </div>
+        <div class="contact-content">
+            <div class="contact-info">
+                {% for item in items %}
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="{{ item.icon }}"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>{{ item.title }}</h4>
+                        <a href="{{ item.link }}">{{ item.text }}</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <form class="contact-form" id="contact-form">
+                <div class="form-group">
+                    <label for="name" class="form-label">{{ contact.form_field_1 }}</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="form-label">{{ contact.form_field_2 }}</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject" class="form-label">{{ contact.form_field_3 }}</label>
+                    <input type="text" id="subject" name="subject" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="message" class="form-label">{{ contact.form_field_4 }}</label>
+                    <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn--primary btn--full-width">{{ contact.form_button }}</button>
+            </form>
+        </div>
+    </div>
 </section>

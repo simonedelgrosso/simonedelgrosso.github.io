@@ -1,0 +1,24 @@
+{% assign cert = site.data.certifications.translations[page.lang] %}
+{% assign items = site.data.certifications.items %}
+<!-- Certifications Section -->
+<section id="certifications" class="certifications">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">{{ cert.title }}</h2>
+            <p class="section-subtitle">{{ cert.subtitle }}</p>
+        </div>
+        <div class="certifications-grid">
+            {% for item in items %}
+            <div class="certification-card">
+                <div class="cert-icon">
+                    <i class="fab fa-microsoft"></i>
+                </div>
+                <h3>{{ item.title }}</h3>
+                <p class="cert-code">{{ item.code }}</p>
+                <p class="cert-year">{{ item.year }}</p>
+                <div class="cert-badge">{{ item.badge }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

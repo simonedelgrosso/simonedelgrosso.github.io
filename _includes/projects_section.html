@@ -1,0 +1,41 @@
+{% assign projs = site.data.projects[page.lang] %}
+<!-- Projects Section -->
+<section id="projects" class="projects">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">{{ projs.title }}</h2>
+            <p class="section-subtitle">{{ projs.subtitle }}</p>
+        </div>
+        <div class="projects-filter" aria-label="{{ projs.filter_label }}">
+            <button class="filter-badge active" data-filter="all" aria-pressed="true">{{ projs.filter_1 }}</button>
+            <button class="filter-badge" data-filter="mobile" aria-pressed="false">{{ projs.filter_2 }}</button>
+            <button class="filter-badge" data-filter="web" aria-pressed="false">{{ projs.filter_3 }}</button>
+        </div>
+        <div class="projects-grid">
+            {% for item in projs.items %}
+            <div class="project-card" data-category="{{ item.data_category }}">
+                <div class="project-image">
+                    <div class="project-placeholder">
+                        <i class="fas fa-compass"></i>
+                    </div>
+                    <div class="project-overlay">
+                        <a href="{{ item.link }}" class="project-link" target="_blank">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="project-category">{{ item.category }}</div>
+                    <h3 class="project-title">{{ item.title }}</h3>
+                    <p class="project-description">{{ item.description }}</p>
+                    <div class="project-tech">
+                        {% for tech in item.technologies %}
+                        <span class="tech-tag">{{ tech.text }}</span>
+                        {% endfor %}    
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

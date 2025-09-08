@@ -1,49 +1,33 @@
-{% assign t = site.data.translations[page.lang] %}
-{% assign s = site.data.social %}
 <!DOCTYPE html>
 <html lang="{{ page.lang }}">
-  <head>
-    {% include google_analytics.html %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ page.description }}">
-    <title>{{ page.title }}</title>
-    {% seo %}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="alternate" hreflang="en" href="https://simonedelgrosso.github.io/en/" />
-    <link rel="alternate" hreflang="it" href="https://simonedelgrosso.github.io/it/" />
-    <link rel="alternate" hreflang="x-default" href="https://simonedelgrosso.github.io/" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/assets/css/style.css" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-  </head>
-  <body>
-    <nav>
-      <ul id="navbar">
-        <li class="nav-spacer"></li>
-        <li id="nav-btn-home" class="nav-btn active cursor-pointer" role="button" tabindex="0" aria-label="Home page navigation button">{{ t.nav.home }}</li>
-        <li id="nav-btn-about" class="nav-btn cursor-pointer" role="button" tabindex="0" aria-label="About page navigation button">{{ t.nav.about }}</li>
-        <li id="nav-btn-portfolio" class="nav-btn cursor-pointer" role="button" tabindex="0" aria-label="Portfolio page navigation button">{{ t.nav.portfolio }}</li>
-        <li id="nav-btn-contact" class="nav-btn cursor-pointer" role="button" tabindex="0" aria-label="Contact page navigation button">{{ t.nav.contact }}</li>
-        <li class="nav-spacer"></li>
-        <div class="theme-toggle-btn" id="theme-toggle" role="button" tabindex="0" aria-label="Toggle theme">
-          <div class="toggle">
-            <i class="fa-solid fa-sun"></i>
-          </div>
-        </div>
-      </ul>
-    </nav>
-    <div id="nav-btn" role="button" tabindex="0" aria-label="Open navigation menu"><i class="fa fa-bars"></i></div>
-    <div id="scroll-back-btn" role="button" tabindex="0" aria-label="Scroll back to top"><i class="fa fa-chevron-up"></i></div>
-    {% include home_section.html %}
-    <div id="main-container">
-      {% include about_section.html %}
-      {% include portfolio_section.html %}
-      {% include contact_section.html %}
-      {% include footer_section.html %}
-    </div>
-    <script src="/assets/js/script.js"></script>
-  </body>
+    <head>
+        {% include google_analytics.html %}
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="{{ page.description }}" />
+        <title>{{ page.title }}</title>
+        {% seo %}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+        <link rel="alternate" hreflang="en" href="https://simonedelgrosso.github.io/en/" />
+        <link rel="alternate" hreflang="it" href="https://simonedelgrosso.github.io/it/" />
+        <link rel="alternate" hreflang="x-default" href="https://simonedelgrosso.github.io/" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="/assets/css/style.css" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    </head>
+    <body data-color-scheme="dark">
+        {% include navigation_section.html %}
+        {% include hero_section.html %}
+        {% include about_section.html %}
+        {% include education_section.html %}
+        {% include certifications_section.html %}
+        {% include experience_section.html %}
+        {% include skills_section.html %}
+        {% include projects_section.html %}
+        {% include contact_section.html %}
+        {% include footer_section.html %}
+        <script src="/assets/js/script.js"></script>
+    </body>
 </html>

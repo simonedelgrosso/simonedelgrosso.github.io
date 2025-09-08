@@ -18,8 +18,3 @@ Repository del mio sito portfolio personale, disponibile all'indirizzo:
 - **Jekyll** – per la generazione del sito statico
 - **HTML5, CSS3, JavaScript** – tecnologie base per layout e interattività
 - **GitHub Pages** – per l'hosting gratuito e il deploy continuo
-
-## 📷 Screenshots
-
-![Screenshot 1](assets/imgs/portfolio/it/desktop/screenshot-1.png)  
-![Screenshot 2](assets/imgs/portfolio/it/desktop/screenshot-2.png)

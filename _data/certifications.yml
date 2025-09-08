@@ -1,0 +1,21 @@
+items:
+- title: "Azure Fundamentals"
+  code: "AZ-900"
+  year: "2024"
+  badge: "Microsoft Certified"
+- title: "Azure Developer Associate"
+  code: "AZ-204"
+  year: "2024"
+  badge: "Microsoft Certified"
+- title: "Azure AI Engineer Associate"
+  code: "AI-102"
+  year: "2025"
+  badge: "Microsoft Certified"
+
+translations:
+  it:
+    title: "Certificazioni"
+    subtitle: "Certificazioni professionali Microsoft Azure"
+  en:
+    title: "Certifications"
+    subtitle: "Microsoft Azure professional certifications"

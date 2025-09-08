@@ -1,0 +1,16 @@
+it:
+  title: Ciao, sono <span class="highlight">Simone Del Grosso</span>
+  subtitle: "Sviluppatore full-stack appassionato di tecnologie moderne e soluzioni innovative"
+  contact_button: "Contattami"
+  cv_button: "Scarica CV"
+  experience: "Anni di Esperienza"
+  projects: "Progetti Personali"
+  certifications: "Certificazioni"
+en:
+  title: Hi, I am <span class="highlight">Simone Del Grosso</span>
+  subtitle: "Full-Stack Developer passionate about modern technologies and innovative solutions"
+  contact_button: "Contact me"
+  cv_button: "Download CV"
+  experience: "Years of Experience"
+  projects: "Personal Projects"
+  certifications: "Certifications"

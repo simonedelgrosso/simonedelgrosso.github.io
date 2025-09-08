@@ -1,100 +1,31 @@
-<section id="about">
-  <p class="section-title">{{ t.nav.about }}</p>
- 	<div id="about-card">
-    <div id="about-intro">
-      <div id="about-img">
-        <img class="image" src="/assets/imgs/photo.jpg" alt="{{ t.about.photo_alt_text }}" loading="lazy" />
-      </div>
-      <div id="about-info">
-        <h1 id="about-name">Simone Del Grosso</h1>
-        <h2 id="about-role" class="accent">{{ t.about.role }}</h2>
-        <p id="about-text">{{ t.about.presentation }}</p>
-        <ul class="bullet-list">
-          <li><strong>{{ t.about.from_label }}</strong> {{ t.about.from_value }}</li>
-          <li><strong>{{ t.about.age_label }}</strong> <span id="about-age">27</span></li>
-        </ul>
-      </div>
-    </div>
-    <div id="about-more">
-      <div id="about-experience">
-        <h1>{{ t.about.experience }}</h1>
-        <ul class="timeline-list">
-          <li>
-            <p class="about-list-label">2023 - {{ t.about.current }}</p>
-            <div class="about-entry">
-              <p class="about-list-item">Consultant</p>
-              <p class="accent about-list-place">Cluster Reply Rome IT</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div id="about-education">
-        <h1>{{ t.about.education }}</h1>
-        <ul class="timeline-list">
-          <li>
-            <p class="about-list-label">2017 - 2023</p>
-            <div class="about-entry">
-              <p class="about-list-item">{{ t.about.education_bachelor}}</p>
-              <p class="accent about-list-place">{{ t.about.education_university }}</p>
-            </div>
-          </li>
-          <li>
-            <p class="about-list-label">2012 - 2017</p>
-            <div class="about-entry">
-              <p class="about-list-item">{{ t.about.education_diploma }}</p>
-              <p class="accent about-list-place">{{ t.about.education_highschool }}</p>
-            </div>
-          </li>                
-        </ul>
-      </div>
-      <div id="about-certifications">
-        <h1>{{ t.about.certifications }}</h1>
-        <ul class="timeline-list">
-          <li>
-            <p class="about-list-label">2025</p>
-            <div class="about-entry">
-              <p class="about-list-item">Microsoft Certified: Azure AI Engineer Associate (AI-102)</p>
-              <p class="accent about-list-place">Microsoft</p>
-            </div>
-          </li>
-          <li>
-            <p class="about-list-label">2024</p>
-            <div class="about-entry">
-              <p class="about-list-item">Microsoft Certified: Azure Developer Associate (AZ-204)</p>
-              <p class="accent about-list-place">Microsoft</p>
-            </div>
-            <div class="about-entry">
-              <p class="about-list-item">Microsoft Certified: Azure Fundamentals (AZ-900)</p>
-              <p class="accent about-list-place">Microsoft</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div id="about-skills">
-        <p class="section-title">{{ t.about.skills }}</p>
-        <div id="about-skills-container">
-          <div>
-            <h1>Front-end</h1>
-            <ul class="skills-list">
-              <li><i class="fab fa-html5 github-icon"></i>HTML</li>
-              <li><i class="fab fa-css3-alt github-icon"></i>CSS</li>
-              <li><i class="fab fa-js-square github-icon"></i>JavaScript</li>
-              <li><i class="fab fa-angular github-icon"></i>Angular</li>
-              <li><i class="fab fa-react github-icon"></i>React</li>
-            </ul>
-          </div>
-          <div>
-            <h1>Back-end</h1>
-            <ul class="skills-list">
-              <li><i class="fab fa-microsoft github-icon"></i>C# (.NET)</li>
-              <li><i class="fab fa-java github-icon"></i>Java</li>
-              <li><i class="fab fa-python github-icon"></i>Python</li>
-              <li><i class="fas fa-server github-icon"></i>SQL</li>
-              <li><i class="fab fa-node-js github-icon"></i>Node.js</li>
-            </ul>
-          </div>
+{% assign info = site.data.personal_info %}
+{% assign about = site.data.about[page.lang] %}
+<!-- About Section -->
+<section id="about" class="about">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">{{ about.title }}</h2>
+            <p class="section-subtitle">{{ about.subtitle }}</p>
         </div>
-      </div>
+        <div class="about-content">
+            <div class="about-text">
+                <p>{{ about.text_1 }}</p>
+                <p>{{ about.text_2 }}</p>
+                <div class="about-highlights">
+                    <div class="highlight-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ about.location }}</span>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-birthday-cake"></i>
+                        <span><span class="age"></span> {{ about.age }}</span>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-code"></i>
+                        <span>{{ info.role }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </section>

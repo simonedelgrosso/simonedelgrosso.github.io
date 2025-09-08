@@ -1,24 +1,15 @@
-<footer id="main-footer">
-  <div id="footer-container">
-    <div>
-      <h1>{{ t.nav.title }}</h1>
-      <hr/>
-      <ul>
-        <li id="footer-btn-home" class="accent cursor-pointer" role="button" tabindex="0" aria-label="Home page link">{{ t.nav.home }}</li>
-        <li id="footer-btn-about" class="accent cursor-pointer" role="button" tabindex="0" aria-label="About page link">{{ t.nav.about }}</li>
-        <li id="footer-btn-portfolio" class="accent cursor-pointer" role="button" tabindex="0" aria-label="Portfolio page link">{{ t.nav.portfolio }}</li>
-        <li id="footer-btn-contact" class="accent cursor-pointer" role="button" tabindex="0" aria-label="Contact page link">{{ t.nav.contact }}</li>
-      </ul>
+{% assign footer = site.data.footer[page.lang] %}
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <p>{{ footer.text }}</p>
+            <div class="social-links">
+                <a href="https://github.com/simonedelgrosso" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/in/simdlg" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://t.me/simonedelgrosso" target="_blank"><i class="fab fa-telegram"></i></a>
+                <a href="mailto:simonedelgrosso@outlook.it"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
     </div>
-    <div>
-      <h1>{{ t.nav.contact }}</h1>
-      <hr/>
-      <ul>
-        <li class="accent"><a href="https://www.github.com/{{ s.github_username }}">GitHub</a></li>
-        <li class="accent"><a href="https://www.linkedin.com/in/{{ s.linkedin_username }}">LinkedIn</a></li>
-        <li class="accent"><a href="https://t.me/{{ s.telegram_username }}">Telegram</a></li>
-      </ul>
-    </div>
-  </div>
-  <p class="footer-text">This template was recreated from scratch and customized.<br/>Original design by <a class="accent" href="https://macodeid.com">MACode ID</a>, all rights reserved to them.</p>
 </footer>
