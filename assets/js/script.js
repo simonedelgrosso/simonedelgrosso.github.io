@@ -387,7 +387,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     animation: spin 1s linear infinite;
                     margin: 0 auto 20px auto;
                 "></div>
-                <p style="color: var(--portfolio-primary); font-weight: 500;">Caricamento Portfolio...</p>
             </div>
         `;
 
