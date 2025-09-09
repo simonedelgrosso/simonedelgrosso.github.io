@@ -896,6 +896,10 @@ select.form-control {
   line-height: 1.2;
 }
 
+.no-wrap {
+  white-space: nowrap;
+}
+
 .highlight {
   background: var(--portfolio-gradient);
   -webkit-background-clip: text;
@@ -1645,7 +1649,7 @@ section:nth-child(even) {
   }
   
   .nav-menu li {
-    margin: var(--space-16) 0;
+    margin: var(--space-12) 0;
   }
 
   .hero-container {
@@ -1707,7 +1711,7 @@ section:nth-child(even) {
   }
   
   .hero-container {
-    padding: 0 var(--space-16);
+    padding: 70px var(--space-16) 0;
   }
   
   .hero-title {
@@ -1716,6 +1720,10 @@ section:nth-child(even) {
   
   .typing-text {
     font-size: var(--font-size-xl);
+  }
+
+  .cursor {
+    height: 1em;
   }
   
   .hero-buttons {
