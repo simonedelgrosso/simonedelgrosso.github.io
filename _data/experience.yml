@@ -2,7 +2,7 @@ it:
   title: "Esperienza"
   subtitle: "Il mio percorso professionale"
   items:
-    - company: "Cluster Reply Rome IT"
+    - company: "Cluster Reply Roma"
       period: "2023 - Presente"
       role: "Consultant - Full-Stack Developer"
       location: "Roma, Italia"
@@ -15,7 +15,7 @@ en:
   title: "Experience"
   subtitle: "My professional journey"
   items:
-    - company: "Cluster Reply Rome IT"
+    - company: "Cluster Reply Roma"
       period: "2023 - Current"
       role: "Consultant - Full-Stack Developer"
       location: "Rome, Italy"
