@@ -8,7 +8,7 @@ url: "https://simonedelgrosso.github.io"
 markdown: kramdown
 timezone: Europe/Rome
 plugins:
-  - jekyll-feed # Example plugin, you might want to add others like jekyll-sitemap, jekyll-seo-tag etc.
+  - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
 

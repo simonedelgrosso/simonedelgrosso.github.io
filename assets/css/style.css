@@ -953,6 +953,7 @@ select.form-control {
   padding: 4px;
   animation: float 3s ease-in-out infinite;
   object-fit: cover;
+  box-shadow: 0 0 60px rgba(91, 140, 255, 0.25);
 }
 
 .profile-placeholder {
@@ -1094,7 +1095,7 @@ section:nth-child(even) {
   top: 0;
   bottom: 0;
   width: 2px;
-  background: var(--portfolio-primary);
+  background: linear-gradient(to bottom, var(--portfolio-primary), transparent);
 }
 
 .timeline-item {
