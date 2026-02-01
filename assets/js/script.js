@@ -324,25 +324,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const scrollBtn = document.createElement('button');
         scrollBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
         scrollBtn.className = 'scroll-to-top';
-        scrollBtn.style.cssText = `
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--portfolio-primary);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(34, 211, 238, 0.3);
-        `;
 
         scrollBtn.addEventListener('click', scrollToTop);
         
@@ -474,7 +455,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const hero = document.querySelector('.hero');
         if (!hero) return;
         
-        const particleCount = 32;
+        const particleCount = 48;
 
         for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
@@ -482,7 +463,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 position: absolute;
                 width: 3px;
                 height: 3px;
-                background: var(--portfolio-primary);
+                background: var(--portfolio-accent);
                 border-radius: 50%;
                 opacity: 0.3;
                 animation: float ${3 + Math.random() * 4}s ease-in-out infinite;
