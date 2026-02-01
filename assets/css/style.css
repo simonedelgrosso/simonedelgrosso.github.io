@@ -147,7 +147,7 @@
 }
 
 /* Dark mode colors */
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) { */
   :root {
     /* RGB versions for opacity control (Dark Mode) */
     --color-gray-400-rgb: 119, 124, 124;
@@ -205,7 +205,7 @@
     --color-warning-rgb: var(--color-orange-400-rgb);
     --color-info-rgb: var(--color-gray-300-rgb);
   }
-}
+/* } */
 
 /* Data attribute for manual theme switching */
 [data-color-scheme="dark"] {
