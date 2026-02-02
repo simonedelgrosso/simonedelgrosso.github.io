@@ -55,6 +55,7 @@ en:
   filter_3: "Web"
   items:
     - data_category: "mobile"
+      icon: "fas fa-compass"
       link: "https://github.com/simonedelgrosso/altira-info"
       category: "Mobile App"
       title: "Altira"
@@ -72,6 +73,7 @@ en:
       technologies:
         - text: "Ionic"
     - data_category: "mobile"
+      icon: "fas fa-pills"
       link: "https://github.com/simonedelgrosso/medivy-info"
       category: "Mobile App"
       title: "Medivy"
@@ -82,6 +84,7 @@ en:
         - text: "XML"
         - text: "Room DB"
     - data_category: "web"
+      icon: "fas fa-globe"
       link: "https://github.com/simonedelgrosso/simonedelgrosso.github.io"
       category: "Web Application"
       title: "Portfolio"
