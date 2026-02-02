@@ -15,6 +15,10 @@ items:
     title: "Telegram"
     link: "https://t.me/simonedelgrosso"
     text: "@simonedelgrosso"
+  - icon: "fab fa-x-twitter"
+    title: "X"
+    link: "https://x.com/simdlg"
+    text: "@simdlg"
 
 translations:
   it:
