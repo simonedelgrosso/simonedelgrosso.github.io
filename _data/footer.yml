@@ -1,4 +1,4 @@
 it:
-  text: '&copy; <span id="current-year"></span> Simone Del Grosso. Tutti i diritti riservati.'
+  text: '&copy; <span id="current-year"></span> <span class="text-accent">Simone Del Grosso</span>. Tutti i diritti riservati.'
 en:
-  text: '&copy; <span id="current-year"></span> Simone Del Grosso. All rights reserved.'
+  text: '&copy; <span id="current-year"></span> <span class="text-accent">Simone Del Grosso</span>. All rights reserved.'
