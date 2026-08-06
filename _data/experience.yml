@@ -6,7 +6,7 @@ it:
       period: "2023 - Presente"
       role: "Consultant - Full-Stack Developer"
       location: "Roma, Italia"
-      description: "Sviluppo di applicazioni web full-stack utilizzando tecnologie moderne. Collaborazione con team multidisciplinari per la creazione di soluzioni innovative per clienti enterprise."
+      description: "Sviluppo full-stack di soluzioni enterprise per clienti nei settori bancario e della PA, con integrazione di servizi Azure."
       achievements:
         - text: "Sviluppo di applicazioni web scalabili utilizzando ASP.NET, React.js e Angular"
         - text: "Implementazione di API REST con .NET e C#"
@@ -19,7 +19,7 @@ en:
       period: "2023 - Current"
       role: "Consultant - Full-Stack Developer"
       location: "Rome, Italy"
-      description: "Full-stack web application development using modern technologies. Collaboration with multidisciplinary teams to create innovative solutions for enterprise clients."
+      description: "Full-stack development of enterprise solutions for clients in banking and public administration sectors, with Azure services integrations."
       achievements:
         - text: "Development of scalable web applications using ASP.NET, React.js, and Angular"
         - text: "Implementation of REST APIs with .NET and C#"
