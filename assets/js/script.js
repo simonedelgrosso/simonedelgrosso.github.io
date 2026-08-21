@@ -450,29 +450,161 @@ document.addEventListener('DOMContentLoaded', function() {
     //     document.body.appendChild(themeToggle);
     // }
 
-    // Add particle effect to hero section (simple version)
+    // Add particle effect to hero section with connected faint lines
     function createParticles() {
         const hero = document.querySelector('.hero');
         if (!hero) return;
-        
-        const particleCount = 48;
 
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            particle.style.cssText = `
-                position: absolute;
-                width: 3px;
-                height: 3px;
-                background: var(--portfolio-accent);
-                border-radius: 50%;
-                opacity: 0.3;
-                animation: float ${3 + Math.random() * 4}s ease-in-out infinite;
-                animation-delay: ${Math.random() * 5}s;
-                left: ${Math.random() * 100}%;
-                top: ${Math.random() * 100}%;
-            `;
-            hero.appendChild(particle);
+        const existingCanvas = document.getElementById('hero-particles-canvas');
+        if (existingCanvas) existingCanvas.remove();
+
+        const canvas = document.createElement('canvas');
+        canvas.id = 'hero-particles-canvas';
+        canvas.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        `;
+        hero.appendChild(canvas);
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        let width = 0;
+        let height = 0;
+        let particles = [];
+        let mouse = { x: -1000, y: -1000, active: false };
+
+        function resize() {
+            width = canvas.width = hero.offsetWidth;
+            height = canvas.height = hero.offsetHeight;
+            initParticles();
         }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.min(70, Math.max(35, Math.floor((width * height) / 18000)));
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.6,
+                    vy: (Math.random() - 0.5) * 0.6,
+                    bouncePhase: Math.random() * Math.PI * 2,
+                    bounceSpeed: 0.015 + Math.random() * 0.02,
+                    bounceAmp: 0.3 + Math.random() * 0.4,
+                    radius: 2 + Math.random() * 1.5,
+                    isHovered: false
+                });
+            }
+        }
+
+        function onMouseMove(e) {
+            const rect = hero.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+            mouse.active = true;
+        }
+
+        function onMouseLeave() {
+            mouse.x = -1000;
+            mouse.y = -1000;
+            mouse.active = false;
+        }
+
+        hero.addEventListener('mousemove', onMouseMove);
+        hero.addEventListener('mouseleave', onMouseLeave);
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            let hoveredParticle = null;
+            let minMouseDist = Infinity;
+            const hoverRadius = 35;
+
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                p.bouncePhase += p.bounceSpeed;
+                p.x += p.vx;
+                p.y += p.vy + Math.sin(p.bouncePhase) * p.bounceAmp;
+
+                if (p.x < 0) { p.x = 0; p.vx *= -1; }
+                if (p.x > width) { p.x = width; p.vx *= -1; }
+                if (p.y < 0) { p.y = 0; p.vy *= -1; }
+                if (p.y > height) { p.y = height; p.vy *= -1; }
+
+                if (mouse.active) {
+                    const dx = mouse.x - p.x;
+                    const dy = mouse.y - p.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < hoverRadius && dist < minMouseDist) {
+                        minMouseDist = dist;
+                        hoveredParticle = p;
+                    }
+                }
+                p.isHovered = false;
+            }
+
+            if (hoveredParticle) {
+                hoveredParticle.isHovered = true;
+            }
+
+            const maxConnectDist = 130;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p1 = particles[i];
+                    const p2 = particles[j];
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < maxConnectDist) {
+                        const isLineHovered = p1.isHovered || p2.isHovered;
+                        const factor = 1 - dist / maxConnectDist;
+
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+
+                        if (isLineHovered) {
+                            ctx.strokeStyle = `rgba(0, 200, 255, ${Math.min(0.9, factor * 0.95)})`;
+                            ctx.lineWidth = 1.8;
+                        } else {
+                            ctx.strokeStyle = `rgba(244, 244, 244, ${factor * 0.18})`;
+                            ctx.lineWidth = 0.8;
+                        }
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.isHovered ? p.radius + 1.8 : p.radius, 0, Math.PI * 2);
+
+                if (p.isHovered) {
+                    ctx.fillStyle = '#00c8ff';
+                    ctx.shadowColor = '#00c8ff';
+                    ctx.shadowBlur = 10;
+                } else {
+                    ctx.fillStyle = 'rgba(244, 244, 244, 0.5)';
+                    ctx.shadowBlur = 0;
+                }
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        requestAnimationFrame(animate);
     }
 
     // Utility functions
