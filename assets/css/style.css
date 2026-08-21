@@ -752,7 +752,7 @@ select.form-control {
 
 /* Custom CSS Variables for Portfolio */
 :root {
-  --portfolio-primary: #00ff00;
+  --portfolio-primary: #00c8ff;
   --portfolio-secondary: #64748b;
   --portfolio-accent: #f4f4f4;
   --portfolio-dark: #000000;
