@@ -571,11 +571,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         ctx.lineTo(p2.x, p2.y);
 
                         if (isLineHovered) {
-                            ctx.strokeStyle = `rgba(0, 200, 255, ${Math.min(0.9, factor * 0.95)})`;
-                            ctx.lineWidth = 1.8;
+                            ctx.strokeStyle = `rgba(255, 255, 255, ${Math.min(0.9, factor * 0.95)})`;
+                            ctx.lineWidth = 2;
                         } else {
-                            ctx.strokeStyle = `rgba(244, 244, 244, ${factor * 0.18})`;
-                            ctx.lineWidth = 0.8;
+                            ctx.strokeStyle = `rgba(0, 200, 255, ${factor * 0.18})`;
+                            ctx.lineWidth = 1.5;
                         }
                         ctx.stroke();
                     }
@@ -588,11 +588,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 ctx.arc(p.x, p.y, p.isHovered ? p.radius + 1.8 : p.radius, 0, Math.PI * 2);
 
                 if (p.isHovered) {
-                    ctx.fillStyle = '#00c8ff';
-                    ctx.shadowColor = '#00c8ff';
+                    ctx.fillStyle = '#fff';
+                    ctx.shadowColor = '#fff';
                     ctx.shadowBlur = 10;
                 } else {
-                    ctx.fillStyle = 'rgba(244, 244, 244, 0.5)';
+                    ctx.fillStyle = 'rgba(0, 200, 255, 0.63)';
                     ctx.shadowBlur = 0;
                 }
                 ctx.fill();
