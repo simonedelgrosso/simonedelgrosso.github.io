@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (hamburger.classList.contains('active')) {
             bars[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
             bars[1].style.opacity = '0';
-            bars[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+            bars[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
         } else {
             bars[0].style.transform = 'none';
             bars[1].style.opacity = '1';

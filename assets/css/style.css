@@ -1033,7 +1033,7 @@ select.form-control {
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  z-index: 1000;
+  z-index: 990;
   transition: 0.3s;
   box-shadow: color-mix(in srgb, var(--portfolio-primary) 50%, transparent) 0px 4px 12px;
 
@@ -1691,20 +1691,20 @@ section:nth-child(even) {
 
   .nav-menu {
     position: fixed;
-    top: 70px;
-    left: -100%;
+    top: 59px;
+    right: -100%;
     width: 100%;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 59px);
     background: var(--color-background);
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     padding-top: var(--space-32);
-    transition: left var(--duration-normal) var(--ease-standard);
+    transition: right var(--duration-normal) var(--ease-standard);
   }
 
   .nav-menu.active {
-    left: 0;
+    right: 0;
   }
 
   .nav-menu li {
