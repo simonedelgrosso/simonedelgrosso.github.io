@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Hero Elements
     const typingText = document.getElementById('typing-text');
+    const heroCursor = document.querySelector('.typing-container .cursor');
     const statNumbers = document.querySelectorAll('.stat-number');
     
     // Skills Elements
@@ -89,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         let typeSpeed = 100;
+        let isPaused = false;
         
         if (isDeleting) {
             typeSpeed /= 2;
@@ -97,10 +99,21 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!isDeleting && currentCharIndex === currentPhrase.length) {
             typeSpeed = 2000; // Pause at the end
             isDeleting = true;
+            isPaused = true;
         } else if (isDeleting && currentCharIndex === 0) {
             isDeleting = false;
             currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
             typeSpeed = 500; // Pause before starting new phrase
+            isPaused = true;
+        }
+
+        // The cursor blinks only when stationary/paused; while moving (writing/deleting), it stays fixed solid
+        if (heroCursor) {
+            if (isPaused) {
+                heroCursor.classList.add('blinking');
+            } else {
+                heroCursor.classList.remove('blinking');
+            }
         }
 
         setTimeout(typeEffect, typeSpeed);

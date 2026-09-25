@@ -932,6 +932,10 @@ select.form-control {
   position: relative;
   height: 18px;
   border-left: 3px solid var(--color-white);
+  opacity: 1;
+}
+
+.cursor.blinking {
   animation: blink 1s infinite;
 }
 
