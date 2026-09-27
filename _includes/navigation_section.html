@@ -16,10 +16,17 @@
             <li><a href="#projects" class="nav-link">{{ nav.projects }}</a></li>
             <li><a href="#contact" class="nav-link">{{ nav.contact }}</a></li>
         </ul>
-        <div class="hamburger" id="hamburger">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
+        <div class="nav-controls">
+            <div class="lang-switch">
+                <a href="/en/" class="lang-link {% if page.lang == 'en' %}active{% endif %}" title="English">EN</a>
+                <span class="lang-separator">|</span>
+                <a href="/it/" class="lang-link {% if page.lang == 'it' %}active{% endif %}" title="Italiano">IT</a>
+            </div>
+            <div class="hamburger" id="hamburger" aria-label="Menu" role="button" tabindex="0">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
         </div>
     </div>
 </nav>
