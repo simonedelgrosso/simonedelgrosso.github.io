@@ -799,6 +799,20 @@ select.form-control {
       var(--portfolio-primary) 100%);
 }
 
+/* Scroll Progress Bar */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: var(--portfolio-primary);
+  box-shadow: 0 0 10px var(--portfolio-primary), 0 0 20px color-mix(in srgb, var(--portfolio-primary) 50%, transparent);
+  z-index: 1100;
+  transition: width 0.05s linear;
+  pointer-events: none;
+}
+
 /* Navigation Styles */
 .navbar {
   position: fixed;
@@ -1150,7 +1164,7 @@ section {
   padding: 6rem 0;
 }
 
-section:nth-child(even) {
+section:nth-child(odd) {
   background: var(--color-surface);
 }
 

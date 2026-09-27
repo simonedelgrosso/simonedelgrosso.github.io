@@ -728,12 +728,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Optimized scroll handler
+        const scrollProgressEl = document.getElementById('scroll-progress');
         const optimizedScrollHandler = debounce(() => {
             handleNavbarScroll();
             updateActiveNavLink();
         }, 10);
 
+        // Scroll progress bar — uses rAF for buttery smoothness
+        function updateScrollProgress() {
+            if (!scrollProgressEl) return;
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            scrollProgressEl.style.width = Math.min(progress, 100) + '%';
+        }
+
         window.addEventListener('scroll', optimizedScrollHandler);
+        window.addEventListener('scroll', () => requestAnimationFrame(updateScrollProgress), { passive: true });
 
         // Projects filter badges
         if (filterBadges && filterBadges.length > 0) {
