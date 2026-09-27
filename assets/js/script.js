@@ -633,8 +633,62 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
+    // Language Switcher Slider Animation
+    function setupLanguageSwitcher() {
+        const langSwitch = document.querySelector('.lang-switch');
+        if (!langSwitch) return;
+
+        const langLinks = langSwitch.querySelectorAll('.lang-link');
+
+        function switchLanguage(targetLink, e) {
+            if (targetLink.classList.contains('active')) {
+                return;
+            }
+            if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.which === 2)) {
+                return;
+            }
+            if (e) {
+                e.preventDefault();
+            }
+
+            const targetUrl = targetLink.getAttribute('href');
+            const targetLang = targetLink.getAttribute('data-lang');
+
+            // Slide circle to active position
+            langSwitch.classList.remove('en-active', 'it-active');
+            langSwitch.classList.add(targetLang + '-active');
+            langLinks.forEach(l => l.classList.remove('active'));
+            targetLink.classList.add('active');
+
+            // Navigate after transition completes
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 220);
+        }
+
+        langLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                switchLanguage(this, e);
+            });
+        });
+
+        // Clicking on the pill switch track toggles to the inactive language
+        langSwitch.addEventListener('click', function(e) {
+            if (e.target.closest('.lang-link')) {
+                return;
+            }
+            const inactiveLink = langSwitch.querySelector('.lang-link:not(.active)');
+            if (inactiveLink) {
+                switchLanguage(inactiveLink, e);
+            }
+        });
+    }
+
     // Event Listeners Setup
     function setupEventListeners() {
+        // Language switcher
+        setupLanguageSwitcher();
+
         // Hamburger menu
         if (hamburger) {
             hamburger.addEventListener('click', toggleMobileNav);

@@ -17,10 +17,10 @@
             <li><a href="#contact" class="nav-link">{{ nav.contact }}</a></li>
         </ul>
         <div class="nav-controls">
-            <div class="lang-switch">
-                <a href="/en/" class="lang-link {% if page.lang == 'en' %}active{% endif %}" title="English">EN</a>
-                <span class="lang-separator">|</span>
-                <a href="/it/" class="lang-link {% if page.lang == 'it' %}active{% endif %}" title="Italiano">IT</a>
+            <div class="lang-switch {{ page.lang }}-active" role="group" aria-label="Language selector">
+                <span class="lang-slider" aria-hidden="true"></span>
+                <a href="/en/" class="lang-link {% if page.lang == 'en' %}active{% endif %}" data-lang="en" title="English" aria-label="English">EN</a>
+                <a href="/it/" class="lang-link {% if page.lang == 'it' %}active{% endif %}" data-lang="it" title="Italiano" aria-label="Italiano">IT</a>
             </div>
             <div class="hamburger" id="hamburger" aria-label="Menu" role="button" tabindex="0">
                 <span class="bar"></span>
