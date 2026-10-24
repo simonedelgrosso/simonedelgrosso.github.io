@@ -848,7 +848,8 @@ select.form-control {
 }
 
 .nav-logo:before {
-  content: ">";
+  content: "> ";
+  color: var(--color-text-secondary);
 }
 
 .nav-menu {
