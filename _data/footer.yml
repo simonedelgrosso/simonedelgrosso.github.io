@@ -1,4 +1,6 @@
 it:
   text: '&copy; <span id="current-year"></span> <span class="text-accent">Simone Del Grosso</span>. Tutti i diritti riservati.'
+  email: "Scrivimi una email"
 en:
   text: '&copy; <span id="current-year"></span> <span class="text-accent">Simone Del Grosso</span>. All rights reserved.'
+  email: "Send me an email"

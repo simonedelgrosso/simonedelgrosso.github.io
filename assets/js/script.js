@@ -335,8 +335,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add Scroll to Top Button
     function createScrollToTopButton() {
         const scrollBtn = document.createElement('button');
-        scrollBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+        scrollBtn.innerHTML = '<i class="fas fa-chevron-up" aria-hidden="true"></i>';
         scrollBtn.className = 'scroll-to-top';
+        scrollBtn.setAttribute('aria-label', document.documentElement.dataset.scrollTopLabel || 'Back to top');
 
         scrollBtn.addEventListener('click', scrollToTop);
         
@@ -425,43 +426,78 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // // Theme toggle functionality (bonus feature)
-    // function createThemeToggle() {
-    //     const themeToggle = document.createElement('button');
-    //     themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-    //     themeToggle.className = 'theme-toggle';
-    //     themeToggle.style.cssText = `
-    //         position: fixed;
-    //         top: 50%;
-    //         right: 20px;
-    //         transform: translateY(-50%);
-    //         width: 50px;
-    //         height: 50px;
-    //         background: var(--color-surface);
-    //         border: 2px solid var(--color-border);
-    //         border-radius: 50%;
-    //         color: var(--color-text);
-    //         cursor: pointer;
-    //         display: flex;
-    //         align-items: center;
-    //         justify-content: center;
-    //         font-size: 18px;
-    //         z-index: 999;
-    //         transition: all 0.3s ease;
-    //     `;
+    // Theme toggle (light/dark)
+    // The active scheme lives on <html data-color-scheme>, resolved before first paint
+    // by the inline script in _layouts/default.html. These helpers only keep it in sync
+    // afterwards: toggle state, storage, browser UI color and the `themechange` event.
+    const THEME_COLORS = { light: '#f8f9fb', dark: '#0b0d12' };
 
-    //     themeToggle.addEventListener('click', () => {
-    //         const currentTheme = document.body.getAttribute('data-color-scheme');
-    //         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    //         document.body.setAttribute('data-color-scheme', newTheme);
-            
-    //         themeToggle.innerHTML = newTheme === 'dark' 
-    //             ? '<i class="fas fa-sun"></i>' 
-    //             : '<i class="fas fa-moon"></i>';
-    //     });
+    function getTheme() {
+        return document.documentElement.getAttribute('data-color-scheme') === 'dark' ? 'dark' : 'light';
+    }
 
-    //     document.body.appendChild(themeToggle);
-    // }
+    function getStoredTheme() {
+        try {
+            const stored = localStorage.getItem('theme');
+            return stored === 'dark' || stored === 'light' ? stored : null;
+        } catch (e) {
+            return null; // storage blocked (privacy mode, disabled cookies)
+        }
+    }
+
+    // `notify` is false for the initial sync: nothing changed, and
+    // createParticles() reads the current tokens when it is created anyway.
+    // Every real state change must notify, on window, for the particle recolor.
+    function applyTheme(scheme, notify) {
+        document.documentElement.setAttribute('data-color-scheme', scheme);
+
+        const toggle = document.getElementById('theme-toggle');
+        if (toggle) {
+            toggle.setAttribute('aria-pressed', scheme === 'dark' ? 'true' : 'false');
+        }
+
+        const meta = document.getElementById('theme-color');
+        if (meta) {
+            meta.setAttribute('content', THEME_COLORS[scheme] || THEME_COLORS.light);
+        }
+
+        if (notify !== false) {
+            // Must stay on window: createParticles() listens there to re-read its color tokens.
+            window.dispatchEvent(new CustomEvent('themechange', { detail: { scheme: scheme } }));
+        }
+    }
+
+    function setupThemeToggle() {
+        // Reflect the scheme chosen before first paint (also fixes aria-pressed on reload).
+        applyTheme(getTheme(), false);
+
+        const toggle = document.getElementById('theme-toggle');
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                const next = getTheme() === 'dark' ? 'light' : 'dark';
+                applyTheme(next);
+                try {
+                    localStorage.setItem('theme', next);
+                } catch (e) {
+                    /* storage blocked: the choice lasts for this page view only */
+                }
+            });
+        }
+
+        // Until the visitor picks a theme explicitly, keep following the OS preference.
+        if (window.matchMedia) {
+            const query = window.matchMedia('(prefers-color-scheme: dark)');
+            const onSchemeChange = (event) => {
+                if (getStoredTheme()) return;
+                applyTheme(event.matches ? 'dark' : 'light');
+            };
+            if (query.addEventListener) {
+                query.addEventListener('change', onSchemeChange);
+            } else if (query.addListener) {
+                query.addListener(onSchemeChange); // Safari < 14
+            }
+        }
+    }
 
     // Add particle effect to hero section with connected faint lines
     function createParticles() {
@@ -486,6 +522,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
+
+        // Particle colors come from the theme tokens so both schemes stay readable.
+        function readColorTokens() {
+            const styles = getComputedStyle(document.documentElement);
+            return {
+                particle: styles.getPropertyValue('--particle-rgb').trim() || '129, 140, 248',
+                line: styles.getPropertyValue('--particle-line-rgb').trim() || '255, 255, 255'
+            };
+        }
+        let themeColors = readColorTokens();
+        window.addEventListener('themechange', () => {
+            themeColors = readColorTokens();
+        });
 
         let width = 0;
         let height = 0;
@@ -584,10 +633,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         ctx.lineTo(p2.x, p2.y);
 
                         if (isLineHovered) {
-                            ctx.strokeStyle = `rgba(255, 255, 255, ${Math.min(0.9, factor * 0.95)})`;
+                            ctx.strokeStyle = `rgba(${themeColors.line}, ${Math.min(0.9, factor * 0.95)})`;
                             ctx.lineWidth = 2;
                         } else {
-                            ctx.strokeStyle = `rgba(0, 200, 255, ${factor * 0.18})`;
+                            ctx.strokeStyle = `rgba(${themeColors.particle}, ${factor * 0.22})`;
                             ctx.lineWidth = 1.5;
                         }
                         ctx.stroke();
@@ -601,11 +650,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 ctx.arc(p.x, p.y, p.isHovered ? p.radius + 1.8 : p.radius, 0, Math.PI * 2);
 
                 if (p.isHovered) {
-                    ctx.fillStyle = '#fff';
-                    ctx.shadowColor = '#fff';
+                    ctx.fillStyle = `rgb(${themeColors.line})`;
+                    ctx.shadowColor = `rgb(${themeColors.line})`;
                     ctx.shadowBlur = 10;
                 } else {
-                    ctx.fillStyle = 'rgba(0, 200, 255, 0.63)';
+                    ctx.fillStyle = `rgba(${themeColors.particle}, 0.7)`;
                     ctx.shadowBlur = 0;
                 }
                 ctx.fill();
@@ -773,9 +822,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize everything
     function init() {
+        setupThemeToggle();
         createPreloader();
         createScrollToTopButton();
-        // createThemeToggle();
         initializeCardsAnimation();
         // Ensure hero stat targets are set before observers/animations start
         setHeroStatsTargets();

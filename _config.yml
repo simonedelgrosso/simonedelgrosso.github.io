@@ -7,6 +7,11 @@ url: "https://simonedelgrosso.github.io"
 # Build settings
 markdown: kramdown
 timezone: Europe/Rome
+
+# Planning notes must never be published as part of the site.
+exclude:
+  - plans
+
 plugins:
   - jekyll-feed
   - jekyll-sitemap

@@ -22,6 +22,23 @@
   --color-red-500: rgba(192, 21, 47, 1);
   --color-orange-400: rgba(230, 129, 97, 1);
   --color-orange-500: rgba(168, 75, 47, 1);
+  /* Neutral ramp used by both themes */
+  --color-ink-950: #0b0d12;
+  --color-ink-900: #11141b;
+  --color-ink-800: #171b24;
+  --color-ink-700: #1f2430;
+  --color-ink-100: #e6e8ee;
+  --color-ink-200: #cbd0da;
+  --color-ink-300: #a8b0c0;
+  --color-slate-950: #0f172a;
+  --color-slate-600: #475569;
+  /* Brand accents */
+  --color-indigo-400: #818cf8;
+  --color-indigo-500: #4f46e5;
+  --color-indigo-600: #4338ca;
+  --color-sky-400: #38bdf8;
+  --color-sky-600: #0284c7;
+  --color-sky-700: #0369a1;
 
   /* RGB versions for opacity control */
   --color-brown-600-rgb: 94, 82, 64;
@@ -34,82 +51,112 @@
   --color-orange-400-rgb: 230, 129, 97;
 
   /* Background color tokens (Light Mode) */
-  --color-bg-1: rgba(59, 130, 246, 0.08);
-  /* Light blue */
+  --color-bg-1: rgba(79, 70, 229, 0.08);
+  /* Indigo */
   --color-bg-2: rgba(245, 158, 11, 0.08);
-  /* Light yellow */
+  /* Amber */
   --color-bg-3: rgba(34, 197, 94, 0.08);
-  /* Light green */
+  /* Green */
   --color-bg-4: rgba(239, 68, 68, 0.08);
-  /* Light red */
+  /* Red */
   --color-bg-5: rgba(147, 51, 234, 0.08);
-  /* Light purple */
+  /* Purple */
   --color-bg-6: rgba(249, 115, 22, 0.08);
-  /* Light orange */
+  /* Orange */
   --color-bg-7: rgba(236, 72, 153, 0.08);
-  /* Light pink */
-  --color-bg-8: rgba(6, 182, 212, 0.08);
-  /* Light cyan */
+  /* Pink */
+  --color-bg-8: rgba(2, 132, 199, 0.08);
+  /* Sky */
 
-  /* Semantic Color Tokens (Light Mode) */
-  --color-background: var(--color-cream-50);
-  --color-surface: var(--color-cream-100);
-  --color-text: var(--color-slate-900);
-  --color-text-secondary: var(--color-slate-500);
-  --color-primary: var(--color-teal-500);
-  --color-primary-hover: var(--color-teal-600);
-  --color-primary-active: var(--color-teal-700);
-  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
-  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-btn-primary-text: var(--color-cream-50);
-  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+  /* Semantic Color Tokens (Light Mode - default when no scheme is set) */
+  --color-background: #f8f9fb;
+  --color-background-alt: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-text: #0f172a;
+  --color-text-secondary: #475569;
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-primary-active: #3730a3;
+  --color-secondary: rgba(15, 23, 42, 0.05);
+  --color-secondary-hover: rgba(15, 23, 42, 0.09);
+  --color-secondary-active: rgba(15, 23, 42, 0.13);
+  --color-border: rgba(15, 23, 42, 0.12);
+  --color-border-subtle: rgba(15, 23, 42, 0.08);
+  --color-card-border: rgba(15, 23, 42, 0.08);
+  --color-card-border-inner: rgba(15, 23, 42, 0.06);
+  --color-on-accent: #ffffff;
+  --color-overlay: rgba(15, 23, 42, 0.72);
+  --color-glass: rgba(248, 249, 251, 0.82);
+  --color-focus-ring: rgba(79, 70, 229, 0.35);
   --color-error: var(--color-red-500);
-  --color-success: var(--color-teal-500);
+  --color-success: #047857;
   --color-warning: var(--color-orange-500);
   --color-info: var(--color-slate-500);
-  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
-  --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
+  --color-btn-primary-text: #ffffff;
+  --color-select-caret: rgba(15, 23, 42, 0.8);
+
+  /* Portfolio tokens (Light Mode) */
+  --portfolio-primary: #4f46e5;
+  --portfolio-primary-soft: rgba(79, 70, 229, 0.12);
+  --portfolio-secondary: #475569;
+  --portfolio-accent: rgba(79, 70, 229, 0.16);
+  --portfolio-dark: #f8f9fb;
+  --portfolio-dark-light: #475569;
+  --portfolio-gradient: linear-gradient(135deg, var(--color-indigo-500) 0%, var(--color-sky-700) 100%);
+  --particle-rgb: 79, 70, 229;
+  --particle-line-rgb: 15, 23, 42;
+
+  /* Shadows (Light Mode) */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 8px 16px -8px rgba(15, 23, 42, 0.14), 0 2px 6px -3px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 24px 48px -24px rgba(15, 23, 42, 0.24), 0 8px 16px -12px rgba(15, 23, 42, 0.12);
+  --shadow-inset-sm:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 0 rgba(15, 23, 42, 0.04);
 
   /* Common style patterns */
   --focus-ring: 0 0 0 3px var(--color-focus-ring);
   --focus-outline: 2px solid var(--color-primary);
   --status-bg-opacity: 0.15;
   --status-border-opacity: 0.25;
-  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230f172a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23e6e8ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 
-  /* RGB versions for opacity control */
-  --color-success-rgb: 33, 128, 141;
-  --color-error-rgb: 192, 21, 47;
-  --color-warning-rgb: 168, 75, 47;
-  --color-info-rgb: 98, 108, 113;
+  /* RGB versions for light mode */
+  --color-success-rgb: 4, 120, 87;
+  --color-error-rgb: var(--color-red-500-rgb);
+  --color-warning-rgb: var(--color-orange-500-rgb);
+  --color-info-rgb: var(--color-slate-500-rgb);
 
   /* Typography */
   --font-family-base:
-    "Space Grotesk", "Geist", "Inter", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, sans-serif;
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-display:
+    "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
   --font-family-mono:
-    "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    monospace;
-  --font-size-xs: 11px;
-  --font-size-sm: 12px;
-  --font-size-base: 14px;
-  --font-size-md: 14px;
-  --font-size-lg: 16px;
-  --font-size-xl: 18px;
-  --font-size-2xl: 20px;
-  --font-size-3xl: 24px;
-  --font-size-4xl: 30px;
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-base: 16px;
+  --font-size-md: 15px;
+  --font-size-lg: 17px;
+  --font-size-xl: 19px;
+  --font-size-2xl: 22px;
+  --font-size-3xl: 26px;
+  --font-size-4xl: 32px;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
-  --font-weight-semibold: 550;
-  --font-weight-bold: 600;
+  --font-weight-semibold: 600;
+  /* 700 exists only in the display family (Plus Jakarta Sans). Inter is loaded
+     at 400/500/600 to stay within the 6-weight font budget, so text that
+     inherits the body font must not go above --font-weight-semibold: the
+     browser would silently substitute the 600 face. */
+  --font-weight-bold: 700;
   --line-height-tight: 1.2;
-  --line-height-normal: 1.5;
-  --letter-spacing-tight: -0.01em;
+  --line-height-normal: 1.65;
+  --letter-spacing-tight: -0.02em;
 
   /* Spacing */
   --space-0: 0;
@@ -124,23 +171,21 @@
   --space-20: 20px;
   --space-24: 24px;
   --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-80: 80px;
+  --space-96: 96px;
+  --space-112: 112px;
 
   /* Border Radius */
   --radius-sm: 6px;
   --radius-base: 8px;
   --radius-md: 10px;
   --radius-lg: 12px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
   --radius-full: 9999px;
-
-  /* Shadows */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-md:
-    0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-  --shadow-lg:
-    0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-  --shadow-inset-sm:
-    inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 0 rgba(0, 0, 0, 0.03);
 
   /* Animation */
   --duration-fast: 150ms;
@@ -154,174 +199,84 @@
   --container-xl: 1280px;
 }
 
-/* Dark mode colors */
-/* @media (prefers-color-scheme: dark) { */
-:root {
-  /* RGB versions for opacity control (Dark Mode) */
-  --color-gray-400-rgb: 119, 124, 124;
-  --color-teal-300-rgb: 50, 184, 198;
-  --color-gray-300-rgb: 167, 169, 169;
-  --color-gray-200-rgb: 245, 245, 245;
-
-  /* Background color tokens (Dark Mode) */
-  --color-bg-1: rgba(29, 78, 216, 0.15);
-  /* Dark blue */
-  --color-bg-2: rgba(180, 83, 9, 0.15);
-  /* Dark yellow */
-  --color-bg-3: rgba(21, 128, 61, 0.15);
-  /* Dark green */
-  --color-bg-4: rgba(185, 28, 28, 0.15);
-  /* Dark red */
-  --color-bg-5: rgba(107, 33, 168, 0.15);
-  /* Dark purple */
-  --color-bg-6: rgba(194, 65, 12, 0.15);
-  /* Dark orange */
-  --color-bg-7: rgba(190, 24, 93, 0.15);
-  /* Dark pink */
-  --color-bg-8: rgba(8, 145, 178, 0.15);
-  /* Dark cyan */
-
-  /* Semantic Color Tokens (Dark Mode) */
-  --color-background: var(--color-charcoal-700);
-  --color-surface: var(--color-charcoal-800);
-  --color-text: var(--color-gray-200);
-  --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
-  --color-primary: var(--color-teal-300);
-  --color-primary-hover: var(--color-teal-400);
-  --color-primary-active: var(--color-teal-800);
-  --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
-  --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
-  --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
-  --color-border: rgba(var(--color-gray-400-rgb), 0.3);
-  --color-error: var(--color-red-400);
-  --color-success: var(--color-teal-300);
-  --color-warning: var(--color-orange-400);
-  --color-info: var(--color-gray-300);
-  --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
-  --color-btn-primary-text: var(--color-slate-900);
-  --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
-  --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
-  --shadow-inset-sm:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  --button-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
-  --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
-  --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
-
-  /* Common style patterns - updated for dark mode */
-  --focus-ring: 0 0 0 3px var(--color-focus-ring);
-  --focus-outline: 2px solid var(--color-primary);
-  --status-bg-opacity: 0.15;
-  --status-border-opacity: 0.25;
-  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-
-  /* RGB versions for dark mode */
-  --color-success-rgb: 0, 255, 0;
-  --color-error-rgb: var(--color-red-400-rgb);
-  --color-warning-rgb: var(--color-orange-400-rgb);
-  --color-info-rgb: var(--color-gray-300-rgb);
-}
-
-/* } */
-
-/* Data attribute for manual theme switching */
+/* Dark theme */
 [data-color-scheme="dark"] {
-  /* RGB versions for opacity control (dark mode) */
-  --color-gray-400-rgb: 119, 124, 124;
-  --color-teal-300-rgb: 50, 184, 198;
-  --color-gray-300-rgb: 167, 169, 169;
-  --color-gray-200-rgb: 245, 245, 245;
-
   /* Colorful background palette - Dark Mode */
-  --color-bg-1: rgba(29, 78, 216, 0.15);
-  /* Dark blue */
-  --color-bg-2: rgba(180, 83, 9, 0.15);
-  /* Dark yellow */
-  --color-bg-3: rgba(21, 128, 61, 0.15);
-  /* Dark green */
-  --color-bg-4: rgba(185, 28, 28, 0.15);
-  /* Dark red */
-  --color-bg-5: rgba(107, 33, 168, 0.15);
-  /* Dark purple */
-  --color-bg-6: rgba(194, 65, 12, 0.15);
-  /* Dark orange */
-  --color-bg-7: rgba(190, 24, 93, 0.15);
-  /* Dark pink */
-  --color-bg-8: rgba(8, 145, 178, 0.15);
-  /* Dark cyan */
+  --color-bg-1: rgba(129, 140, 248, 0.14);
+  /* Indigo */
+  --color-bg-2: rgba(245, 158, 11, 0.12);
+  /* Amber */
+  --color-bg-3: rgba(52, 211, 153, 0.12);
+  /* Green */
+  --color-bg-4: rgba(248, 113, 113, 0.12);
+  /* Red */
+  --color-bg-5: rgba(167, 139, 250, 0.14);
+  /* Purple */
+  --color-bg-6: rgba(251, 146, 60, 0.12);
+  /* Orange */
+  --color-bg-7: rgba(244, 114, 182, 0.12);
+  /* Pink */
+  --color-bg-8: rgba(56, 189, 248, 0.14);
+  /* Sky */
 
   /* Semantic Color Tokens (Dark Mode) */
-  --color-background: var(--color-charcoal-700);
-  --color-surface: var(--color-charcoal-800);
-  --color-text: var(--color-gray-200);
-  --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
-  --color-primary: var(--color-teal-300);
-  --color-primary-hover: var(--color-teal-400);
-  --color-primary-active: var(--color-teal-800);
-  --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
-  --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
-  --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
-  --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+  --color-background: #0b0d12;
+  --color-background-alt: #0e1117;
+  --color-surface: #12151c;
+  --color-surface-raised: #171b24;
+  --color-text: #e6e8ee;
+  --color-text-secondary: #a8b0c0;
+  --color-primary: #818cf8;
+  --color-primary-hover: #a5b4fc;
+  --color-primary-active: #c7d2fe;
+  --color-secondary: rgba(255, 255, 255, 0.06);
+  --color-secondary-hover: rgba(255, 255, 255, 0.1);
+  --color-secondary-active: rgba(255, 255, 255, 0.14);
+  --color-border: rgba(255, 255, 255, 0.14);
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-card-border: rgba(255, 255, 255, 0.1);
+  --color-card-border-inner: rgba(255, 255, 255, 0.07);
+  --color-on-accent: #0b0d12;
+  --color-overlay: rgba(5, 7, 11, 0.8);
+  --color-glass: rgba(11, 13, 18, 0.72);
+  --color-focus-ring: rgba(129, 140, 248, 0.45);
   --color-error: var(--color-red-400);
-  --color-success: var(--color-teal-300);
+  --color-success: #34d399;
   --color-warning: var(--color-orange-400);
-  --color-info: var(--color-gray-300);
-  --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
-  --color-btn-primary-text: var(--color-slate-900);
-  --color-card-border: rgba(var(--color-gray-400-rgb), 0.15);
-  --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
+  --color-info: var(--color-ink-300);
+  --color-btn-primary-text: #0b0d12;
+  --color-select-caret: rgba(230, 232, 238, 0.8);
+
+  /* Portfolio tokens (Dark Mode) */
+  --portfolio-primary: #818cf8;
+  --portfolio-primary-soft: rgba(129, 140, 248, 0.14);
+  --portfolio-secondary: #a8b0c0;
+  --portfolio-accent: rgba(129, 140, 248, 0.22);
+  --portfolio-dark: #0b0d12;
+  --portfolio-dark-light: #a8b0c0;
+  --portfolio-gradient: linear-gradient(135deg, var(--color-indigo-400) 0%, var(--color-sky-400) 100%);
+  --particle-rgb: 129, 140, 248;
+  --particle-line-rgb: 255, 255, 255;
+
+  /* Shadows (Dark Mode) */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 20px -10px rgba(0, 0, 0, 0.7), 0 2px 6px -3px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 28px 56px -28px rgba(0, 0, 0, 0.85), 0 10px 20px -14px rgba(0, 0, 0, 0.6);
   --shadow-inset-sm:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
-  --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
+    inset 0 1px 0 rgba(255, 255, 255, 0.06), inset 0 -1px 0 rgba(0, 0, 0, 0.4);
 
   /* Common style patterns - updated for dark mode */
   --focus-ring: 0 0 0 3px var(--color-focus-ring);
   --focus-outline: 2px solid var(--color-primary);
   --status-bg-opacity: 0.15;
   --status-border-opacity: 0.25;
-  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 
   /* RGB versions for dark mode */
-  --color-success-rgb: 0, 255, 0;
+  --color-success-rgb: 52, 211, 153;
   --color-error-rgb: var(--color-red-400-rgb);
   --color-warning-rgb: var(--color-orange-400-rgb);
-  --color-info-rgb: var(--color-gray-300-rgb);
-}
-
-[data-color-scheme="light"] {
-  /* RGB versions for opacity control (light mode) */
-  --color-brown-600-rgb: 94, 82, 64;
-  --color-teal-500-rgb: 33, 128, 141;
-  --color-slate-900-rgb: 19, 52, 59;
-
-  /* Semantic Color Tokens (Light Mode) */
-  --color-background: var(--color-cream-50);
-  --color-surface: var(--color-cream-100);
-  --color-text: var(--color-slate-900);
-  --color-text-secondary: var(--color-slate-500);
-  --color-primary: var(--color-teal-500);
-  --color-primary-hover: var(--color-teal-600);
-  --color-primary-active: var(--color-teal-700);
-  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
-  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-btn-primary-text: var(--color-cream-50);
-  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-error: var(--color-red-500);
-  --color-success: var(--color-teal-500);
-  --color-warning: var(--color-orange-500);
-  --color-info: var(--color-slate-500);
-  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
-
-  /* RGB versions for light mode */
-  --color-success-rgb: 0, 255, 0;
-  --color-error-rgb: var(--color-red-500-rgb);
-  --color-warning-rgb: var(--color-orange-500-rgb);
-  --color-info-rgb: var(--color-slate-500-rgb);
+  --color-info-rgb: 168, 176, 192;
 }
 
 /* Base styles */
@@ -332,7 +287,13 @@ html {
   color: var(--color-text);
   background-color: var(--color-background);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
+  color-scheme: light;
+}
+
+[data-color-scheme="dark"] {
+  color-scheme: dark;
 }
 
 body {
@@ -354,18 +315,19 @@ h4,
 h5,
 h6 {
   margin: 0;
-  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-display);
+  font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
   color: var(--color-text);
   letter-spacing: var(--letter-spacing-tight);
 }
 
 h1 {
-  font-size: var(--font-size-4xl);
+  font-size: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
 }
 
 h2 {
-  font-size: var(--font-size-3xl);
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
 }
 
 h3 {
@@ -447,10 +409,11 @@ pre code {
 .btn--primary {
   background: var(--portfolio-primary);
   color: var(--color-btn-primary-text);
+  font-weight: var(--font-weight-semibold);
 }
 
 .btn--primary:hover {
-  background: white;
+  background: var(--color-primary-hover);
   color: var(--color-btn-primary-text);
 }
 
@@ -535,14 +498,7 @@ select.form-control {
   padding-right: var(--space-32);
 }
 
-/* Add a dark mode specific caret */
-@media (prefers-color-scheme: dark) {
-  select.form-control {
-    background-image: var(--select-caret-dark);
-  }
-}
-
-/* Also handle data-color-scheme */
+/* Caret color follows the active theme (set on <html> before first paint) */
 [data-color-scheme="dark"] select.form-control {
   background-image: var(--select-caret-dark);
 }
@@ -775,29 +731,15 @@ select.form-control {
 
 /* Dark mode specifics */
 [data-color-scheme="dark"] .btn--outline {
-  border: 1px solid var(--color-border-secondary);
-}
-
-@font-face {
-  font-family: "Space Grotesk";
-  src: url(https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2) format('woff2');
+  border: 1px solid var(--color-border);
 }
 
 /* Custom Portfolio Styles */
 
 /* Reset and base styles are handled by design system */
 
-/* Custom CSS Variables for Portfolio */
-:root {
-  --portfolio-primary: #00c8ff;
-  --portfolio-secondary: #64748b;
-  --portfolio-accent: #f4f4f4;
-  --portfolio-dark: #000000;
-  --portfolio-dark-light: #404040;
-  --portfolio-gradient: linear-gradient(135deg,
-      var(--portfolio-primary) 0%,
-      var(--portfolio-primary) 100%);
-}
+/* Portfolio color tokens are defined with the theme tokens at the top of
+   this file (:root for light, [data-color-scheme="dark"] for dark). */
 
 /* Scroll Progress Bar */
 #scroll-progress {
@@ -819,16 +761,19 @@ select.form-control {
   top: 0;
   left: 0;
   right: 0;
-  background: var(--portfolio-dark);
-  backdrop-filter: blur(10px);
+  background: var(--color-glass);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   z-index: 1000;
   padding: var(--space-16) 0;
-  transition: all var(--duration-normal) var(--ease-standard);
+  transition: background-color var(--duration-normal) var(--ease-standard),
+    box-shadow var(--duration-normal) var(--ease-standard);
 }
 
 .navbar.scrolled {
-  background: var(--portfolio-dark);
-  box-shadow: var(--shadow-lg);
+  background: var(--color-glass);
+  border-bottom: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-sm);
 }
 
 .nav-container {
@@ -842,9 +787,15 @@ select.form-control {
 
 .nav-logo {
   font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-bold);
+  /* Body font (Inter) is loaded up to 600; 700 would silently fall back. */
+  font-weight: var(--font-weight-semibold);
   color: var(--portfolio-primary);
   text-decoration: none;
+  /* Never wrap onto two lines; truncate instead if space runs out. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .nav-logo:before {
@@ -895,22 +846,71 @@ select.form-control {
   gap: var(--space-16);
 }
 
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-full);
+  background: var(--color-secondary);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+  line-height: 1;
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.theme-toggle:hover {
+  color: var(--color-text);
+  background: var(--color-secondary-hover);
+  border-color: var(--color-border);
+}
+
+.theme-toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.theme-toggle i {
+  pointer-events: none;
+}
+
+/* Only one icon is visible at a time; the active scheme is set on <html> before paint.
+   The extra `.theme-toggle` class is needed to outrank Font Awesome's `.fas` rule,
+   whose stylesheet is loaded after this one. */
+.theme-toggle .theme-toggle__icon--sun {
+  display: none;
+}
+
+[data-color-scheme="dark"] .theme-toggle .theme-toggle__icon--sun {
+  display: inline-block;
+}
+
+[data-color-scheme="dark"] .theme-toggle .theme-toggle__icon--moon {
+  display: none;
+}
+
 .lang-switch {
   position: relative;
   display: inline-flex;
   align-items: center;
   padding: 3px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: var(--color-secondary);
+  border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-full);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-inset-sm);
   user-select: none;
   cursor: pointer;
   transition: border-color var(--duration-fast) var(--ease-standard);
 }
 
 .lang-switch:hover {
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: var(--color-border);
 }
 
 .lang-slider {
@@ -947,18 +947,19 @@ select.form-control {
   font-size: 11px;
   font-weight: var(--font-weight-semibold);
   letter-spacing: 0.5px;
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--color-text-secondary);
   text-decoration: none;
   transition: color var(--duration-fast) var(--ease-standard);
 }
 
 .lang-link:hover:not(.active) {
-  color: var(--color-white);
+  color: var(--color-text);
 }
 
 .lang-link.active {
-  color: #000000;
-  font-weight: var(--font-weight-bold);
+  color: var(--color-on-accent);
+  /* No font-weight bump: the body font (Inter) tops out at 600 here, so the
+     active state is conveyed by the accent pill and its text color. */
 }
 
 .lang-link:focus-visible {
@@ -989,7 +990,7 @@ select.form-control {
   justify-content: center;
   align-items: center;
   padding: var(--space-32) 0;
-  background: var(--portfolio-dark);
+  background: var(--color-background);
   position: relative;
   overflow: hidden;
 }
@@ -1058,7 +1059,7 @@ select.form-control {
   display: inline-block;
   position: relative;
   height: 18px;
-  border-left: 3px solid var(--color-white);
+  border-left: 3px solid var(--color-text);
   opacity: 1;
 }
 
@@ -1105,15 +1106,17 @@ select.form-control {
 .stat {
   text-align: center;
   padding: var(--space-24);
-  background: var(--color-background);
-  border-radius: var(--radius-lg);
+  background: var(--color-surface-raised);
+  border-radius: var(--radius-xl);
   border: 1px solid var(--color-card-border);
+  box-shadow: var(--shadow-sm);
 }
 
 .stat-number {
   display: block;
   font-size: var(--font-size-4xl);
-  font-weight: var(--font-weight-bold);
+  /* Body font (Inter) is loaded up to 600; 700 would silently fall back. */
+  font-weight: var(--font-weight-semibold);
   color: var(--portfolio-primary);
   margin-bottom: var(--space-8);
 }
@@ -1143,8 +1146,8 @@ select.form-control {
   width: 50px;
   height: 50px;
   background: var(--portfolio-primary);
-  color: white;
-  border: medium;
+  color: var(--color-on-accent);
+  border: none;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -1152,11 +1155,12 @@ select.form-control {
   justify-content: center;
   font-size: 18px;
   z-index: 990;
-  transition: 0.3s;
-  box-shadow: color-mix(in srgb, var(--portfolio-primary) 50%, transparent) 0px 4px 12px;
+  transition: background-color var(--duration-normal) var(--ease-standard),
+    transform var(--duration-normal) var(--ease-standard);
+  box-shadow: var(--shadow-md);
 
   i {
-    color: black;
+    color: var(--color-on-accent);
   }
 }
 
@@ -1365,11 +1369,11 @@ section:nth-child(odd) {
 
 .cert-badge {
   background: var(--portfolio-gradient);
-  color: black;
+  color: var(--color-on-accent);
   padding: var(--space-6) var(--space-12);
   border-radius: var(--radius-full);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
 }
 
 /* Experience Section */
@@ -1521,7 +1525,8 @@ section:nth-child(odd) {
   background: var(--portfolio-primary);
   color: var(--color-btn-primary-text);
   border-color: transparent;
-  box-shadow: 0 4px 12px rgba(var(--color-success-rgb), 0.25);
+  /* Accent-tinted glow; the old success-tinted one clashed with the indigo accent. */
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--portfolio-primary) 35%, transparent);
 }
 
 .projects-grid {
@@ -1566,7 +1571,7 @@ section:nth-child(odd) {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: var(--color-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1579,17 +1584,18 @@ section:nth-child(odd) {
 }
 
 .project-link {
-  color: white;
+  color: #ffffff;
   font-size: 1.5rem;
   padding: var(--space-12);
-  border: 2px solid white;
+  border: 2px solid currentColor;
   border-radius: 50%;
-  transition: all var(--duration-fast) var(--ease-standard);
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
 }
 
 .project-link:hover {
-  background: white;
-  color: var(--portfolio-dark);
+  background: #ffffff;
+  color: var(--color-slate-950);
 }
 
 .project-content {
@@ -1634,7 +1640,9 @@ section:nth-child(odd) {
 /* Contact Section */
 .contact-content {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* minmax(0, …) lets the tracks shrink below their min-content width, which the
+     16px base font made wider than a 320px viewport. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-32);
   max-width: 1000px;
   margin: 0 auto;
@@ -1644,6 +1652,13 @@ section:nth-child(odd) {
   display: flex;
   flex-direction: column;
   gap: var(--space-24);
+  min-width: 0;
+}
+
+.contact-details {
+  min-width: 0;
+  /* Long unbreakable strings (email addresses) must wrap instead of overflowing. */
+  overflow-wrap: anywhere;
 }
 
 .contact-item {
@@ -1664,7 +1679,7 @@ section:nth-child(odd) {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: black;
+  color: var(--color-on-accent);
   font-size: var(--font-size-lg);
 }
 
@@ -1688,6 +1703,7 @@ section:nth-child(odd) {
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-card-border);
   transition: border 250ms;
+  min-width: 0;
 }
 
 .contact-form:hover {
@@ -1701,7 +1717,8 @@ section:nth-child(odd) {
 
 /* Footer */
 .footer {
-  background: var(--portfolio-dark);
+  background: var(--color-background-alt);
+  border-top: 1px solid var(--color-border-subtle);
   padding: var(--space-32) 0;
   text-align: center;
 }
@@ -1737,7 +1754,7 @@ section:nth-child(odd) {
 
 .social-links a:hover {
   background: var(--portfolio-primary);
-  color: black;
+  color: var(--color-on-accent);
   transform: translateY(-2px);
 }
 
@@ -1877,7 +1894,7 @@ section:nth-child(odd) {
   }
 
   .contact-content {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .footer-content {
@@ -1894,6 +1911,15 @@ section:nth-child(odd) {
 @media (max-width: 480px) {
   .nav-container {
     padding: 0 var(--space-16);
+  }
+
+  /* Keep logo + theme toggle + language switch + hamburger inside 320px. */
+  .nav-controls {
+    gap: var(--space-8);
+  }
+
+  .nav-logo {
+    font-size: var(--font-size-base);
   }
 
   .hero-container {
@@ -1927,5 +1953,17 @@ section:nth-child(odd) {
 
   .contact-form {
     padding: var(--space-16);
+  }
+}
+
+@media (max-width: 360px) {
+  /* At 320px the full name only fits if the decorative "> " prefix goes away:
+     it costs ~15px, exactly the gap between fitting and truncating. */
+  .nav-logo::before {
+    content: none;
+  }
+
+  .nav-logo {
+    font-size: var(--font-size-md);
   }
 }

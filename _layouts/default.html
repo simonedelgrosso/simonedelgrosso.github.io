@@ -1,23 +1,47 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang }}">
+<html lang="{{ page.lang }}" data-scroll-top-label="{{ site.data.navigation[page.lang].scroll_top }}">
     <head>
         {% include google_analytics.html %}
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="dark light" />
         <meta name="description" content="{{ page.description }}" />
         <title>{{ page.title }}</title>
         {% seo %}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="/assets/css/style.css" />
+        <meta name="theme-color" id="theme-color" content="#f8f9fb" />
+        <script>
+            // Resolve the color scheme before first paint to avoid a flash of the wrong theme.
+            (function () {
+                var COLORS = { light: "#f8f9fb", dark: "#0b0d12" };
+                var isDarkOS = !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+                var scheme = isDarkOS ? "dark" : "light";
+                try {
+                    var stored = localStorage.getItem("theme");
+                    if (stored === "dark" || stored === "light") {
+                        scheme = stored;
+                    }
+                } catch (e) {
+                    /* storage blocked: keep the OS preference */
+                }
+                document.documentElement.setAttribute("data-color-scheme", scheme);
+                // Keep the browser UI color in sync with the resolved scheme, not just the OS one.
+                var meta = document.getElementById("theme-color");
+                if (meta) {
+                    meta.setAttribute("content", COLORS[scheme]);
+                }
+            })();
+        </script>
         <link rel="alternate" hreflang="en" href="https://simonedelgrosso.github.io/en/" />
         <link rel="alternate" hreflang="it" href="https://simonedelgrosso.github.io/it/" />
         <link rel="alternate" hreflang="x-default" href="https://simonedelgrosso.github.io/" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" href="/assets/css/style.css" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
     </head>
-    <body data-color-scheme="dark">
+    <body>
         <div id="scroll-progress" aria-hidden="true"></div>
         {% include navigation_section.html %}
         {% include hero_section.html %}

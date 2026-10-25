@@ -17,6 +17,10 @@
             <li><a href="#contact" class="nav-link">{{ nav.contact }}</a></li>
         </ul>
         <div class="nav-controls">
+            <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="{{ nav.theme_toggle }}" title="{{ nav.theme_toggle }}">
+                <i class="fas fa-moon theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true"></i>
+                <i class="fas fa-sun theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true"></i>
+            </button>
             <div class="lang-switch {{ page.lang }}-active" role="group" aria-label="Language selector">
                 <span class="lang-slider" aria-hidden="true"></span>
                 <a href="/en/" class="lang-link {% if page.lang == 'en' %}active{% endif %}" data-lang="en" title="English" aria-label="English">EN</a>
@@ -29,4 +33,19 @@
             </div>
         </div>
     </div>
+    <script>
+        // The toggle ships with aria-pressed="false"; the real state is already on
+        // <html data-color-scheme> (set before first paint). Sync it here, right after
+        // the button is parsed, so assistive tech never announces the wrong state
+        // between parsing and DOMContentLoaded. script.js keeps it in sync afterwards.
+        //
+        // Kept INSIDE <nav> on purpose: as a direct child of <body> it would shift
+        // section:nth-child(odd) and flip the alternating section backgrounds.
+        (function () {
+            var toggle = document.getElementById('theme-toggle');
+            if (!toggle) return;
+            var isDark = document.documentElement.getAttribute('data-color-scheme') === 'dark';
+            toggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+        })();
+    </script>
 </nav>
