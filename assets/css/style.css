@@ -1170,7 +1170,7 @@ body.nav-open {
   margin-bottom: var(--space-24);
   /* One reserved line at the typing size, so the subtitle never jumps while
      the text is typed and deleted. */
-  min-height: 1.5em;
+  height: 1.5em;
   font-size: clamp(1.25rem, 2.1vw, 1.75rem);
 }
 
