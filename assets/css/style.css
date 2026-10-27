@@ -724,6 +724,43 @@ select.form-control {
   border-width: 0;
 }
 
+/* Skip link: the first focusable element, parked above the viewport until it
+   receives focus. It is moved with a transform (not `left: -9999px`) so it can
+   never widen the document. No transition: a skip link should appear instantly
+   and there is nothing here for prefers-reduced-motion to disable. */
+.skip-link {
+  position: fixed;
+  top: var(--space-8);
+  left: var(--space-8);
+  z-index: 1200;
+  padding: var(--space-10) var(--space-16);
+  border-radius: var(--radius-base);
+  background: var(--portfolio-primary);
+  color: var(--color-on-accent);
+  font-weight: var(--font-weight-semibold);
+  box-shadow: var(--shadow-md);
+  transform: translateY(calc(-100% - var(--space-16)));
+}
+
+.skip-link:focus,
+.skip-link:hover {
+  color: var(--color-on-accent);
+  transform: translateY(0);
+}
+
+/* The global focus outline is the accent color, which is invisible against the
+   accent background; a text-colored ring reads on both themes. */
+.skip-link:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+/* <main> is only a programmatic focus target for the skip link (tabindex="-1"),
+   so the ring would outline the whole page. Interactive children keep theirs. */
+#main:focus {
+  outline: none;
+}
+
 :focus-visible {
   outline: var(--focus-outline);
   outline-offset: 2px;
@@ -1099,9 +1136,10 @@ body.nav-open {
   justify-content: center;
   align-items: center;
   /* Top padding clears the fixed navbar; the bottom one leaves room for the
-     scroll indicator. */
+     scroll indicator. The hero keeps the raised surface: it is not part of the
+     content alternation (about starts on --color-background). */
   padding: var(--space-96) 0 var(--space-80);
-  background: var(--color-background);
+  background: var(--color-surface);
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -1343,42 +1381,57 @@ body.nav-open {
 
 /* Section Styles */
 section {
-  padding: 6rem 0;
+  /* Fluid vertical rhythm: 64px on phones, 96px on wide screens. */
+  padding: clamp(4rem, 5vw + 1.5rem, 6rem) 0;
+  background: var(--color-background);
 }
 
-section:nth-child(odd) {
+/* The alternating surfaces are explicit classes, not `:nth-child`. The old
+   `section:nth-child(odd)` counted <body>'s children, so wrapping the sections
+   in <main> or prepending/removing #preloader (which happens on every load)
+   silently flipped the pattern. .section--alt is the raised surface, and the
+   sections that carry it reproduce the parity the old rule produced. */
+.section--alt {
   background: var(--color-surface);
 }
 
 .section-header {
   text-align: center;
-  margin-bottom: 4rem;
+  /* One measure for every header, so titles wrap the same way everywhere. */
+  max-width: 720px;
+  margin: 0 auto clamp(2.5rem, 3vw + 1.5rem, 4rem);
 }
 
 .section-title {
-  font-size: var(--font-size-4xl);
+  font-size: clamp(1.75rem, 1.35rem + 1.5vw, 2.5rem);
   font-weight: var(--font-weight-bold);
-  margin-bottom: var(--space-16);
+  line-height: 1.15;
+  letter-spacing: var(--letter-spacing-tight);
+  /* Room for the underline, which hangs below the text box. */
+  margin-bottom: var(--space-24);
   position: relative;
+  text-wrap: balance;
 }
 
 .section-title::after {
   content: "";
   position: absolute;
-  bottom: -8px;
+  bottom: -12px;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
+  width: 48px;
+  height: 3px;
   background: var(--portfolio-gradient);
   border-radius: var(--radius-full);
 }
 
 .section-subtitle {
   font-size: var(--font-size-lg);
+  line-height: 1.6;
   color: var(--color-text-secondary);
-  max-width: 600px;
+  max-width: 620px;
   margin: 0 auto;
+  text-wrap: pretty;
 }
 
 /* About Section */
@@ -1860,8 +1913,11 @@ section:nth-child(odd) {
   font-size: var(--font-size-lg);
 }
 
-.contact-details h4 {
+/* Contact items are h3: the section title is h2 and skipping to h4 failed
+   Lighthouse's heading-order audit. The size is pinned to the old h4 one. */
+.contact-details h3 {
   margin-bottom: var(--space-4);
+  font-size: var(--font-size-xl);
   color: var(--portfolio-primary);
 }
 
@@ -2220,10 +2276,6 @@ section:nth-child(odd) {
   .stat-number {
     margin-bottom: 0;
     font-size: var(--font-size-2xl);
-  }
-
-  .section-title {
-    font-size: var(--font-size-3xl);
   }
 
   .contact-form {

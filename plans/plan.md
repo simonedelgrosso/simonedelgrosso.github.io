@@ -2,7 +2,7 @@
 
 Status: **In progress.** Created 2026-10-24. Revised 2026-10-24
 after the user answered the open questions.
-Completed: **T0, T1, T2, T3, T4**. Next: **T5**.
+Completed: **T0, T1, T2, T3, T4, T5**. Next: **T6**.
 Previous plan: none (`plans/` did not exist before this file).
 
 ## 0. Progress log
@@ -14,6 +14,7 @@ Previous plan: none (`plans/` did not exist before this file).
 | T2 – Theme toggle | **Done** | `togglecheck.mjs` **28/28** (OS following, persistence, no-flash, ARIA correct before parsing, no init event, live OS follow, storage blocked, Space key, IT label); strict overflow audit clean at 320/375/768/1024/1440 for EN+IT in both themes; contrast 0 failures; Lighthouse a11y **95** EN+IT; both Jekyll builds clean. Two independent review rounds: 2 P3 + 2 minor in round 2, all fixed and re-verified. See the T2 completion log. |
 | T3 – Navbar and language switcher | **Done** | `navprobe.mjs` at 320/375/1440 × EN/IT (menu offset == navbar height, `aria-expanded` round-trip, scroll lock, Escape + focus return, closed menu out of the tab order); `navcheck.mjs` (Enter/Space/Escape with real key events, 44px hit-area hit tests, scrolled glass + hairline, per-theme computed styles); `navflow.mjs` (real mouse clicks: open → link click → closed + scrolled + focus returned; open → resize past the breakpoint → unlocked); `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 0 failures / 311 elements × 4 combinations; Lighthouse a11y **93** EN+IT with no new failures (the three remaining are the pre-existing `heading-order`, `landmark-one-main`, `.project-link` `link-name`; `label-content-name-mismatch` was **removed**); both Jekyll builds clean. See the T3 completion log. Six P3s from independent reviews (dead reduced-motion override; focus lost to `<body>` when the drawer closed by widening; no focus containment while the drawer is open; stale focus tracking; over-broad `inert` cleanup; anchor measured while the drawer's scroll lock was still applied, plus the navbar's scrollbar compensation snapping) fixed and re-verified. |
 | T4 – Hero section | **Done** | `heroprobe.mjs` 16 runs (1440×900 / 768×900 / 375×800 / 320×700 × EN/IT × light/dark): hero 880 at 1440/768, indicator hidden ≤768 and never overlapping the stats, ring `8px` + image 284/240/216, typing advances, counters reach 3/1/3 (after a scroll at 375/320, where the last cards start below the fold), particles 1516–3594 px and recolour on toggle in every run, 0 console/page errors; `overflow.mjs` clean at 320/375 × EN/IT; `contrast.mjs` 311 scanned / 0 failures × 4; `navprobe.mjs` + `navcheck.mjs` unchanged after moving the navbar's `backdrop-filter` to the scrolled/drawer states (documented deviation); Lighthouse `/en/` a11y **93**, CLS **0.002**. See the T4 completion log. |
+| T5 – Section shell | **Done** | `shellprobe.mjs` 16 runs (1440/768/375/320 × EN/IT × light/dark): exactly one `<main>` (child of `<body>`), **0** heading-order skips, the section backgrounds equal the intended base/alt pair **both while `#preloader` is present and after it is removed**, no `.section-title` overflow (all seven fit on one line at 375/320 in both languages), contact `h3` at 19px, 0 console/page errors; real-key-event skip-link flow (one Tab → visible at 8/8, Enter → `#main` focused, `scrollY` 0); `shellnav.mjs` section `offsetTop == rectTop` with `offsetParent = BODY` and the active nav link correct after the wrap; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; `navprobe.mjs` + `navcheck.mjs` unchanged (focus return, 44px hit areas, scrolled glass) with the skip link now the first tab stop; Lighthouse a11y **0.96** EN+IT — `landmark-one-main`, `heading-order` and `skip-link` now pass, only the pre-existing `.project-link` `link-name` (T9) remains; Jekyll 4.4.1 and 3.10.0 builds clean. See the T5 completion log. |
 
 Verification tooling used (temporary, outside the repo, in
 `%LOCALAPPDATA%\Temp\opencode\`): `shot.mjs` (headless Chrome via CDP,
@@ -37,9 +38,16 @@ screenshots with animations frozen), `bleedprofile.mjs` + `navbarbleed.mjs`
 scrolled and drawer-open states), `barcheck.mjs` + `overbisect.mjs` (what
 overflows at 320px), and `static.mjs` (a tiny static server used to A/B the
 working tree against a HEAD copy of `_site`).
+T5 added: `shellprobe.mjs` (16-run landmark/heading-order/alternation sweep, with
+the section backgrounds read **before and after** the preloader is removed, plus
+a real-key-event skip-link flow), `shellrhythm.mjs` (header margins, title and
+subtitle metrics, underline geometry, per-section padding and background),
+`shellnav.mjs` (section `offsetTop`/`offsetParent` and nav-link highlighting
+after the `<main>` wrap) and `shellshots.mjs` (section-header screenshots,
+including the focused skip link).
 Screenshots: `baseline\` (before), `t1-dark\`, `t1-light\`, `t1-final\`,
 `t1-review*\`, `t1-320*`, `t2-light\`, `t2-nav\`, `navshots\`,
-`navstates*\`, `hero-1440-*`, `hero2-*`, `hero3-*`.
+`navstates*\`, `hero-1440-*`, `hero2-*`, `hero3-*`, `t5shots\`.
 
 ## 1. Objective
 
@@ -1237,8 +1245,8 @@ recorded as a T4 deviation rather than a silent change.
   HEAD itself is still self-consistent (it references `photo.jpg`, which is
   committed), so nothing is broken until that partial commit is made.
 
-### T5 - Section shell (headers, spacing, alternating backgrounds)
-- [ ] **Objective:** Give all sections the same header style (refined title,
+### T5 - Section shell (headers, spacing, alternating backgrounds) ✅ Done (2026-10-27)
+- [x] **Objective:** Give all sections the same header style (refined title,
   short accent gradient underline, muted subtitle), the same vertical rhythm,
   and subtly alternating surfaces.
 - **Files:** `style.css` section styles at around lines 1163-1202 and
@@ -1262,6 +1270,125 @@ recorded as a T4 deviation rather than a silent change.
   `document.querySelector('main')` is non-null on both pages.
 - **Verify:** manual scroll-through, plus
   `document.querySelectorAll('main').length === 1` on `/en/` and `/it/`.
+
+**Completion log (T5)**
+
+*What changed.* `_layouts/default.html`:
+- `<a class="skip-link" href="#main">` is the first focusable element (label from
+  `_data/navigation.yml`: "Skip to content" / "Vai al contenuto");
+- the eight content includes are wrapped in `<main id="main" tabindex="-1">`; the
+  footer stays outside it. `tabindex="-1"` gives the fragment a real focus
+  target, so the Tab after the skip link continues inside the content.
+
+`assets/css/style.css`:
+- `.skip-link`: `position: fixed`, `8px/8px`, `z-index: 1200` (above the navbar's
+  1000 and the progress bar's 1100), accent background + `--color-on-accent`
+  text, parked with `transform: translateY(calc(-100% - 16px))` (a transform, so
+  it can never widen the document) and revealed on `:focus`/`:hover`. No
+  transition, so there is nothing for T11's reduced-motion sweep to disable. The
+  global focus ring is accent-on-accent here, so the link gets a
+  `--color-text` ring instead. `#main:focus { outline: none }` only suppresses
+  the ring on the programmatic target.
+- `section`: `padding: clamp(4rem, 5vw + 1.5rem, 6rem) 0` (96px at 1440, 64px
+  ≤768) and an explicit `background: var(--color-background)`.
+- `section:nth-child(odd)` → `.section--alt` (`--color-surface`), applied in the
+  includes to `education`, `experience` and `projects`. This is the parity the
+  old rule produced, but it no longer depends on `<body>`'s child index, so the
+  `<main>` wrap and the runtime `#preloader` prepend/remove cannot flip it.
+- `.section-header`: `max-width: 720px`, `margin: 0 auto clamp(2.5rem, 3vw +
+  1.5rem, 4rem)` (64px at 1440, 40px ≤375).
+- `.section-title`: `clamp(1.75rem, 1.35rem + 1.5vw, 2.5rem)` (40px at 1440, 28px
+  at 375/320 — the old fixed 32px plus the 26px ≤480 override are gone),
+  `line-height: 1.15`, tight tracking, `text-wrap: balance`, 24px below.
+- `.section-title::after`: 48×3px (was 80×4px) at `bottom: -12px`, still the
+  `--portfolio-gradient`.
+- `.section-subtitle`: 17px, `line-height: 1.6`, secondary color, `max-width:
+  620px`, `text-wrap: pretty`.
+- `.hero`: keeps the raised surface explicitly (`--color-surface`) instead of
+  relying on the old `nth-child(odd)` override; about starts on
+  `--color-background`, so the hero → about → education sequence still alternates.
+- `.contact-details h4` → `h3` with `font-size: var(--font-size-xl)` (the old h4
+  size), because `_includes/contact_section.html` now uses `<h3>`.
+
+`_includes/about_section.html`: the subtitle is conditional. The English about
+entry has no `subtitle` key, so the old markup rendered an empty `<p>` and the
+header height differed per language.
+
+`_includes/navigation_section.html`: the comment that justified keeping the
+theme-toggle snippet inside `<nav>` ("it would shift `section:nth-child(odd)`")
+is no longer true and was rewritten; the snippet stays where it is.
+
+*Measured* (`shellprobe.mjs`, 16 runs = 1440/768/375/320 × EN/IT × light/dark):
+- exactly **1** `<main>`, parent `BODY`, `tabindex="-1"`, on both pages;
+- section backgrounds, read as soon as `#preloader` exists (16/16 runs) **and**
+  again at 3s (removed):
+  `home/education/experience/projects` = surface, `about/certifications/skills/
+  contact` = background, in both themes, in all 16 runs — i.e. the alternation is
+  identical before and after the preloader is prepended and removed;
+- 23 headings, **0** skipped levels in every run (contact `h4` → `h3`);
+- `.section-title` `scrollWidth == clientWidth` for all seven sections in both
+  languages at 375 and 320 (IT "Certificazioni" included), all one line;
+- contact `h3` computed 19px;
+- 0 console errors, 0 page errors.
+
+`shellrhythm.mjs` (1440 light EN/IT, 375 light/dark + 320):
+- title 40px / line-height 46px / `margin-bottom` 24px at 1440, 28px / 32.2px at
+  375–320; underline 48×3px at `bottom: -12px`, `border-radius: 9999px`;
+- subtitle 17px / 27.2px, `#475569` light and `#a8b0c0` dark, `max-width: 620px`;
+- header `margin-bottom` 64px at 1440 and 40px at 375/320;
+- content sections `96px/96px` at 1440 and `64px/64px` at 375/320; the hero keeps
+  `96px/80px` and `80px/80px` respectively (its own padding);
+- skip link at rest: `top: -54`, `bottom: -8` (fully above the viewport),
+  `z-index: 1200`.
+
+`shellnav.mjs`: after the wrap every section reports `offsetTop == rectTop` and
+`offsetParent = BODY` (so `updateActiveNavLink()`'s `offsetTop` maths is
+unaffected); clicking About/Education/Experience/Contact lands the section at
+80px and highlights the right nav link.
+
+*Also verified:* `overflow.mjs` clean at 320/375 × EN/IT × light/dark
+(`docW == innerW`); `contrast.mjs` **0 failures** over 312 (EN) / 313 (IT)
+elements × light/dark; `navprobe.mjs` (320/375/1440 × EN/IT) still reports
+`offsetMatchesNavbar`, the scroll lock, `aria-expanded` and focus return to the
+hamburger; `navcheck.mjs` (375 EN light) still passes the Enter/Space/Escape
+round-trips, the 44px hit tests and the scrolled glass, with `skip-link` now the
+first entry in the tab order (then the toggle, the two language links, the
+hamburger, `contact-me`, the filters — the closed drawer links stay out);
+Lighthouse accessibility **0.96** on `/en/` and `/it/` (was 0.93):
+`landmark-one-main` **1**, `heading-order` **1**, the new `skip-link` audit **1**,
+and the only failing audit is the pre-existing `.project-link` `link-name` (T9);
+all three inline scripts in both pages still parse; Jekyll 4.4.1 and
+`jekyll _3.10.0_ build` both succeed, both outputs contain the skip link and
+`<main>`, `_site/plans` is absent and `apps/piano/` is intact.
+
+*Decisions / deviations (all inside the T5 brief).*
+- **Explicit classes instead of a parity fix.** The wrap alone would have
+  preserved the old parity (sections move from `<body>` child 3…10 to `<main>`
+  child 1…8, an even offset), but the runtime preloader would still have flipped
+  it on every load. `.section--alt` removes the coupling entirely.
+- **The hero was already rendering on `--color-surface`** because
+  `section:nth-child(odd)` out-specified `.hero`. Dropping `nth-child` would
+  silently have moved it to `--color-background`, so `.hero` now declares the
+  surface itself and the rendering is unchanged.
+- **Contact `h4` → `h3`** is the fix for `heading-order`; the plan assigned it
+  to T5 (line "Confirmed by Lighthouse: the contact items use `<h4>`"). The CSS
+  pins the old 19px size, so only the semantics change.
+- **Mobile section padding 96px → 64px** is part of the "same vertical rhythm"
+  brief: the old value left ~96px of dead space on a 320px screen.
+- The ≤480 `.section-title` override (26px) was removed because the new clamp
+  already handles small widths; keeping both would have made the clamp dead code
+  at exactly the widths where it matters.
+
+*Known limits (not T5 regressions).*
+- **The English About header has no subtitle.** `_data/about.yml` only defines
+  `it.subtitle`; the empty `<p>` is now guarded, but the text itself is a content
+  gap, not a shell gap. Adding the English sentence is a content decision, so it
+  is left for T6/T13 rather than invented here.
+- The 11px horizontal overflow at 320px with a **classic** scrollbar is unchanged
+  (layout viewport 305, `documentElement.scrollWidth` 316, the same 316 as
+  recorded in T4); `overflow.mjs` uses overlay scrollbars and stays clean.
+- `.project-link` still fails `link-name` (T9), and the skip link now precedes
+  the theme toggle in the tab order by design.
 
 ### T6 – About and Education (timeline)
 - [ ] **Objective:**
@@ -1441,7 +1568,9 @@ recorded as a T4 deviation rather than a silent change.
   - `jekyll build` exits 0. The parity build with `jekyll _3.10.0_` also
     exits 0.
   - The structure check returns all `True`.
-  - The only data change is the two new `theme_toggle` keys.
+  - The only data changes are additive `_data/navigation.yml` keys
+    (`theme_toggle`, `scroll_top` from T2/T3 and `skip_to_content` from T5);
+    no content data (`hero`, `about`, `projects`, …) changed.
   - `apps/piano/` is unchanged.
 - **Verify:**
   ```powershell
@@ -1450,7 +1579,7 @@ recorded as a T4 deviation rather than a silent change.
   Test-Path _site/en/index.html, _site/it/index.html, _site/assets/css/style.css, _site/sitemap.xml, _site/feed.xml, _site/apps/piano/index.html
   git diff --stat
   git diff --quiet -- apps/piano; $LASTEXITCODE        # expect 0
-  git diff -- _data                                     # expect only theme_toggle additions
+  git diff -- _data                                     # expect only additive navigation.yml keys
   ```
 
 ## 9. Risks, edge cases and failure modes
@@ -1517,11 +1646,16 @@ recorded as a T4 deviation rather than a silent change.
   (`aria-label` + `aria-hidden` icons). The remaining `link-name` failure is
   `.project-link` (T9).
 - Lighthouse `heading-order`: a heading level is skipped somewhere in the
-  page (T5). Confirmed by Lighthouse: the contact items use `<h4>`.
+  page (**fixed in T5**: the contact items were `<h4>` under an `<h2>` and are now
+  `<h3>`, with the old 19px size pinned in CSS).
 - **No `<main>` landmark** (found in the second review round): sections are
   direct children of `<body>`, so axe's `landmark-one-main` fails. Lighthouse
   reports it only intermittently (1 of 6 runs), so it slipped past T1/T2.
-  Assigned to **T5**, together with the `section:nth-child(odd)` caution.
+  **Fixed in T5**: the eight content sections are wrapped in
+  `<main id="main" tabindex="-1">` with a localized skip link, and the
+  alternating backgrounds moved from `section:nth-child(odd)` to explicit
+  `.section--alt` classes so neither the wrap nor the runtime `#preloader` can
+  flip them.
 - `100vh` on `.hero` produces a large blank band under the fixed navbar on
   short/mobile viewports (**fixed in T4**: `min(100vh, 880px)` +
   `min(100svh, 880px)` with `padding: 96px 0 80px`).

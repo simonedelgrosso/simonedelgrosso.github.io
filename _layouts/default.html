@@ -43,15 +43,23 @@
     </head>
     <body>
         <div id="scroll-progress" aria-hidden="true"></div>
+        {%- comment -%}
+            First focusable element: keyboard users can jump the eight nav links.
+            tabindex="-1" on <main> gives the fragment a real focus target, so the
+            next Tab continues inside the content instead of restarting at the top.
+        {%- endcomment -%}
+        <a class="skip-link" href="#main">{{ site.data.navigation[page.lang].skip_to_content }}</a>
         {% include navigation_section.html %}
-        {% include hero_section.html %}
-        {% include about_section.html %}
-        {% include education_section.html %}
-        {% include certifications_section.html %}
-        {% include experience_section.html %}
-        {% include skills_section.html %}
-        {% include projects_section.html %}
-        {% include contact_section.html %}
+        <main id="main" tabindex="-1">
+            {% include hero_section.html %}
+            {% include about_section.html %}
+            {% include education_section.html %}
+            {% include certifications_section.html %}
+            {% include experience_section.html %}
+            {% include skills_section.html %}
+            {% include projects_section.html %}
+            {% include contact_section.html %}
+        </main>
         {% include footer_section.html %}
         <script src="/assets/js/script.js"></script>
     </body>

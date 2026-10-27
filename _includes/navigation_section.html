@@ -44,8 +44,10 @@
         // the button is parsed, so assistive tech never announces the wrong state
         // between parsing and DOMContentLoaded. script.js keeps it in sync afterwards.
         //
-        // Kept INSIDE <nav> on purpose: as a direct child of <body> it would shift
-        // section:nth-child(odd) and flip the alternating section backgrounds.
+        // Kept INSIDE <nav> so the snippet stays next to the markup it syncs.
+        // (It used to be load-bearing for the alternating section backgrounds,
+        // which counted <body>'s children; T5 replaced that with explicit
+        // .section--alt classes, so its position no longer affects them.)
         (function () {
             var toggle = document.getElementById('theme-toggle');
             if (!toggle) return;

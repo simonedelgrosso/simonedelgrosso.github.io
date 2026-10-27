@@ -5,7 +5,11 @@
     <div class="container">
         <div class="section-header">
             <h2 class="section-title">{{ about.title }}</h2>
-            <p class="section-subtitle">{{ about.subtitle }}</p>
+            {%- comment -%}
+                The English about entry has no subtitle; without this guard it
+                renders an empty <p> and the header height differs per language.
+            {%- endcomment -%}
+            {% if about.subtitle %}<p class="section-subtitle">{{ about.subtitle }}</p>{% endif %}
         </div>
         <div class="about-content">
             <div class="about-text">

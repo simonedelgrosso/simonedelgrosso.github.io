@@ -9,6 +9,7 @@ it:
   contact: "Contatti"
   theme_toggle: "Attiva/disattiva tema scuro"
   scroll_top: "Torna all'inizio"
+  skip_to_content: "Vai al contenuto"
   menu: "Menu"
   lang_selector: "Selettore lingua"
 en:
@@ -22,5 +23,6 @@ en:
   contact: "Contact"
   theme_toggle: "Toggle dark mode"
   scroll_top: "Back to top"
+  skip_to_content: "Skip to content"
   menu: "Menu"
   lang_selector: "Language selector"
