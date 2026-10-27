@@ -2,7 +2,7 @@
 
 Status: **In progress.** Created 2026-10-24. Revised 2026-10-24
 after the user answered the open questions.
-Completed: **T0, T1, T2, T3**. Next: **T4**.
+Completed: **T0, T1, T2, T3, T4**. Next: **T5**.
 Previous plan: none (`plans/` did not exist before this file).
 
 ## 0. Progress log
@@ -13,6 +13,7 @@ Previous plan: none (`plans/` did not exist before this file).
 | T1 – Design tokens, fonts, theme token sets | **Done** | Builds (Jekyll 4.4.1 + 3.10.0), screenshots in both themes at 320/375/768/1024/1440 for EN/IT, computed-style checks, theme-resolution matrix, reveal-forced contrast audit (0 failures, 4 combinations), Lighthouse a11y 0.89. |
 | T2 – Theme toggle | **Done** | `togglecheck.mjs` **28/28** (OS following, persistence, no-flash, ARIA correct before parsing, no init event, live OS follow, storage blocked, Space key, IT label); strict overflow audit clean at 320/375/768/1024/1440 for EN+IT in both themes; contrast 0 failures; Lighthouse a11y **95** EN+IT; both Jekyll builds clean. Two independent review rounds: 2 P3 + 2 minor in round 2, all fixed and re-verified. See the T2 completion log. |
 | T3 – Navbar and language switcher | **Done** | `navprobe.mjs` at 320/375/1440 × EN/IT (menu offset == navbar height, `aria-expanded` round-trip, scroll lock, Escape + focus return, closed menu out of the tab order); `navcheck.mjs` (Enter/Space/Escape with real key events, 44px hit-area hit tests, scrolled glass + hairline, per-theme computed styles); `navflow.mjs` (real mouse clicks: open → link click → closed + scrolled + focus returned; open → resize past the breakpoint → unlocked); `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 0 failures / 311 elements × 4 combinations; Lighthouse a11y **93** EN+IT with no new failures (the three remaining are the pre-existing `heading-order`, `landmark-one-main`, `.project-link` `link-name`; `label-content-name-mismatch` was **removed**); both Jekyll builds clean. See the T3 completion log. Six P3s from independent reviews (dead reduced-motion override; focus lost to `<body>` when the drawer closed by widening; no focus containment while the drawer is open; stale focus tracking; over-broad `inert` cleanup; anchor measured while the drawer's scroll lock was still applied, plus the navbar's scrollbar compensation snapping) fixed and re-verified. |
+| T4 – Hero section | **Done** | `heroprobe.mjs` 16 runs (1440×900 / 768×900 / 375×800 / 320×700 × EN/IT × light/dark): hero 880 at 1440/768, indicator hidden ≤768 and never overlapping the stats, ring `8px` + image 284/240/216, typing advances, counters reach 3/1/3 (after a scroll at 375/320, where the last cards start below the fold), particles 1516–3594 px and recolour on toggle in every run, 0 console/page errors; `overflow.mjs` clean at 320/375 × EN/IT; `contrast.mjs` 311 scanned / 0 failures × 4; `navprobe.mjs` + `navcheck.mjs` unchanged after moving the navbar's `backdrop-filter` to the scrolled/drawer states (documented deviation); Lighthouse `/en/` a11y **93**, CLS **0.002**. See the T4 completion log. |
 
 Verification tooling used (temporary, outside the repo, in
 `%LOCALAPPDATA%\Temp\opencode\`): `shot.mjs` (headless Chrome via CDP,
@@ -27,9 +28,18 @@ keyboard activation, tab order), `navflow.mjs` (real mouse click flow and
 breakpoint reset), `navstates.mjs` (scrolled / menu-open screenshots), and
 the throwaway `bisect.mjs`/`chain.mjs`/`logofit.mjs` probes used to isolate
 the 320px regressions.
+T4 added: `heroprobe.mjs` (hero geometry, counters, typing, ring, stat cards and
+canvas pixel sampling, plus a theme-toggle recolour check), `heromatrix.mjs`
+(16-run viewport × language × scheme sweep), `shot.mjs` (viewport/full-page
+screenshots with animations frozen), `bleedprofile.mjs` + `navbarbleed.mjs`
+(vertical colour profile across the navbar edge with/without
+`backdrop-filter`), `navblur.mjs` (computed `backdrop-filter` in the top,
+scrolled and drawer-open states), `barcheck.mjs` + `overbisect.mjs` (what
+overflows at 320px), and `static.mjs` (a tiny static server used to A/B the
+working tree against a HEAD copy of `_site`).
 Screenshots: `baseline\` (before), `t1-dark\`, `t1-light\`, `t1-final\`,
 `t1-review*\`, `t1-320*`, `t2-light\`, `t2-nav\`, `navshots\`,
-`navstates*\`.
+`navstates*\`, `hero-1440-*`, `hero2-*`, `hero3-*`.
 
 ## 1. Objective
 
@@ -1083,8 +1093,8 @@ once the CSS was final:
   `arguments` unchanged. Both lessons belong in the T13/T14 tooling notes,
   since the probes are currently repo-external.
 
-### T4 – Hero section
-- [ ] **Objective:** Refresh the hero:
+### T4 – Hero section ✅ Done (2026-10-27)
+- [x] **Objective:** Refresh the hero:
   - fluid headline with gradient accent text
   - refined typing line and cursor
   - profile image with a soft gradient ring
@@ -1107,6 +1117,125 @@ once the CSS was final:
   - The layout stacks cleanly at 768px and below.
   - The hero fits within 1440×900.
 - **Verify:** manual check; Lighthouse for CLS, optional.
+
+**Completion log (T4)**
+
+*What changed.* `assets/css/style.css`:
+- `.hero`: `min-height: min(100vh, 880px)` + `min(100svh, 880px)` (capped, so a
+  1080p screen does not get a 1080px hero), `padding: 96px 0 80px` (the old
+  `32px` did not clear the 69px navbar), `isolation: isolate` so the glows stay
+  behind the content.
+- `.hero::before`: two soft radial glows (`--color-bg-1` top-left,
+  `--portfolio-primary-soft` top-right) replacing the flat `opacity: 0.1` tint.
+- `.hero-content`: `minmax(0, 1.7fr) minmax(0, 1fr)` and
+  `gap: clamp(32px, 5vw, 64px)`.
+- `.hero-title`: `clamp(2.25rem, 4.8vw, 3.75rem)` (60px at 1440), `line-height
+  1.08`, `letter-spacing: -0.025em`, `text-wrap: balance`.
+- `.typing-container`: flex row, `min-height: 1.5em`, `clamp(1.25rem, 2.1vw,
+  1.75rem)`; `.typing-text { font-size: inherit }`. `.cursor` is now a 2px
+  `currentColor` bar at `1.1em` (was a fixed 18px `border-left` next to 26px
+  text), blinking with `steps(1, end)`.
+- `.hero-subtitle`: `clamp(1rem, 1.25vw, 1.1875rem)`, `line-height: 1.65`,
+  `max-width: 52ch`.
+- `.hero-buttons .btn`: pill (`--radius-full`), `12px 24px` padding; the primary
+  button gets a tinted drop shadow and a 1px lift on hover.
+- `.hero-image`: the box is the ring — 8px padding, `--radius-full`,
+  `linear-gradient(135deg, indigo-400, sky-400)`, `--shadow-lg`, float moved
+  here from the image. `.profile-image` is 284px inside it (300px total, as
+  before) with no own shadow.
+- `.hero-stats`: `repeat(3, minmax(0, 1fr))`, `max-width: 880px`, 48px above.
+  `.stat`: `--color-surface`, `20px 24px`, `--radius-xl`, `--shadow-xs`, hover
+  lift. `.stat-number`: display font at 700, `clamp(2rem, 3vw, 2.5rem)`,
+  `tabular-nums`.
+
+`assets/js/script.js` (`createParticles`): density
+`min(48, max(24, area / 26000))` (was `min(70, max(35, area / 18000))`), radius
+`1.6–2.8` (was `2–3.5`), dot alpha `0.55` (was `0.7`), line alpha `0.16` (was
+`0.22`), hovered line `0.85` (was `0.95`). The theme-token reading and the
+`themechange` re-read were already in place from T2 and were not touched.
+
+*Responsive.* `≤768px`: removed the `70px` `.hero-container` top padding (the
+hero's own padding clears the navbar now), `padding-top: 80px` on `.hero`,
+title `clamp(2.25rem, 6vw, 3rem)`, centered subtitle / typing line / buttons,
+`.profile-image` 240px, stats stay 3 columns with `16px 12px` cards, and
+`.scroll-indicator` is `display: none`. `≤480px`: `.hero-container` padding
+`0 16px`, title `2rem` (keeps the nowrap name inside 320px), typing 19px,
+`.profile-image` 216px, and each stat becomes a compact row
+(`flex`, number left / label right) because three 96px cards cannot hold
+"Certifications".
+
+*Not touched:* `_includes/hero_section.html`. Its only change in the working
+tree is the pre-existing, uncommitted `photo.jpg` → `photo.png` swap made
+outside this task; it was left exactly as found, and every check above ran
+against it.
+
+*Measured* (`heroprobe.mjs`, 16 runs = 1440×900 / 768×900 / 375×800 / 320×700 ×
+EN/IT × light/dark):
+- hero height 880 at 1440 and 768 (fits the 900 viewport), 930 at 375/320 and
+  904 for IT (content-driven, expected on mobile);
+- 1440: content 216–516, stats 564–680, indicator 825–856 → no overlap; title
+  60px; typing 28px with a 31px cursor (1.1em);
+- 768: content 99–633, stats 681–781, indicator **hidden** (`0×0`), title
+  46.08px, image 240+16;
+- 375/320: content 80–634, stats 682–850 (168px for three rows instead of the
+  443px the old single-column stack took), image 216+16, title 32px;
+- ring: `8px` padding + 284/240/216px image, gradient applied, `box-shadow` on
+  the box, `none` on the image, in every run;
+- typing advances (`typingChanges: true`) and counters reach `3/1/3` at 1440 and
+  768; at 375/320 the second and third cards sit below the fold, so the
+  `rootMargin: -50px` observer leaves them at `0` until a scroll — after
+  `scrollTo(stats - 200)` they reach `3/1/3` as well (verified, by design);
+- particles: 1516–3594 non-transparent px per run (was 9333 at 1440 before),
+  average colour `73,63,229` light ↔ `127,138,249` dark, and every run reports
+  `particleColorChanged: true` after a theme toggle with no reload;
+- 0 console errors, 0 page errors in all 16 runs;
+- extra sizes 1100×900, 1920×1080, 900×800: hero 880/880/800, indicator clear of
+  the stats in all three.
+
+*Also verified:* `overflow.mjs` clean at 320/375 × EN/IT; `contrast.mjs`
+`scanned: 311`, **0 failures** × EN/IT × light/dark; `navprobe.mjs`
+(320/375/1440 × EN/IT) and `navcheck.mjs` (375 dark) unchanged after the navbar
+edit below; Lighthouse `/en/`: a11y **93** with only `heading-order`,
+`link-name`, `landmark-one-main` (all pre-existing, T5/T9), CLS **0.002**.
+
+*Deviation (documented, small).* The navbar carried
+`backdrop-filter: blur(16px) saturate(180%)` even while it was transparent. Over
+the new flat-ish hero gradient that blurs nothing, but Chromium samples past the
+top edge of the viewport and composites a lighter strip along it — measured in
+dark mode at x=700: blue channel **43 at y=65** (just above the navbar's bottom
+edge) vs **35 at y=72** (just below), and 54 vs 42 at x=60. With the filter
+moved to `.navbar.scrolled` / `body.nav-open .navbar` the two profiles become
+identical (`bleedprofile.mjs`), and the scrolled/drawer states keep the blur
+(`navblur.mjs`: `none` at top, `blur(16px) saturate(1.8)` when scrolled or with
+the drawer open, `none` again after scrolling back / closing). This is T3 code,
+but the artifact only became visible with the new hero, so it is fixed here and
+recorded as a T4 deviation rather than a silent change.
+
+*Known limits (not T4 regressions).*
+- The hero is capped at 880px, so on a 900px+ viewport the next section shows
+  20px (at 900) up to 200px (at 1080). That is the intended "there is more"
+  affordance, not a bug.
+- `stat-number` values are rewritten at runtime (3/1/3 from the years-since-2023
+  calculation and the collection sizes), so the literal `2/3/3` in
+  `_includes/hero_section.html` is not what the page shows.
+- `#scroll-progress` (fixed, 3px, top) and the scroll-to-top button are still
+  T11's to restyle; the button overlaps the stats when the hero is taller than
+  the viewport (visible at 375 in the screenshots).
+- Reduced motion still runs the particles and the typing effect; disabling them
+  is T11's scope and was deliberately not started here. T11 should sweep the
+  **whole** hero, not just those two: the 7s infinite `.hero-image` `float`
+  (moved from the image to the ring in T4), the `.cursor` `blink`, the
+  `.scroll-indicator` `bounce`, the `.stat:hover` lift and the
+  `.hero-buttons .btn--primary` hover transition all keep animating under
+  `prefers-reduced-motion: reduce` (the file's only reduce blocks are the
+  navbar-scoped one and the drawer one at the end of the file).
+- **Commit hygiene for the photo swap (reviewer P2).** `_includes/hero_section.html`
+  points at `../assets/imgs/photo.png`, which is still **untracked**, while
+  `assets/imgs/photo.jpg` is deleted. Those three paths must land in the same
+  commit; a `git commit -a` / `git add -u` would commit the include and the
+  deletion without the PNG and deploy a 404 on both `/en/` and `/it/`.
+  HEAD itself is still self-consistent (it references `photo.jpg`, which is
+  committed), so nothing is broken until that partial commit is made.
 
 ### T5 - Section shell (headers, spacing, alternating backgrounds)
 - [ ] **Objective:** Give all sections the same header style (refined title,
@@ -1394,9 +1523,26 @@ once the CSS was final:
   reports it only intermittently (1 of 6 runs), so it slipped past T1/T2.
   Assigned to **T5**, together with the `section:nth-child(odd)` caution.
 - `100vh` on `.hero` produces a large blank band under the fixed navbar on
-  short/mobile viewports (T4).
+  short/mobile viewports (**fixed in T4**: `min(100vh, 880px)` +
+  `min(100svh, 880px)` with `padding: 96px 0 80px`).
 - `.skills-grid` uses `minmax(350px, 1fr)`, which overflows below 350px
   (T8).
+- **11px horizontal overflow at 320px, only with a classic scrollbar** (found
+  in T4, pre-existing and verified identical at HEAD): with a 15px scrollbar
+  the layout viewport is 305px and `documentElement.scrollWidth` is 316, so a
+  horizontal scrollbar appears. With overlay scrollbars (what `overflow.mjs`
+  emulates) the viewport is 320 and everything fits, which is why no earlier
+  run saw it. `overbisect.mjs` shows the 316 is unchanged with the navbar, the
+  hero or all other sections hidden, and no element's box is wider than 305 —
+  so it is not the hero. Needs its own investigation; `overflow.mjs` should
+  grow a classic-scrollbar mode (the round-5 T3 lesson again).
+- **Wordmark is ellipsized at 320px** (found in T4, pre-existing):
+  `.nav-logo` is 132px wide but its text needs 135px, so it renders
+  "Simone Del Gros…" (measured `scrollWidth` 135 vs `clientWidth` 132,
+  `text-overflow: ellipsis`, `white-space: nowrap`). T3's log claimed "no
+  truncation" from the element width alone; the ≤360px rule drops the `"> "`
+  decoration and uses 15px, which is not quite enough. A 14px step or a 2px
+  smaller gap would close it. Not fixed in T4 to keep the task scoped.
 - **Desktop nav dead zone between 769px and ~1100px** (found in T3,
   pre-existing): the hamburger only appears at ≤768px, so from 769px the
   eight inline links squeeze the wordmark and push `.nav-controls` out of the

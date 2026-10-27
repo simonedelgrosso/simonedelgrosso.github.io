@@ -763,8 +763,10 @@ select.form-control {
   right: 0;
   /* Transparent over the hero; the glass only appears once content scrolls under. */
   background: transparent;
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  backdrop-filter: blur(16px) saturate(180%);
+  /* No backdrop-filter here: over the flat hero gradient it blurs nothing, but
+     Chromium samples past the top edge of the viewport and composites a lighter
+     strip along it (measured in dark mode at x=700: blue channel 43 at y=65 vs
+     35 just below the navbar). The filter is enabled with the glass instead. */
   /* The hairline is always there (transparent) so it can fade in with the rest of
      the scrolled state instead of popping in. */
   border-bottom: 1px solid transparent;
@@ -781,6 +783,8 @@ select.form-control {
 
 .navbar.scrolled {
   background: var(--color-glass);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
   border-bottom-color: var(--color-border-subtle);
   box-shadow: var(--shadow-sm);
 }
@@ -790,6 +794,8 @@ select.form-control {
    by script.js when the page scroll is locked, to keep the controls from jumping. */
 body.nav-open .navbar {
   background: var(--color-glass);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
   border-bottom-color: var(--color-border-subtle);
   padding-right: var(--scrollbar-width, 0px);
 }
@@ -1083,29 +1089,39 @@ body.nav-open {
 
 /* Hero Section */
 .hero {
-  min-height: 100vh;
+  /* Fill the viewport, but stop growing past 880px on tall screens. svh keeps
+     mobile browser chrome from cropping the content; the vh line is the
+     fallback for engines without svh. */
+  min-height: min(100vh, 880px);
+  min-height: min(100svh, 880px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: var(--space-32) 0;
+  /* Top padding clears the fixed navbar; the bottom one leaves room for the
+     scroll indicator. */
+  padding: var(--space-96) 0 var(--space-80);
   background: var(--color-background);
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 
+/* Two soft glows instead of a flat tint: indigo from the top-left, accent from
+   the top-right. The alphas live in the theme tokens, so both schemes get their
+   own intensity without a second rule. */
 .hero::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--color-bg-1);
-  opacity: 0.1;
+  inset: 0;
+  background:
+    radial-gradient(60% 55% at 18% 18%, var(--color-bg-1), transparent 72%),
+    radial-gradient(48% 48% at 84% 12%, var(--portfolio-primary-soft), transparent 72%);
+  pointer-events: none;
 }
 
 .hero-container {
+  width: 100%;
   max-width: var(--container-xl);
   margin: 0 auto;
   padding: 0 var(--space-24);
@@ -1115,10 +1131,10 @@ body.nav-open {
 
 .hero-content {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: var(--space-32);
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: clamp(var(--space-32), 5vw, var(--space-64));
   align-items: center;
-  margin-bottom: var(--space-32);
+  margin-bottom: var(--space-48);
 }
 
 .hero-text {
@@ -1126,10 +1142,14 @@ body.nav-open {
 }
 
 .hero-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2.25rem, 4.8vw, 3.75rem);
   font-weight: var(--font-weight-bold);
   margin-bottom: var(--space-16);
-  line-height: 1.2;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  /* Keeps the two lines of the greeting balanced instead of leaving a stray
+     word on its own line. */
+  text-wrap: balance;
 }
 
 .no-wrap {
@@ -1144,33 +1164,45 @@ body.nav-open {
 }
 
 .typing-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
   margin-bottom: var(--space-24);
-  min-height: 3rem;
+  /* One reserved line at the typing size, so the subtitle never jumps while
+     the text is typed and deleted. */
+  min-height: 1.5em;
+  font-size: clamp(1.25rem, 2.1vw, 1.75rem);
 }
 
 .typing-text {
-  font-size: var(--font-size-3xl);
+  font-size: inherit;
   color: var(--portfolio-primary);
   font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.01em;
 }
 
+/* A caret sized to the text (1.1em) instead of a fixed 18px bar, so it stays
+   proportional at every breakpoint. */
 .cursor {
   display: inline-block;
-  position: relative;
-  height: 18px;
-  border-left: 3px solid var(--color-text);
-  opacity: 1;
+  flex: none;
+  width: 2px;
+  height: 1.1em;
+  border-radius: var(--radius-full);
+  background: currentColor;
+  color: var(--portfolio-primary);
 }
 
 .cursor.blinking {
-  animation: blink 1s infinite;
+  animation: blink 1.1s steps(1, end) infinite;
 }
 
 .hero-subtitle {
-  font-size: var(--font-size-xl);
+  font-size: clamp(1rem, 1.25vw, 1.1875rem);
+  line-height: 1.65;
   color: var(--color-text-secondary);
   margin-bottom: var(--space-32);
-  max-width: 600px;
+  max-width: 52ch;
 }
 
 .hero-buttons {
@@ -1179,57 +1211,103 @@ body.nav-open {
   flex-wrap: wrap;
 }
 
+/* Pill-shaped and slightly lifted, so the primary action reads as the one
+   thing to click in the hero. */
+.hero-buttons .btn {
+  padding: var(--space-12) var(--space-24);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-md);
+}
+
+.hero-buttons .btn--primary {
+  box-shadow: 0 12px 28px -14px var(--portfolio-primary);
+  transition: transform var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+
+.hero-buttons .btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 34px -14px var(--portfolio-primary);
+}
+
+/* The box is the gradient ring; the photo sits inside it. 8px of padding plus
+   a 284px image keeps the whole thing at 300px. The ring uses the 400 steps in
+   both schemes: --portfolio-gradient's dark end (sky-700) reads as a heavy
+   outline against a light hero. */
 .hero-image {
   display: flex;
   justify-content: center;
   align-items: center;
+  justify-self: center;
+  padding: 8px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-indigo-400) 0%, var(--color-sky-400) 100%);
+  box-shadow: var(--shadow-lg);
+  animation: float 7s ease-in-out infinite;
 }
 
 .profile-image {
-  width: 300px;
-  height: 300px;
+  width: 284px;
+  height: 284px;
   border-radius: 50%;
-  background: var(--portfolio-accent);
-  animation: float 3s ease-in-out infinite;
+  background: var(--color-surface);
   object-fit: cover;
-  box-shadow: 0 0 60px var(--portfolio-accent);
+  display: block;
 }
 
 .hero-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-32);
-  margin-top: var(--space-32);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(var(--space-16), 2vw, var(--space-24));
+  /* Narrower than the text block: three wide cards would read as banners. */
+  max-width: 880px;
+  margin: var(--space-48) auto 0;
 }
 
 .stat {
   text-align: center;
-  padding: var(--space-24);
-  background: var(--color-surface-raised);
+  padding: var(--space-20) var(--space-24);
+  background: var(--color-surface);
   border-radius: var(--radius-xl);
   border: 1px solid var(--color-card-border);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--duration-normal) var(--ease-standard),
+    box-shadow var(--duration-normal) var(--ease-standard),
+    border-color var(--duration-normal) var(--ease-standard);
+}
+
+.stat:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border);
 }
 
 .stat-number {
   display: block;
-  font-size: var(--font-size-4xl);
-  /* Body font (Inter) is loaded up to 600; 700 would silently fall back. */
-  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-display);
+  font-size: clamp(2rem, 3vw, 2.5rem);
+  font-weight: var(--font-weight-bold);
+  /* Numbers stay aligned while they count up. */
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
   color: var(--portfolio-primary);
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-4);
 }
 
 .stat-label {
   color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
 }
 
 .scroll-indicator {
   position: absolute;
-  bottom: var(--space-32);
+  bottom: var(--space-24);
   left: 50%;
   transform: translateX(-50%);
+  opacity: 0.6;
   animation: bounce 2s infinite;
 }
 
@@ -1995,8 +2073,10 @@ section:nth-child(odd) {
     background: var(--color-secondary);
   }
 
-  .hero-container {
-    padding-top: 70px;
+  /* The hero's own top padding already clears the fixed navbar, so the old
+     70px container padding double-counted it. */
+  .hero {
+    padding-top: var(--space-80);
   }
 
   .hero-content {
@@ -2005,9 +2085,45 @@ section:nth-child(odd) {
     gap: var(--space-24);
   }
 
+  .hero-title {
+    font-size: clamp(2.25rem, 6vw, 3rem);
+  }
+
+  /* The 52ch measure is narrower than the column once it is centered. */
+  .hero-subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Flex does not inherit the column's text-align, so the caret line stayed
+     flush left under a centered headline. */
+  .typing-container {
+    justify-content: center;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .profile-image {
+    width: 240px;
+    height: 240px;
+  }
+
+  /* Three columns still fit with tighter padding; stacking them made the hero
+     ~440px taller (measured 443px at 375px). */
   .hero-stats {
-    grid-template-columns: 1fr;
-    gap: var(--space-16);
+    gap: var(--space-12);
+  }
+
+  .stat {
+    padding: var(--space-16) var(--space-12);
+  }
+
+  /* It overlapped the stats block at this width (measured 1132-1163 inside
+     729-1172), and the stats already show that the page continues. */
+  .scroll-indicator {
+    display: none;
   }
 
   .timeline::before {
@@ -2063,19 +2179,17 @@ section:nth-child(odd) {
   }
 
   .hero-container {
-    padding: 70px var(--space-16) 0;
+    padding: 0 var(--space-16);
   }
 
   .hero-title {
+    /* 2rem keeps the nowrap name inside 320px. */
     font-size: 2rem;
   }
 
-  .typing-text {
+  /* The typing line inherits from the container, so this is the only lever. */
+  .typing-container {
     font-size: var(--font-size-xl);
-  }
-
-  .cursor {
-    height: 1em;
   }
 
   .hero-buttons {
@@ -2083,8 +2197,29 @@ section:nth-child(odd) {
   }
 
   .profile-image {
-    width: 250px;
-    height: 250px;
+    width: 216px;
+    height: 216px;
+  }
+
+  /* Three cards side by side cannot hold "Certifications" at this width, so
+     each stat becomes a compact row: number, then label. */
+  .hero-stats {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .stat {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-12);
+    padding: var(--space-12) var(--space-16);
+    text-align: left;
+  }
+
+  .stat-number {
+    margin-bottom: 0;
+    font-size: var(--font-size-2xl);
   }
 
   .section-title {

@@ -616,7 +616,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function initParticles() {
             particles = [];
-            const count = Math.min(70, Math.max(35, Math.floor((width * height) / 18000)));
+            // Quiet background texture: fewer, smaller dots than the old
+            // 35-70 range. The canvas covers the whole hero, so the count
+            // scales with its area but stays inside 24-48.
+            const count = Math.min(48, Math.max(24, Math.floor((width * height) / 26000)));
             for (let i = 0; i < count; i++) {
                 particles.push({
                     x: Math.random() * width,
@@ -626,7 +629,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     bouncePhase: Math.random() * Math.PI * 2,
                     bounceSpeed: 0.015 + Math.random() * 0.02,
                     bounceAmp: 0.3 + Math.random() * 0.4,
-                    radius: 2 + Math.random() * 1.5,
+                    radius: 1.6 + Math.random() * 1.2,
                     isHovered: false
                 });
             }
@@ -700,10 +703,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         ctx.lineTo(p2.x, p2.y);
 
                         if (isLineHovered) {
-                            ctx.strokeStyle = `rgba(${themeColors.line}, ${Math.min(0.9, factor * 0.95)})`;
+                            ctx.strokeStyle = `rgba(${themeColors.line}, ${Math.min(0.85, factor * 0.85)})`;
                             ctx.lineWidth = 2;
                         } else {
-                            ctx.strokeStyle = `rgba(${themeColors.particle}, ${factor * 0.22})`;
+                            ctx.strokeStyle = `rgba(${themeColors.particle}, ${factor * 0.16})`;
                             ctx.lineWidth = 1.5;
                         }
                         ctx.stroke();
@@ -721,7 +724,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     ctx.shadowColor = `rgb(${themeColors.line})`;
                     ctx.shadowBlur = 10;
                 } else {
-                    ctx.fillStyle = `rgba(${themeColors.particle}, 0.7)`;
+                    ctx.fillStyle = `rgba(${themeColors.particle}, 0.55)`;
                     ctx.shadowBlur = 0;
                 }
                 ctx.fill();
