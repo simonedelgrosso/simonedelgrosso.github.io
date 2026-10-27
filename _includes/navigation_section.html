@@ -21,16 +21,21 @@
                 <i class="fas fa-moon theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true"></i>
                 <i class="fas fa-sun theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true"></i>
             </button>
-            <div class="lang-switch {{ page.lang }}-active" role="group" aria-label="Language selector">
+            <div class="lang-switch {{ page.lang }}-active" role="group" aria-label="{{ nav.lang_selector }}">
                 <span class="lang-slider" aria-hidden="true"></span>
-                <a href="/en/" class="lang-link {% if page.lang == 'en' %}active{% endif %}" data-lang="en" title="English" aria-label="English">EN</a>
-                <a href="/it/" class="lang-link {% if page.lang == 'it' %}active{% endif %}" data-lang="it" title="Italiano" aria-label="Italiano">IT</a>
+                {%- comment -%}
+                    WCAG 2.5.3 (Label in Name): the accessible name must contain the
+                    visible "EN"/"IT" as a whole word. axe compares word tokens and
+                    drops parentheticals, so "English (EN)" fails; "EN, English" passes.
+                {%- endcomment -%}
+                <a href="/en/" class="lang-link {% if page.lang == 'en' %}active{% endif %}" data-lang="en" title="English" aria-label="EN, English">EN</a>
+                <a href="/it/" class="lang-link {% if page.lang == 'it' %}active{% endif %}" data-lang="it" title="Italiano" aria-label="IT, Italiano">IT</a>
             </div>
-            <div class="hamburger" id="hamburger" aria-label="Menu" role="button" tabindex="0">
+            <button type="button" class="hamburger" id="hamburger" aria-label="{{ nav.menu }}" aria-controls="nav-menu" aria-expanded="false">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
-            </div>
+            </button>
         </div>
     </div>
     <script>

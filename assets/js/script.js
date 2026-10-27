@@ -37,32 +37,99 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentCharIndex = 0;
     let isDeleting = false;
 
-    // Mobile Navigation Toggle
-    function toggleMobileNav() {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
-        
-        // Animate hamburger bars
-        const bars = hamburger.querySelectorAll('.bar');
-        if (hamburger.classList.contains('active')) {
-            bars[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-            bars[1].style.opacity = '0';
-            bars[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-        } else {
-            bars[0].style.transform = 'none';
-            bars[1].style.opacity = '1';
-            bars[2].style.transform = 'none';
+    // Mobile Navigation
+    // The hamburger is a real <button>, so Enter/Space come for free. All state
+    // changes go through setMobileNav() so mouse, keyboard, Escape and the
+    // breakpoint reset can never disagree about aria-expanded or the scroll lock.
+    //
+    // Last element focused inside the navbar. The breakpoint handler needs it
+    // because the browser blurs the hamburger (display: none above 768px) before
+    // the matchMedia change event reaches us, so activeElement is already <body>
+    // by then.
+    let lastNavFocus = null;
+
+    function isMobileNavOpen() {
+        return !!navMenu && navMenu.classList.contains('active');
+    }
+
+    // The drawer covers the whole viewport below the navbar and the page is
+    // scroll-locked behind it, so nothing outside the navbar may be focused,
+    // clicked or read out while it is open. `inert` on the body's other children
+    // covers pointer input and assistive tech; the Tab wrap in
+    // setupEventListeners() keeps the cycle inside the navbar for engines that
+    // ignore the attribute (and stops Tab leaving the document for the browser
+    // chrome, which would be the next step otherwise).
+    //
+    // Only the elements this function made inert are recorded, so closing never
+    // clears an `inert` that some other feature set for its own reasons.
+    let inertedElements = [];
+
+    function setPageInert(inert) {
+        if (!inert) {
+            inertedElements.forEach(function (el) { el.removeAttribute('inert'); });
+            inertedElements = [];
+            return;
+        }
+        const children = document.body.children;
+        for (let i = 0; i < children.length; i++) {
+            const el = children[i];
+            if (el === navbar || el.tagName === 'SCRIPT' || el.hasAttribute('inert')) continue;
+            el.setAttribute('inert', '');
+            inertedElements.push(el);
         }
     }
 
-    // Close mobile nav when clicking on a link
+    // Focusable elements inside the navbar, in DOM order: the eight drawer links
+    // first, then the theme toggle, the two language links and the hamburger.
+    // getClientRects() filters out anything display:none'd at this breakpoint.
+    function navFocusables() {
+        if (!navbar) return [];
+        return Array.prototype.filter.call(
+            navbar.querySelectorAll('a[href], button'),
+            function (el) { return el.getClientRects().length > 0; }
+        );
+    }
+
+    function setMobileNav(open, options) {
+        if (!hamburger || !navMenu) return;
+        const opts = options || {};
+
+        hamburger.classList.toggle('active', open);
+        navMenu.classList.toggle('active', open);
+        hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+
+        // Lock the page behind the full-screen menu. --scrollbar-width lets the
+        // navbar compensate for the scrollbar that disappears, so the controls do
+        // not shift on narrow desktop windows (overlay scrollbars report 0).
+        const scrollbar = open ? window.innerWidth - document.documentElement.clientWidth : 0;
+        document.body.classList.toggle('nav-open', open);
+        document.body.style.setProperty('--scrollbar-width', scrollbar > 0 ? scrollbar + 'px' : '0px');
+
+        setPageInert(open);
+
+        if (!open && opts.returnFocus) {
+            // preventScroll: the button lives in the fixed navbar, so focusing it
+            // must not disturb a smooth scroll that is starting in the same task.
+            hamburger.focus({ preventScroll: true });
+        }
+    }
+
+    function toggleMobileNav() {
+        setMobileNav(!isMobileNavOpen());
+    }
+
+    // Close mobile nav when clicking on a link. Focus goes back to the hamburger:
+    // the menu is hidden right after, and a hidden element must not keep focus.
     function closeMobileNav() {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
-        const bars = hamburger.querySelectorAll('.bar');
-        bars[0].style.transform = 'none';
-        bars[1].style.opacity = '1';
-        bars[2].style.transform = 'none';
+        if (isMobileNavOpen()) setMobileNav(false, { returnFocus: true });
+    }
+
+    // The mobile menu sits directly under the navbar. Measuring it instead of
+    // hard-coding a pixel value keeps the two aligned when fonts load, the logo
+    // changes size or the user zooms.
+    function syncNavbarHeight() {
+        if (!navbar) return;
+        navbar.style.setProperty('--navbar-height', navbar.offsetHeight + 'px');
     }
 
     // Fixed Smooth Scrolling for Navigation Links
@@ -742,6 +809,83 @@ document.addEventListener('DOMContentLoaded', function() {
         if (hamburger) {
             hamburger.addEventListener('click', toggleMobileNav);
         }
+
+        // Keep the mobile menu glued to the bottom of the navbar.
+        syncNavbarHeight();
+        if (navbar) {
+            if (typeof ResizeObserver === 'function') {
+                new ResizeObserver(syncNavbarHeight).observe(navbar);
+            } else {
+                window.addEventListener('resize', syncNavbarHeight);
+            }
+        }
+
+        // Escape closes the menu and hands focus back to the button that opened it.
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isMobileNavOpen()) {
+                setMobileNav(false, { returnFocus: true });
+            }
+        });
+
+        // While the drawer is open, Tab cycles inside the navbar: the eight
+        // drawer links, then the theme toggle, the language links and the
+        // hamburger. Without this, Tab walks into the page content that the
+        // opaque drawer is covering (and `inert` is ignored by older engines).
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Tab' || !isMobileNavOpen()) return;
+            const items = navFocusables();
+            if (!items.length) return;
+            const first = items[0];
+            const last = items[items.length - 1];
+            const active = document.activeElement;
+            if (!navbar.contains(active)) {
+                e.preventDefault();
+                first.focus();
+            } else if (e.shiftKey && active === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && active === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        });
+
+        // Widening past the breakpoint must not leave the page scroll-locked.
+        // It must also not drop focus onto <body>: the hamburger is display:none
+        // above 768px, so a user who had focus on it loses all context. The
+        // drawer's first link is laid out inline there, so hand focus to it.
+        // (Focus on a menu link survives on its own: it is the same <a>, still
+        // visible on desktop. That is why only the hamburger needs help.)
+        if (window.matchMedia) {
+            const mobileNavQuery = window.matchMedia('(max-width: 768px)');
+            const handleMobileNavBreakpoint = (e) => {
+                if (e.matches) return;
+                const restoreFocus = lastNavFocus === hamburger;
+                setMobileNav(false);
+                if (restoreFocus) {
+                    const firstLink = navMenu && navMenu.querySelector('.nav-link');
+                    // preventScroll: the link lives in the fixed navbar, so there
+                    // is nothing to reveal, and focusing must not jump the page.
+                    if (firstLink) firstLink.focus({ preventScroll: true });
+                }
+                lastNavFocus = null;
+            };
+            if (mobileNavQuery.addEventListener) {
+                mobileNavQuery.addEventListener('change', handleMobileNavBreakpoint);
+            } else if (mobileNavQuery.addListener) {
+                mobileNavQuery.addListener(handleMobileNavBreakpoint);
+            }
+        }
+
+        // Record what has focus inside the navbar, and forget it the moment focus
+        // moves anywhere else — a stale hamburger value would otherwise pull focus
+        // into the nav on some later resize. This is safe for the breakpoint case
+        // because the browser blurs the hamburger to <body> WITHOUT firing a
+        // focusin (verified), so `lastNavFocus` is still the hamburger when the
+        // matchMedia change event arrives.
+        document.addEventListener('focusin', (e) => {
+            lastNavFocus = navbar && navbar.contains(e.target) ? e.target : null;
+        });
         
         // Navigation links - FIXED smooth scrolling
         navLinks.forEach(link => {
@@ -749,8 +893,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 const targetId = link.getAttribute('href');
                 if (targetId && targetId.startsWith('#')) {
-                    smoothScroll(targetId);
+                    // Close first: the drawer's scroll lock hides the scrollbar, so
+                    // the content is ~15px wider while it is open. Measuring the
+                    // target under the locked layout and reflowing straight after
+                    // would leave the smooth scroll aiming at a stale offset.
                     closeMobileNav();
+                    smoothScroll(targetId);
                 }
             });
         });

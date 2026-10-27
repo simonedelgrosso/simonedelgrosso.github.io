@@ -761,19 +761,42 @@ select.form-control {
   top: 0;
   left: 0;
   right: 0;
-  background: var(--color-glass);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+  /* Transparent over the hero; the glass only appears once content scrolls under. */
+  background: transparent;
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
+  /* The hairline is always there (transparent) so it can fade in with the rest of
+     the scrolled state instead of popping in. */
+  border-bottom: 1px solid transparent;
   z-index: 1000;
-  padding: var(--space-16) 0;
+  padding: var(--space-12) 0;
+  /* padding is in the list for the drawer's scrollbar compensation
+     (body.nav-open .navbar { padding-right }), which would otherwise snap while
+     the glass fades. */
   transition: background-color var(--duration-normal) var(--ease-standard),
-    box-shadow var(--duration-normal) var(--ease-standard);
+    border-color var(--duration-normal) var(--ease-standard),
+    box-shadow var(--duration-normal) var(--ease-standard),
+    padding var(--duration-normal) var(--ease-standard);
 }
 
 .navbar.scrolled {
   background: var(--color-glass);
-  border-bottom: 1px solid var(--color-border-subtle);
+  border-bottom-color: var(--color-border-subtle);
   box-shadow: var(--shadow-sm);
+}
+
+/* While the mobile menu is open the navbar gets the glass treatment too, so the
+   strip above the opaque menu does not look like a hole. --scrollbar-width is set
+   by script.js when the page scroll is locked, to keep the controls from jumping. */
+body.nav-open .navbar {
+  background: var(--color-glass);
+  border-bottom-color: var(--color-border-subtle);
+  padding-right: var(--scrollbar-width, 0px);
+}
+
+/* The open mobile menu covers the viewport; do not scroll the page behind it. */
+body.nav-open {
+  overflow: hidden;
 }
 
 .nav-container {
@@ -786,9 +809,11 @@ select.form-control {
 }
 
 .nav-logo {
+  /* Display face: the wordmark gets a real 700 weight (Inter here tops out at 600). */
+  font-family: var(--font-family-display);
   font-size: var(--font-size-xl);
-  /* Body font (Inter) is loaded up to 600; 700 would silently fall back. */
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.01em;
   color: var(--portfolio-primary);
   text-decoration: none;
   /* Never wrap onto two lines; truncate instead if space runs out. */
@@ -812,9 +837,14 @@ select.form-control {
 }
 
 .nav-link {
+  display: inline-flex;
+  align-items: center;
+  /* 44px tall hit area; the label is centred and the underline sits under it. */
+  min-height: 44px;
   color: var(--color-text);
   text-decoration: none;
   font-weight: var(--font-weight-medium);
+  line-height: 1.2;
   position: relative;
   transition: color var(--duration-fast) var(--ease-standard);
 }
@@ -827,11 +857,12 @@ select.form-control {
 .nav-link::after {
   content: "";
   position: absolute;
-  bottom: -4px;
+  bottom: 6px;
   left: 0;
   width: 0;
-  height: 3px;
-  background: var(--portfolio-primary);
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: var(--portfolio-gradient);
   transition: width var(--duration-normal) var(--ease-standard);
 }
 
@@ -844,9 +875,13 @@ select.form-control {
   display: flex;
   align-items: center;
   gap: var(--space-16);
+  /* Keeps the navbar a stable 69px tall at every breakpoint, even though the
+     individual controls are 36px. */
+  min-height: 44px;
 }
 
 .theme-toggle {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -863,6 +898,16 @@ select.form-control {
   transition: color var(--duration-fast) var(--ease-standard),
     background-color var(--duration-fast) var(--ease-standard),
     border-color var(--duration-fast) var(--ease-standard);
+}
+
+/* 44x44 tap target without spending any of the 320px horizontal budget: the
+   pseudo-element extends 4px on each side, which is exactly the gap to the
+   neighbouring language switch. */
+.theme-toggle::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
 }
 
 .theme-toggle:hover {
@@ -909,6 +954,14 @@ select.form-control {
   transition: border-color var(--duration-fast) var(--ease-standard);
 }
 
+/* Same 44px tap-target trick as the theme toggle (64x36 -> 72x44). */
+.lang-switch::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+}
+
 .lang-switch:hover {
   border-color: var(--color-border);
 }
@@ -922,7 +975,7 @@ select.form-control {
   border-radius: 50%;
   background: var(--portfolio-primary);
   box-shadow: 0 2px 8px color-mix(in srgb, var(--portfolio-primary) 50%, transparent);
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--duration-normal) var(--ease-standard);
   pointer-events: none;
   z-index: 1;
 }
@@ -970,16 +1023,62 @@ select.form-control {
 .hamburger {
   display: none;
   flex-direction: column;
-  cursor: pointer;
+  align-items: center;
+  justify-content: center;
   gap: var(--space-4);
+  width: 25px;
+  /* Full-height tap target; the bars themselves stay 25x14. The width cannot
+     grow to 44px at 320px: that would push .nav-controls from 141px to 160px,
+     past the 153px the row has left after the 135px wordmark. */
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.hamburger:focus-visible {
+  outline: 2px solid var(--portfolio-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
 
 .bar {
+  display: block;
   width: 25px;
-  height: 3px;
-  background: var(--color-text);
+  height: 2px;
+  background: currentColor;
   border-radius: var(--radius-full);
-  transition: all var(--duration-fast) var(--ease-standard);
+  transition: transform var(--duration-fast) var(--ease-standard),
+    opacity var(--duration-fast) var(--ease-standard);
+}
+
+/* 2px bars with a 4px gap sit at 1, 7 and 13px from the top, so the outer two
+   meet in the middle after a 6px shift. */
+.hamburger.active .bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.hamburger.active .bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0.4);
+}
+
+.hamburger.active .bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Navbar-scoped reduced motion. T11 consolidates the global block; until then the
+   bars, the underlines and the slider snap into place. The mobile drawer is
+   handled at the end of the file, because the responsive block re-declares its
+   transition shorthand and would otherwise win on source order. */
+@media (prefers-reduced-motion: reduce) {
+  .nav-link::after,
+  .bar,
+  .lang-slider {
+    transition-duration: 0.01ms;
+  }
 }
 
 /* Hero Section */
@@ -1833,26 +1932,67 @@ section:nth-child(odd) {
     display: flex;
   }
 
+  /* Tap targets at 320px. The row is 288px of inner width; the wordmark needs
+     135px, which leaves 153px for .nav-controls. Those need 36 + 8 + 64 + 8 + 25
+     = 141px today, so the toggle and the language switch take 44px hit areas from
+     their ::after rings (they fit inside the 8px gaps) while the hamburger can
+     only grow vertically: 44px of width would make the row 160px and truncate the
+     name. */
   .nav-menu {
     position: fixed;
-    top: 59px;
-    right: -100%;
+    /* --navbar-height is measured by script.js (69px = 12px padding + 44px
+       .nav-controls + 1px hairline). The fallback only matters before JS runs,
+       when the menu is still hidden. */
+    top: var(--navbar-height, 69px);
+    right: 0;
     width: 100%;
-    height: calc(100vh - 59px);
+    height: calc(100vh - var(--navbar-height, 69px));
+    height: calc(100dvh - var(--navbar-height, 69px));
+    padding: var(--space-16) 0 var(--space-24);
     background: var(--color-background);
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
-    padding-top: var(--space-32);
-    transition: right var(--duration-normal) var(--ease-standard);
+    align-items: stretch;
+    /* The desktop 32px column gap is too airy for full-width rows. */
+    gap: var(--space-4);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    /* Off-canvas to the right. visibility keeps the links out of the tab order
+       and out of the accessibility tree while the menu is closed. */
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform var(--duration-normal) var(--ease-standard),
+      visibility 0s linear var(--duration-normal);
   }
 
   .nav-menu.active {
-    right: 0;
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform var(--duration-normal) var(--ease-standard),
+      visibility 0s;
   }
 
   .nav-menu li {
-    margin: var(--space-12) 0;
+    margin: 0;
+  }
+
+  /* Full-width rows read better than centred links on a phone. */
+  .nav-menu .nav-link {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    padding: 0 var(--space-24);
+    font-size: var(--font-size-lg);
+  }
+
+  /* The desktop underline would sit in the middle of a row. */
+  .nav-menu .nav-link::after {
+    content: none;
+  }
+
+  .nav-menu .nav-link.active {
+    background: var(--color-secondary);
   }
 
   .hero-container {
@@ -1965,5 +2105,19 @@ section:nth-child(odd) {
 
   .nav-logo {
     font-size: var(--font-size-md);
+  }
+}
+
+/* Reduced motion for the mobile drawer. This has to live after the
+   `max-width: 768px` block: that block sets a full `transition` shorthand on
+   `.nav-menu` and again on `.nav-menu.active`, so a `transition-duration` set
+   before it would be reset (and `.nav-menu.active` would out-specify it).
+   Zeroing the delay as well makes the closed state hide the links instantly
+   instead of after the slide. */
+@media (prefers-reduced-motion: reduce) {
+  .nav-menu,
+  .nav-menu.active {
+    transition-duration: 0.01ms;
+    transition-delay: 0s;
   }
 }

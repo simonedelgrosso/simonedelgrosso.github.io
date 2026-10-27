@@ -2,7 +2,7 @@
 
 Status: **In progress.** Created 2026-10-24. Revised 2026-10-24
 after the user answered the open questions.
-Completed: **T0, T1, T2**. Next: **T3**.
+Completed: **T0, T1, T2, T3**. Next: **T4**.
 Previous plan: none (`plans/` did not exist before this file).
 
 ## 0. Progress log
@@ -12,6 +12,7 @@ Previous plan: none (`plans/` did not exist before this file).
 | T0 – Baseline capture | **Done** | `jekyll build` + headless screenshots at 375/768/1024/1440 for EN/IT (light and dark); console showed only the 3 expected `console.log` greetings, no errors. |
 | T1 – Design tokens, fonts, theme token sets | **Done** | Builds (Jekyll 4.4.1 + 3.10.0), screenshots in both themes at 320/375/768/1024/1440 for EN/IT, computed-style checks, theme-resolution matrix, reveal-forced contrast audit (0 failures, 4 combinations), Lighthouse a11y 0.89. |
 | T2 – Theme toggle | **Done** | `togglecheck.mjs` **28/28** (OS following, persistence, no-flash, ARIA correct before parsing, no init event, live OS follow, storage blocked, Space key, IT label); strict overflow audit clean at 320/375/768/1024/1440 for EN+IT in both themes; contrast 0 failures; Lighthouse a11y **95** EN+IT; both Jekyll builds clean. Two independent review rounds: 2 P3 + 2 minor in round 2, all fixed and re-verified. See the T2 completion log. |
+| T3 – Navbar and language switcher | **Done** | `navprobe.mjs` at 320/375/1440 × EN/IT (menu offset == navbar height, `aria-expanded` round-trip, scroll lock, Escape + focus return, closed menu out of the tab order); `navcheck.mjs` (Enter/Space/Escape with real key events, 44px hit-area hit tests, scrolled glass + hairline, per-theme computed styles); `navflow.mjs` (real mouse clicks: open → link click → closed + scrolled + focus returned; open → resize past the breakpoint → unlocked); `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 0 failures / 311 elements × 4 combinations; Lighthouse a11y **93** EN+IT with no new failures (the three remaining are the pre-existing `heading-order`, `landmark-one-main`, `.project-link` `link-name`; `label-content-name-mismatch` was **removed**); both Jekyll builds clean. See the T3 completion log. Six P3s from independent reviews (dead reduced-motion override; focus lost to `<body>` when the drawer closed by widening; no focus containment while the drawer is open; stale focus tracking; over-broad `inert` cleanup; anchor measured while the drawer's scroll lock was still applied, plus the navbar's scrollbar compensation snapping) fixed and re-verified. |
 
 Verification tooling used (temporary, outside the repo, in
 `%LOCALAPPDATA%\Temp\opencode\`): `shot.mjs` (headless Chrome via CDP,
@@ -20,10 +21,15 @@ matrix), `contrast.mjs` (reveal-forced contrast audit that does not rely
 on Lighthouse), `overflow.mjs` (**strict** overflow audit, `mobile: false`,
 the tool of record for width checks), `togglecheck.mjs` (theme-toggle
 acceptance checks with real key events), `navshot.mjs` (clipped navbar
-screenshots + nav metrics), and the throwaway `bisect.mjs`/`chain.mjs`/
-`logofit.mjs` probes used to isolate the 320px regressions.
+screenshots + nav metrics), `navprobe.mjs` (navbar geometry + mobile menu
+state machine), `navcheck.mjs` (computed nav styles, hit-area hit tests,
+keyboard activation, tab order), `navflow.mjs` (real mouse click flow and
+breakpoint reset), `navstates.mjs` (scrolled / menu-open screenshots), and
+the throwaway `bisect.mjs`/`chain.mjs`/`logofit.mjs` probes used to isolate
+the 320px regressions.
 Screenshots: `baseline\` (before), `t1-dark\`, `t1-light\`, `t1-final\`,
-`t1-review*\`, `t1-320*`, `t2-light\`, `t2-nav\`.
+`t1-review*\`, `t1-320*`, `t2-light\`, `t2-nav\`, `navshots\`,
+`navstates*\`.
 
 ## 1. Objective
 
@@ -620,8 +626,8 @@ the audit fires only intermittently, which is why it never appeared during T1
 or the first T2 round. Lighthouse alone cannot be trusted for this one; the
 deterministic check is `document.querySelector('main') === null`.
 
-### T3 – Navigation bar and language switcher
-- [ ] **Objective:** Make the navbar translucent and blurred, with a hairline
+### T3 – Navigation bar and language switcher ✅ Done (2026-10-27)
+- [x] **Objective:** Make the navbar translucent and blurred, with a hairline
   border on `.scrolled`, refined hover/active underlines, a polished pill
   language switch, and a cleaner mobile menu. The theme toggle must fit next
   to it.
@@ -678,6 +684,404 @@ deterministic check is `document.querySelector('main') === null`.
 - **Verify:** manual check at 320, 375 and 1440 for both languages and both
   themes, plus `overflow.mjs` (320/375) and `navshot.mjs` for the 320px
   control budget.
+
+#### T3 completion log
+
+**Files changed**
+
+- `_includes/navigation_section.html`:
+  - the hamburger is a real `<button type="button" aria-controls="nav-menu"
+    aria-expanded="false" aria-label="{{ nav.menu }}">` (was
+    `div[role=button][tabindex=0]` with a hard-coded English label and no
+    keydown handler);
+  - `.lang-switch` gets `aria-label="{{ nav.lang_selector }}"` (was
+    hard-coded English on both languages);
+  - the two `.lang-link`s get `aria-label="EN, English"` / `"IT, Italiano"`
+    (see the a11y note below).
+- `_data/navigation.yml`: `menu` and `lang_selector` for EN and IT.
+- `assets/css/style.css`:
+  - `.navbar` is transparent at the top, `backdrop-filter: blur(16px)
+    saturate(180%)`, an always-present transparent 1px `border-bottom` that
+    animates to `--color-border-subtle` on `.scrolled`, `padding: 12px 0`;
+  - `body.nav-open` gets the glass treatment + `--scrollbar-width`
+    compensation, and `overflow: hidden`;
+  - `.nav-logo` switches to the display face at a real 700 with
+    `letter-spacing: -0.01em`;
+  - `.nav-link` is a 44px-tall `inline-flex` with a 2px gradient underline
+    (`bottom: 6px`, `--radius-full`);
+  - `.nav-controls` gets `min-height: 44px` so the navbar is a stable 69px at
+    every breakpoint;
+  - `.theme-toggle` and `.lang-switch` get 44px tap targets from an
+    `inset: -4px` `::after` ring (they fit inside the 8px gaps and do not
+    steal each other's clicks);
+  - `.hamburger` is a reset `<button>` (25px wide, `min-height: 44px`,
+    centred bars, visible `:focus-visible` ring); `.bar` is 2px tall with
+    `currentColor`, and `.hamburger.active .bar:nth-child(n)` does the X
+    (the inline transforms in `script.js` are gone);
+  - `@media (max-width: 768px)`: the menu is anchored with `top:
+    var(--navbar-height, 69px)`, slides with `transform: translateX()` instead
+    of `right`, is `visibility: hidden` when closed (out of the tab order and
+    the accessibility tree), has full-width 48px rows with a 4px gap, a
+    `--color-secondary` active row, `overflow-y: auto` and
+    `overscroll-behavior: contain`, plus `100vh`/`100dvh` fallbacks;
+  - a navbar-scoped `prefers-reduced-motion` block for the bars, underlines and
+    slider, plus a separate one at the end of the file for the mobile drawer
+    (it has to come after the `max-width: 768px` block to win the cascade —
+    see the post-review fix below). T11 will consolidate both.
+- `assets/js/script.js`:
+  - `setMobileNav(open, { returnFocus })` is the single state transition; it
+    sets `aria-expanded`, the `.active` classes, `body.nav-open`,
+    `--scrollbar-width`, and optionally returns focus;
+  - `syncNavbarHeight()` measures `.navbar` into `--navbar-height`
+    (`ResizeObserver`, `resize` fallback) instead of the hard-coded `59px`;
+  - Escape closes and returns focus; a `matchMedia('(max-width: 768px)')`
+    listener closes the menu and releases the scroll lock when the viewport
+    grows, handing focus to the first nav link if it was on the hamburger
+    (see the round-2 post-review fix); `closeMobileNav()` now also returns
+    focus to the hamburger;
+  - `setPageInert()` marks every `<body>` child except the navbar `inert`
+    while the drawer is open, and a `Tab` handler wraps focus inside the
+    navbar (round-3 post-review fix).
+
+**Deviations from the plan text above**
+
+- **The hamburger's tap target is 25×44, not 44×44.** At 320px the row has
+  288px of inner width; the wordmark needs 135px, leaving 153px for
+  `.nav-controls`, which already need 36 + 8 + 64 + 8 + 25 = 141px. Growing
+  the hamburger to 44px would make the row 160px and truncate the name. The
+  toggle and the language switch do reach 44×44 and 72×44 through their
+  `::after` rings, and the hamburger is 44px tall; its 25px width still
+  clears the 24px WCAG 2.2 AA target-size minimum. The arithmetic is recorded
+  in a CSS comment next to `.hamburger` and in the mobile media query.
+- **The navbar is 69px tall, not the 68px the plan assumed** (12px + 44px +
+  the 1px hairline). `--navbar-height` is measured, so the menu still aligns
+  exactly; the CSS fallback and the comments say 69px.
+- **`.lang-link` labels changed** (`aria-label="EN, English"`). This was not
+  in the plan: Lighthouse/axe `label-content-name-mismatch` (WCAG 2.5.3,
+  Label in Name) was already failing at HEAD for both language links. axe
+  compares **word tokens** and strips parentheticals, so `"English (EN)"`
+  still fails; `"EN, English"` passes. This removes one pre-existing
+  Lighthouse failure from the navbar instead of leaving it there.
+- **Focus after a link click** is returned to the hamburger rather than lost
+  to `<body>`, because the menu is `visibility: hidden` immediately after and
+  a hidden element must not keep focus. Moving focus to the target section
+  would need `tabindex="-1"` on the sections, which belongs to T5 (`<main>`).
+
+**Verification executed (all after the final build)**
+
+- `jekyll build` → exit 0; `jekyll _3.10.0_ build -d <temp>` → exit 0;
+  `_site/en/index.html` and `_site/it/index.html` present, `_site/plans`
+  absent, `git diff -- apps/piano` empty.
+- `navprobe.mjs` (320/375/1440 × EN/IT, light): navbar 69px everywhere;
+  `#nav-menu` top == navbar bottom (69) in both languages; closed menu
+  `visibility: hidden`, open `visible`; `aria-expanded` `false → true →
+  false`; `body.nav-open` + `overflow: hidden` only while open; Escape closes
+  and focus lands on `#hamburger`; `scrollWidth == innerWidth` at every size;
+  wordmark 135px at 320 (no truncation).
+- `navcheck.mjs` (375 dark): `.scrolled` → `rgba(11,13,18,0.72)` +
+  `rgba(255,255,255,0.08)` hairline + shadow, with
+  `transition-property: background-color, border-color, box-shadow, padding`
+  (`padding` was added in the round-5 fix so the drawer's scrollbar
+  compensation animates instead of snapping);
+  logo `"Plus Jakarta Sans"` at `700`; `--color-on-accent` `#0b0d12` on the
+  `rgb(129,140,248)` slider; hit tests at ±3px around the toggle, the
+  language switch and the hamburger all resolve to the intended control
+  (no dead zones, no stolen clicks); Enter opens, Space closes, Escape
+  closes; tab order from a fresh load is
+  `theme-toggle → EN → IT → hamburger → contact-me`, i.e. the eight
+  off-canvas links are correctly skipped.
+- `navflow.mjs` (375, real mouse events): open → click "Skills" → menu
+  closed, scroll lock released, `scrollY` 5072, focus back on the hamburger;
+  re-open → resize to 1200px → closed and unlocked; **no console errors and
+  no uncaught exceptions**.
+- `overflow.mjs` (320/375 × EN/IT × light/dark): `docWidth == innerWidth`,
+  no overflow; `.nav-controls` 163..304 at 320px (inside the 304px content
+  edge) and the wordmark 135px.
+- `contrast.mjs` (EN/IT × light/dark): **0 failures / 311 elements** each.
+- Lighthouse accessibility: **93** on both `/en/` and `/it/` with exactly
+  `heading-order`, `landmark-one-main` and `.project-link` `link-name`
+  remaining — all three pre-existing and assigned to T5/T9. An A/B run at
+  `HEAD` produced the **same four** audits *plus*
+  `label-content-name-mismatch`, so T3 introduces no new Lighthouse failure
+  and removes one. (The score wobbles between 93 and 95 because
+  `landmark-one-main` fires intermittently; compare the failing audit list,
+  not the number.)
+
+#### Post-review fixes (two independent reviews of T3)
+
+**Round 1 — 1 P3: the reduced-motion override for the mobile drawer was dead code.**
+The navbar-scoped `prefers-reduced-motion` block sat *before* the
+`@media (max-width: 768px)` block, so the drawer's later
+`transition: transform …, visibility 0s linear …` shorthand reset
+`transition-duration` back to 250ms (same specificity, later source order),
+and `.nav-menu.active` out-specified the override outright. Net effect: with
+"reduce motion" enabled the full-viewport menu still slid for 250ms, and the
+closed state kept its links visible for another 250ms — contradicting the
+T3 acceptance criterion "reduced motion is respected".
+Fixed by removing `.nav-menu` from the early block (it only ever applied
+there by accident) and adding a dedicated block at the **end of the file**
+targeting both `.nav-menu` and `.nav-menu.active` with
+`transition-duration: 0.01ms; transition-delay: 0s`, plus a comment saying
+why the position matters. Verified with `rmprobe.mjs` (CDP
+`Emulation.setEmulatedMedia` + `prefers-reduced-motion`), 375px EN:
+- `reduce`: closed and open both report
+  `transform, visibility | dur=1e-05s | delay=0s`; visibility flips on the
+  next frame (~64ms measured, i.e. the CDP/rAF overhead, not 250ms).
+- `no-preference`: unchanged `dur=0.25s, 0s | delay=0s, 0.25s` closed,
+  `delay=0s, 0s` open; menu still opens/closes and `aria-expanded`
+  round-trips.
+- Desktop is unaffected: `.nav-menu` has no transition above 768px, so the
+  new rule is inert there.
+
+**Round 2 — 1 P3: focus dropped to `<body>` when the drawer closed by
+widening past 768px.** `handleMobileNavBreakpoint` called
+`setMobileNav(false)` with no focus handling, so a keyboard or screen-reader
+user who had focus on the hamburger lost all context (measured: `BODY`).
+Two things had to be established before fixing it, because the obvious patch
+does not work:
+1. **Focus on a menu link survives on its own.** Above the breakpoint the
+   same `<a>` elements are laid out inline in the navbar and
+   `visibility: hidden` no longer applies, so the element stays focusable
+   (measured: `A#home` before *and* after the resize). Only the **hamburger**
+   loses focus, because it becomes `display: none`.
+2. **The handler cannot see the hamburger as focused.** At `change` time the
+   browser has already blurred it: `document.activeElement` is `BODY` and
+   `getComputedStyle(hamburger).display` is already `none` (measured with an
+   in-page listener). So `setMobileNav(false, { returnFocus:
+   navMenu.contains(document.activeElement) })` — the suggested fix — would
+   never fire, and `hamburger.focus()` would be a no-op anyway.
+
+Implemented instead: a `focusin` listener on the navbar records
+`lastNavFocus` (the browser blurs before we are notified, so the state has to
+be remembered); the breakpoint handler captures
+`lastNavFocus === hamburger`, closes the drawer, and moves focus to the
+drawer's first `.nav-link` with `focus({ preventScroll: true })` — the same
+element the drawer listed first, visible inline on desktop, and the fixed
+navbar means there is nothing to scroll to. Verified with `bpflow.mjs`
+(375 → 1200) and `bpnosteal.mjs`:
+- focus on the hamburger → after resize focus is `A#home` (was `BODY`);
+- focus on a menu link → unchanged, still `A#home`;
+- focus on the theme toggle → unchanged, still `#theme-toggle` (not stolen);
+- **nobody ever touched the navbar** → focus stays `BODY`, i.e. the handler
+  does not steal focus on a plain window resize;
+- Escape (control) → still returns focus to the hamburger;
+- `scrollY` 900 before and after in both the scrolled and unscrolled cases,
+  so `preventScroll` does its job (no jump).
+`navflow.mjs` now reports `afterResize.focused = "nav-link"` where it used to
+report `""`, with **0 console and 0 page errors**; `navprobe.mjs`
+(320/375/1440 × EN/IT) and `overflow.mjs` (320/375 × EN/IT) are unchanged and
+clean.
+*Known limit (superseded by the round-4 fix):* `lastNavFocus` was only cleared
+by the handler, so a user who had focused the hamburger and then moved focus
+outside the navbar could still get focus handed to the first link on a later
+resize. Round 4 below fixes it.
+
+**Round 2 — verification gap (acknowledged, not fixed here).** The 320px
+control budget is evidenced only by probes living outside the repo, so a
+later CSS change could regress it without any guard. `plans/plan.md` already
+assigns "commit the verification tooling" to T13/T14; until then the numbers
+in this log are reproducible only from `%LOCALAPPDATA%\Temp\opencode\`.
+
+**Round 3 — 1 P3: the open drawer did not contain keyboard focus.** The
+drawer is fullscreen, opaque and scroll-locked, i.e. it behaves modally, but
+nothing kept focus inside it: `#nav-menu` precedes `.nav-controls` in the DOM,
+so the hamburger is the last focusable in the navbar. The pre-existing
+`navcheck.mjs` run (closed state) already showed the next focusable after the
+hamburger is `#contact-me`, a hero CTA — so with the drawer open, Tab from the
+hamburger walked into the content hidden behind it, and Shift+Tab from the
+first drawer link wrapped to the footer links behind it. Fixed in
+`setMobileNav()`, so every open/close path gets it for free:
+- `setPageInert(open)` sets/removes `inert` on every `<body>` child except
+  `nav#navbar` (11 elements: `#scroll-progress`, the eight sections, the
+  footer, the scroll-to-top button). This covers pointer input *and*
+  assistive tech, and it is what makes the hidden CTAs unfocusable.
+- A `Tab` handler wraps the cycle inside the navbar
+  (`navFocusables()` → the eight drawer links, then the theme toggle, EN, IT
+  and the hamburger). It exists for engines that ignore `inert`, and to stop
+  Tab from leaving the document for the browser chrome.
+Verified with `openfocus.mjs` (375px EN, real mouse open, real Tab presses):
+- open → 11 inert elements, `#navbar` and `#nav-menu` **not** inert;
+- Tab from the hamburger → `nav-link #home` (the drawer's first row);
+- full cycle: `#about … #contact → theme-toggle → EN → IT → hamburger →
+  #home`, i.e. it never leaves the navbar;
+- Shift+Tab from `#home` → hamburger;
+- a programmatic `focus()` on the hero's `.btn--primary` while open is
+  **blocked** by `inert` (the focus attempt is ignored);
+- Escape → `inert` count 0, focus back on the hamburger, `aria-expanded`
+  false;
+- widening to 1200px while open → `inert` count 0, unlocked, collapsed;
+- closed-state tab order unchanged (`theme-toggle → EN → IT → hamburger →
+  contact-me`), so the closed drawer is still skipped;
+- **0 console and 0 page errors**.
+Re-ran `navcheck.mjs` (375 dark: scrolled glass, ±3px hit tests, Enter/Space/
+Escape, closed tab order — all unchanged), `navflow.mjs` (open → Skills →
+closed/scrolled/focus returned; resize → focus handed to the first link; 0
+errors), `navprobe.mjs` (320/375/1440 × EN/IT) and `overflow.mjs`
+(320/375 × EN/IT) — all unchanged and clean.
+
+**Round 4 — 2 P3s (both latent-coupling issues in the round-2/round-3 code).**
+
+*4a — stale `lastNavFocus` moved focus on a later resize.* `focusin` was
+bound on the navbar only, so once the hamburger had been focused the value
+survived after focus moved elsewhere; a later widening then pulled focus into
+the nav with no user context. **Reproduced** (`focusevents.mjs`: focus the
+hamburger, then a footer link, then widen → `activeElement` became
+`A.nav-link`, i.e. focus was stolen from the footer). Fixed by moving the
+recorder to `document` and storing `null` whenever focus lands outside the
+navbar. That is safe for the round-2 hand-off because the breakpoint blur
+fires `focusout` on the hamburger and **no** `focusin` on `<body>` — measured:
+the widening event log is `["focusout:hamburger","focusin:A.nav-link"]`, the
+second entry being our own hand-off. Re-measured after the fix: the footer case
+logs `[]` and `activeElement` stays on the footer link, while the hamburger
+case still lands on `A.nav-link`.
+
+*4b — `setPageInert(false)` stripped `inert` from every `<body>` child.*
+Idempotent today, but it would silently clear an `inert` set by any future
+feature. Fixed by tracking only the elements this function made inert
+(`inertedElements`) and skipping children that already carried the attribute,
+so unwinding undoes exactly its own work.
+
+Re-verified after both fixes: `openfocus.mjs` (11 inert elements, Tab cycle
+`#about … #contact → theme-toggle → EN → IT → hamburger → #home`, Shift+Tab →
+hamburger, inert CTA focus blocked, Escape → 0 inert + focus on the hamburger,
+widen-while-open → 0 inert + unlocked, closed tab order unchanged, 0 console /
+0 page errors), `bpflow.mjs` (all six cases unchanged), `bpnosteal.mjs`
+(nobody focused → `BODY` stays `BODY`), `navflow.mjs`, `navprobe.mjs`
+(320/375/1440 × EN/IT) and `overflow.mjs` (320/375 × EN/IT) — all clean.
+Also worth recording: the reviewer's own re-derivation retracted a suspected
+drawer-width bug (`padding-right: var(--scrollbar-width)` does not shrink the
+`backdrop-filter` padding box the fixed drawer is positioned against), so
+nothing was changed there.
+
+`contrast.mjs` and Lighthouse were **not** re-run after any of the four
+fixes: the diffs only touch transition durations/delays, the breakpoint focus
+path and the open-state `inert`/Tab handling, none of which can change
+colour, layout or accessible names in the states those tools measure (both
+run with the drawer closed).
+
+**Round 5 — 2 P3s (both about the drawer's scroll lock and the scrollbar).**
+Both are only observable with a *classic* (space-taking) scrollbar, which is
+why no earlier probe saw them: headless Chrome's default emulation has 0px
+overlay scrollbars, so `body.nav-open { overflow: hidden }` never changed the
+layout. Reproduced by calling
+`Emulation.setScrollbarsHidden({ hidden: false })`, which yields a real 15px
+scrollbar at every width tested (`window.innerWidth - clientWidth == 15`).
+
+*5a — the anchor was measured while the page was still locked.* The nav-link
+handler called `smoothScroll(targetId)` **before** `closeMobileNav()`. The
+lock hides the scrollbar, so the content is 15px wider (measured: body width
+700 → 685 unlocked, 15px `--scrollbar-width`), and the offset was read from
+that layout and then reflowed away in the same task. Fixed by closing first
+and scrolling second, with a comment explaining why the order matters, plus
+`hamburger.focus({ preventScroll: true })` so returning focus cannot perturb
+the animation that starts in the same task.
+Verified with `scrollorder.mjs` at 600/700/760px (all three: classic 15px
+scrollbar), spying on `window.scrollTo` without altering it:
+- `scrollOrder` = `[{ locked: false, args: 1, top: 4608, behavior: "smooth" }]`
+  at 700px — i.e. the page is **already unlocked** when the target is
+  measured, and the options form of `scrollTo` is preserved;
+- `scrollY == expected` at 600 (4637/4637), 700 (4608/4608) and 760
+  (4608/4608) → drift 0;
+- `scrollplain.mjs` at 375px (no instrumentation at all): the animation
+  progresses 0 → 197 → 4192 → 5153 and settles exactly on `expected`.
+*Honest note:* the very first run of `scrollorder.mjs` reported `scrollY: 0`.
+That was a **bug in my probe**, not in the site — the spy called
+`orig(a, b)`, which passes two arguments, so Chromium took the
+`scrollTo(x, y)` path and treated the options object as `NaN`, jumping to 0,0
+instantly (a plain control smooth scroll failed the same way, which is how it
+was identified). With the arity preserved the results above are what the page
+actually does. The underlying drift measured **0** even before the fix,
+because the section offsets do not currently reflow with the scrollbar
+(measured: `#skills` `offsetTop` 4824 locked and unlocked) — the ordering was
+still wrong and T4–T10 change these sections, so it was fixed rather than
+argued away.
+
+*5b — the navbar's scrollbar compensation snapped while the glass faded.*
+`body.nav-open .navbar { padding-right: var(--scrollbar-width) }` was not in
+the navbar's `transition` list, so `.nav-controls` jumped 15px left instantly
+while the background/hairline faded over 250ms. Fixed by adding
+`padding var(--duration-normal) var(--ease-standard)` to the transition.
+Verified with `scrollorder.mjs` padding samples while opening (classic
+scrollbar): `0px` → `12.67px` (80ms) → `14.98px` (120ms) → `15px` (200ms),
+and `0px` again after closing — i.e. it interpolates rather than snapping.
+
+Re-ran after both fixes: `navflow.mjs` (375: open → Skills → closed/unlocked/
+`scrollY` 5072/focus returned; resize → focus to the first link; 0 console,
+0 page errors), `navcheck.mjs` (375 dark: scrolled glass, hairline, shadow,
+±3px hit tests, Enter/Space/Escape, closed tab order — unchanged; the only
+difference is `transition-property` now ending in `, padding`),
+`navprobe.mjs` (320/375/1440 × EN/IT), `overflow.mjs` (320/375 × EN/IT),
+`openfocus.mjs` (11 inert elements, Tab cycle, blocked CTA focus, Escape →
+0 inert, widen-while-open → unlocked) and `bpflow.mjs` (all six focus cases
+unchanged, including Escape → hamburger through the new `preventScroll` call).
+`rmprobe.mjs` was **not** re-run: the diffs touch the nav-link click order,
+one `focus()` option and a `transition` list, none of which can change the
+reduced-motion timings of the drawer. The two heavier checks **were** re-run
+once the CSS was final:
+- `contrast.mjs` (EN/IT × light/dark): `scanned` 311 in every combination,
+  **0 failures**, so the earlier result still holds after all five rounds.
+- Lighthouse accessibility: **93** on both `/en/` and `/it/` with exactly
+  `heading-order`, `link-name` and `landmark-one-main` — the same three
+  pre-existing failures already assigned to T5/T9, and still no
+  `label-content-name-mismatch`. No new failure was introduced by any of the
+  five rounds.
+
+
+**Remaining risks / follow-ups**
+
+- **Pre-existing, out of T3 scope: the desktop nav has no working layout
+  between 769px and ~1100px.** The hamburger only appears at ≤768px, so at
+  769–900px the eight inline links squeeze the wordmark to **0px** and push
+  `.nav-controls` past the viewport (measured: logo width 0 at 769 and 900,
+  117px at 1024, 59px for IT at 1024). This predates T3 — the same numbers
+  were measured at HEAD — and the change set does not make it worse (the
+  wordmark is 135px at 320px, i.e. *narrower* than the 137px it was), but it
+  needs its own task: either raise the drawer breakpoint to ~1100px or shrink
+  the nav gap/type below 1100px. Added to the pre-existing issues list.
+- The off-canvas menu is reported as "overflowing" by `overflow.mjs` because
+  its `li`/`a` children sit at `left: 320` while the parent is fixed; this is
+  a tool false positive (`document.scrollWidth` is unchanged and fixed
+  boxes do not create document overflow), not a layout bug.
+- **No-JS trade-off (deliberate):** the closed drawer is `visibility: hidden`,
+  so without JS the mobile menu is unreachable (previously the off-screen
+  links were at least focusable). The navbar already depended on JS for the
+  toggle, and `visibility` is what keeps the eight links out of the tab order
+  when closed, which T3 requires. A `<noscript>` fallback or progressive
+  enhancement belongs with T11/T12 if it is wanted.
+- **`inert` support (open drawer):** the page-behind `inert` needs Chrome
+  102+, Firefox 112+ or Safari 15.5+. Older engines ignore the attribute, in
+  which case the `Tab` wrap still keeps keyboard focus inside the navbar but
+  screen-reader browse mode could reach the covered content. The browser
+  matrix is T12's; no fallback (`aria-hidden` + `display: none`) was added
+  because it would fight the scroll lock and the drawer animation.
+- **250ms close window:** with normal motion the links stay focusable during
+  the slide-out (`visibility 0s linear 250ms`). Tabbing into one is possible
+  in that window, but focus falls back to `<body>` the moment the menu hides,
+  so it self-heals; under `prefers-reduced-motion` the window is gone
+  (`transition-delay: 0s`).
+- **Menu geometry depends on `backdrop-filter`:** because `.navbar` always
+  carries `backdrop-filter`, it becomes the containing block for the
+  `position: fixed` drawer. The two boxes coincide today (navbar fixed at
+  top 0, full width), so the alignment is correct, but if T11/T12 remove
+  `backdrop-filter` from `.navbar` the drawer will start positioning against
+  the viewport instead. Verified in Chromium only; Firefox/Safari are T12.
+- `aria-expanded` is only meaningful under 769px; the button is
+  `display: none` above the breakpoint, so it cannot be reached by mouse or
+  keyboard (the probe's "open at 1440" step is an artefact of clicking a
+  hidden element through CDP and is skipped in the final run).
+- **Probe fidelity is itself a risk (round 5).** Two of the five review
+  findings were only visible with a *classic* scrollbar, and headless Chrome
+  defaults to 0px overlay scrollbars — every earlier run silently exercised a
+  layout where `body.nav-open { overflow: hidden }` changes nothing. Any probe
+  that touches the scroll lock must first call
+  `Emulation.setScrollbarsHidden({ hidden: false })` and assert that
+  `innerWidth - clientWidth > 0` (this is how the 15px scrollbar was
+  reproduced at 600/700/760px). Separately, the first `scrollorder.mjs` run
+  produced a false `scrollY: 0` because its `window.scrollTo` spy forwarded
+  `orig(a, b)` — two arguments, which Chromium reads as `scrollTo(x, y)` —
+  instead of preserving arity; a pass-through spy must forward
+  `arguments` unchanged. Both lessons belong in the T13/T14 tooling notes,
+  since the probes are currently repo-external.
 
 ### T4 – Hero section
 - [ ] **Objective:** Refresh the hero:
@@ -993,6 +1397,13 @@ deterministic check is `document.querySelector('main') === null`.
   short/mobile viewports (T4).
 - `.skills-grid` uses `minmax(350px, 1fr)`, which overflows below 350px
   (T8).
+- **Desktop nav dead zone between 769px and ~1100px** (found in T3,
+  pre-existing): the hamburger only appears at ≤768px, so from 769px the
+  eight inline links squeeze the wordmark and push `.nav-controls` out of the
+  viewport. Measured at HEAD and after T3, identical: wordmark width 0px at
+  769 and 900, 117px at 1024 (EN) / 59px (IT), untruncated only from ~1100px.
+  Needs its own task (raise the drawer breakpoint, or shrink the nav gap/type
+  below 1100px). Not fixed in T3 to keep the task scoped.
 
 ## 11. Overall acceptance criteria
 
