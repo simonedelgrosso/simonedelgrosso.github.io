@@ -244,11 +244,14 @@ document.addEventListener('DOMContentLoaded', function() {
             rootMargin: '0px 0px -50px 0px'
         };
 
-        // Timeline items start hidden from JS, not from CSS: a no-JS visitor (or a
-        // script error) still sees the list. The observer below reveals each item
-        // as it scrolls in. The old markup used a CSS animation that started on
-        // load, so both cards had finished long before anyone scrolled to them.
-        document.querySelectorAll('.timeline-item').forEach(el => el.classList.add('is-pending'));
+        // Timeline items and the certification/project cards start hidden from
+        // JS, not from CSS: a no-JS visitor (or a script error) still sees them.
+        // The observer below reveals each one as it scrolls in. The old markup
+        // used a CSS animation that started on load, so the timeline cards had
+        // finished long before anyone scrolled to them, and the cards got inline
+        // styles that outranked their :hover lift.
+        document.querySelectorAll('.timeline-item, .certification-card, .project-card')
+            .forEach(el => el.classList.add('is-pending'));
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -279,8 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Add fade-in animation to cards
                     if (entry.target.classList.contains('certification-card') || 
                         entry.target.classList.contains('project-card')) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
+                        entry.target.classList.remove('is-pending');
                     }
                 }
             });
@@ -360,16 +362,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show download message
         alert('Il download del CV inizierà a breve. (Questa è una demo - in un\'applicazione reale il file verrebbe scaricato automaticamente)');
-    }
-
-    // Initialize Cards Animation
-    function initializeCardsAnimation() {
-        const cards = document.querySelectorAll('.certification-card, .project-card');
-        cards.forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        });
     }
 
     // Compute and set dynamic targets for hero counters
@@ -987,7 +979,6 @@ document.addEventListener('DOMContentLoaded', function() {
         setupThemeToggle();
         createPreloader();
         createScrollToTopButton();
-        initializeCardsAnimation();
         // Ensure hero stat targets are set before observers/animations start
         setHeroStatsTargets();
         createObserver();

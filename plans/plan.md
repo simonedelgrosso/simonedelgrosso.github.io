@@ -2,7 +2,7 @@
 
 Status: **In progress.** Created 2026-10-24. Revised 2026-10-24
 after the user answered the open questions.
-Completed: **T0, T1, T2, T3, T4, T5, T6**. Next: **T7**.
+Completed: **T0, T1, T2, T3, T4, T5, T6, T7**. Next: **T8**.
 Previous plan: none (`plans/` did not exist before this file).
 
 ## 0. Progress log
@@ -16,6 +16,8 @@ Previous plan: none (`plans/` did not exist before this file).
 | T4 – Hero section | **Done** | `heroprobe.mjs` 16 runs (1440×900 / 768×900 / 375×800 / 320×700 × EN/IT × light/dark): hero 880 at 1440/768, indicator hidden ≤768 and never overlapping the stats, ring `8px` + image 284/240/216, typing advances, counters reach 3/1/3 (after a scroll at 375/320, where the last cards start below the fold), particles 1516–3594 px and recolour on toggle in every run, 0 console/page errors; `overflow.mjs` clean at 320/375 × EN/IT; `contrast.mjs` 311 scanned / 0 failures × 4; `navprobe.mjs` + `navcheck.mjs` unchanged after moving the navbar's `backdrop-filter` to the scrolled/drawer states (documented deviation); Lighthouse `/en/` a11y **93**, CLS **0.002**. See the T4 completion log. |
 | T5 - Section shell | **Done** | `shellprobe.mjs` 16 runs (1440/768/375/320 × EN/IT × light/dark): exactly one `<main>` (child of `<body>`), **0** heading-order skips, the section backgrounds equal the intended base/alt pair **both while `#preloader` is present and after it is removed**, no `.section-title` overflow (all seven fit on one line at 375/320 in both languages), contact `h3` at 19px, 0 console/page errors; real-key-event skip-link flow (one Tab → visible at 8/8, Enter → `#main` focused, `scrollY` 0); `shellnav.mjs` section `offsetTop == rectTop` with `offsetParent = BODY` and the active nav link correct after the wrap; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; `navprobe.mjs` + `navcheck.mjs` unchanged (focus return, 44px hit areas, scrolled glass) with the skip link now the first tab stop; Lighthouse a11y **0.96** EN+IT - `landmark-one-main`, `heading-order` and `skip-link` now pass, only the pre-existing `.project-link` `link-name` (T9) remains; Jekyll 4.4.1 and 3.10.0 builds clean. See the T5 completion log. |
 | T6 - About and Education | **Done** | `t6probe.mjs` **16/16** runs (1440/768/375/320 × EN/IT × light/dark): items hidden before (`is-pending`, opacity 0) and revealed on scroll (opacity 1, `transform: none`, mid-transition 0.72-0.87 at 150ms), no-JS shows both items at opacity 1, reduced motion keeps `transition: none` but still reveals; 3 chips at a uniform 40px with `9999px` radius and 26×26 icon dots; desktop cards staggered, ≤768 a single left-aligned column (66-344 at 375, 66-289 at 320); dot 12px with two rings, 2px centred spine, card `box-shadow` present, 2 grade lines per page, 0 console/page errors; `t6head.mjs` odd-card header/pill inside the card at 375-1280 (EN/IT); `t6noio.mjs` (IntersectionObserver deleted) leaves both items visible; `t6bg.mjs` confirms the card sits one step above the alt section in both schemes; grade guard proven on a throwaway copy (EN 1 / IT 2 with one `grade:` removed); `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; Jekyll 4.4.1 build clean. Lighthouse not re-run (not installed in this session); contrast covered the changed surfaces. See the T6 completion log. |
+
+| T7 - Certifications and Experience | **Done** | `t7probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): 3 columns at 1440/1024 (400px / 309.66px each), 2 at 768, 1 at 375; every row has equal card heights and **identical badge tops**; icon 56×56 at `border-radius: 50%` on the accent tint in both schemes; badge is a 9999px pill (133×28, 600) narrower than the card; cards hidden before (`is-pending`, opacity 0) and revealed on scroll with **no inline styles**; 0 console/page errors; `t7shared.mjs` real mouse hover lifts a card exactly **2px with `scale: none`** and returns, project cards still reveal through the same path, and with `IntersectionObserver` deleted all certification and project cards stay visible; `t7wrap.mjs` on a throwaway copy with one deliberately long title: 2 lines at 1440 / 3 lines at 1024, heights still equal and badges still aligned; `t7count.mjs` hero counters read 3/1/3 (EN) and 3/1/3 (IT); reduced motion `transition: 0s` yet still reveals; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; `t6probe.mjs` 16/16 unchanged (timeline untouched); **`t7classic.mjs` resolved the long-open 320px/316 classic-scrollbar overflow** (`.certifications-grid` `minmax(300px,1fr)` → `minmax(min(100%,300px),1fr)`; `docW` 316 → 305 == `clientWidth`); Jekyll 4.4.1 and 3.10.0 builds clean, `_site/plans` absent. See the T7 completion log. |
 
 Verification tooling used (temporary, outside the repo, in
 `%LOCALAPPDATA%\Temp\opencode\`): `shot.mjs` (headless Chrome via CDP,
@@ -53,9 +55,21 @@ UTF-16 output), `t6shots.mjs` (About/Education clips at 1440/375 × light/dark),
 `t6bg.mjs` (section vs card background per scheme), `t6head.mjs` (odd-card
 header/pill containment at 769–1280) and `t6noio.mjs` (deletes
 `IntersectionObserver` before the page scripts run).
+T7 added: `t7probe.mjs` (16-run certification-grid/card sweep + experience
+hierarchy, with no-JS and reduced-motion passes), `t7-analyze.mjs` (UTF-16
+output reader and assertions), `t7hover.mjs` (forces `:hover` through CDP and
+measures the lift), `t7shared.mjs` (real mouse hover on a card, the project
+cards' shared reveal, and the no-`IntersectionObserver` path), `t7count.mjs`
+(hero counter values), `t7shots.mjs`/`t7shots2.mjs` (certification and
+experience clips at 1440/1024/375 × light/dark), `t7wrap.mjs` (badge
+alignment when a title wraps, run against the throwaway `t7-longtitle` copy) and
+`t7classic.mjs` (classic-scrollbar width audit that reads
+`documentElement.clientWidth` instead of `innerWidth`, which is what finally
+located the 320px/316 overflow).
 Screenshots: `baseline\` (before), `t1-dark\`, `t1-light\`, `t1-final\`,
 `t1-review*\`, `t1-320*`, `t2-light\`, `t2-nav\`, `navshots\`,
-`navstates*\`, `hero-1440-*`, `hero2-*`, `hero3-*`, `t5shots\`, `t6shots\`.
+`navstates*\`, `hero-1440-*`, `hero2-*`, `hero3-*`, `t5shots\`, `t6shots\`,
+`t7shots\`, `t7shots2\`.
 
 ## 1. Objective
 
@@ -1393,9 +1407,10 @@ all three inline scripts in both pages still parse; Jekyll 4.4.1 and
   gap, not a shell gap. Adding the English sentence is a content decision, so it
   is left for T13 rather than invented here (T6 kept the guard and added no
   English copy).
-- The 11px horizontal overflow at 320px with a **classic** scrollbar is unchanged
-  (layout viewport 305, `documentElement.scrollWidth` 316, the same 316 as
-  recorded in T4); `overflow.mjs` uses overlay scrollbars and stays clean.
+- The 11px horizontal overflow at 320px with a **classic** scrollbar was
+  unchanged by T5 (layout viewport 305, `documentElement.scrollWidth` 316, the
+  same 316 as recorded in T4); `overflow.mjs` uses overlay scrollbars and stays
+  clean. **Later resolved in T7** — see §10 and the T7 log.
 - `.project-link` still fails `link-name` (T9), and the skip link now precedes
   the theme toggle in the tab order by design.
 
@@ -1541,17 +1556,194 @@ photo asset state is consistent (no deploy 404). Residual risks it listed — th
 probes living outside the repo, Lighthouse not re-run, and the preloader
 coupling noted above — are already recorded here; nothing needed changing.
 
-### T7 – Certifications and Experience
-- [ ] **Objective:**
+### T7 – Certifications and Experience ✅ Done (2026-10-29)
+- [x] **Objective:**
   - Certification cards: equal height, icon in a tinted circle, pill badge.
   - Experience cards: clear company, period, role and location hierarchy,
     with an accent-bulleted achievements list.
-- **Files:** `style.css` around lines 1320–1445.
+- **Files:** `style.css` around lines 1320–1445 (the two blocks now sit at
+  1618–1810); `script.js` (`createObserver()`, and the removal of
+  `initializeCardsAnimation()`).
 - **Acceptance:**
   - Grids line up at 1024 and 1440 and stack at 375.
   - The hover lift is subtle with no scaling.
   - The hero certification count is still correct.
 - **Verify:** manual check.
+
+**Completion log (T7)**
+
+*What changed.* `assets/css/style.css`:
+- `.certification-card`: `display: flex; flex-direction: column; align-items:
+  center` with `padding: 32px 24px` and `--shadow-xs`. The grid already
+  stretches a row to one height; the flex column lets `.cert-badge` take
+  `margin-top: auto`, so the badges line up even when a title wraps.
+- `.certification-card:hover`: `translateY(-4px)` + `--shadow-lg` →
+  **`translateY(-2px)` + `--shadow-md` + `--color-border`** (no scaling).
+- `.cert-icon`: the bare 3rem glyph becomes a **56×56 circle** on
+  `--portfolio-primary-soft` with a 22px accent glyph.
+- `.cert-code`: 13px mono, secondary colour, `2px 8px` padding (was 16px text in
+  a 34px-tall box); `.cert-year` 13px.
+- `.cert-badge`: the accent-gradient bar with `--color-on-accent` text (which
+  read as a full-width stripe) becomes a **soft accent pill**, 12px/600,
+  `nowrap`, pushed to the bottom of the card.
+- `.experience-item`: `--color-background` → **`--color-surface-raised`** +
+  `--shadow-sm`, the same "raised above `.section--alt`" step the timeline cards
+  use.
+- `.experience-header`: gains `padding-bottom: 20px` and a
+  `--color-card-border-inner` hairline, so the company/period row, role and
+  location are separated from the body.
+- `.experience-period`: grey chip → accent-tinted pill, 600, tabular numerals,
+  `nowrap`; `.experience-company` gap 8px → 12px.
+- `.experience-location`: 15px, no `margin-bottom` (the header border now does
+  that job); `.experience-description p` gets `text-wrap: pretty`.
+- `.experience-achievements li::before`: the `▶` text glyph (which rendered at
+  the full 16px text size) becomes a **6px accent dot** at `top: 0.6em`;
+  `padding-left` 24px → 20px; `li:last-child` loses its trailing margin.
+- `.project-card`: its `transition` also gains `translate`/`opacity` (the
+  shared reveal below), and `.project-card.is-pending` is styled next to the
+  certification rule.
+- A second `prefers-reduced-motion` block sets `transition: none` on
+  `.certification-card, .project-card`.
+
+`assets/js/script.js`:
+- `createObserver()` now arms `.timeline-item, .certification-card,
+  .project-card` with `.is-pending` and reveals them by removing the class.
+- `initializeCardsAnimation()` is **deleted** (and its call removed from
+  `init()`). It used to write `opacity`, `transform: translateY(30px)` and a
+  `transition` shorthand **inline** on every card.
+
+*Why the JS change was required (a real bug, not a preference).* The old
+`initializeCardsAnimation()` left `style="opacity: 1; transform: translateY(0px)"`
+on each card after the reveal, and an inline `transform` outranks the
+`.certification-card:hover` rule. Measured before the change with
+`t7hover.mjs` (CDP `CSS.forcePseudoState` on `:hover`): `transform` stayed
+`matrix(1, 0, 0, 1, 0, 0)`, **lift 0.00px** — only the shadow changed. The CSS
+lift was dead code. Moving the reveal to the class-based `translate` property
+(the same mechanism T6 introduced for the timeline) leaves `transform` free for
+the hover, and removes the inline styles entirely (asserted: `inline === null`
+on every card in all 16 runs).
+
+*Measured (`t7probe.mjs`, 16 runs = 1440/1024/768/375 × EN/IT × light/dark).*
+- columns: 3 at 1440 (400px each) and 1024 (309.66px each), 2 at 768, 1 at 375;
+- every row: equal card heights (275px with the real data) and identical badge
+  tops; the three cards keep the same left edges as the pre-change baseline
+  (89/513/937 at 1440, 16/350/683 at 1024) and are 19px shorter;
+- icon 56×56, `border-radius: 50%`, tinted (`rgba(79,70,229,0.12)` light /
+  `rgba(129,140,248,0.14)` dark);
+- badge 133×28, `9999px`, 600, always narrower than the card;
+- before the scroll: `is-pending`, opacity 0; mid-transition 0.80–0.84 at 150ms
+  for the cards already in view (the third is still below the fold at 375);
+  settled: opacity 1, `translate: none`, `inline: null`;
+- experience: company 22px/700 accent, role 19px/600, location 15px secondary,
+  header hairline 1px, achievement bullet `content: ""` with a non-transparent
+  background, `padding-left: 20px`, card background `rgb(23,27,36)` dark /
+  `rgb(255,255,255)` light with a shadow;
+- hero counters still `3/1/3`; `docW == innerW`; 0 console/page errors.
+
+*Hover.* `t7shared.mjs` with a real `Input.dispatchMouseEvent` move onto a card:
+`transform: matrix(1, 0, 0, 1, 0, -2)`, **lift 2.00px**, `scale: none`, shadow
+`--shadow-md`; moving away returns to `transform: none` (0.00px). So the
+acceptance "subtle lift, no scaling" is now actually observable.
+
+*Wrapped-title proof.* On a throwaway copy (`t7-longtitle`, one title replaced
+with a 60-character sentence): at 1440 the title takes 2 lines, at 1024 it takes
+3; in both cases all three cards keep **equal heights (298 / 321)** and the
+badges stay at **one shared top (2721 / 2601)** — the `margin-top: auto` claim
+holds.
+
+*Shared reveal / no-JS / no-IO / reduced motion.* `t7shared.mjs`: project cards
+go from `is-pending` + opacity 0 to opacity 1 with `translate: none`, no inline
+styles. No-JS: all three certification cards (and the project card) render at
+opacity 1. `IntersectionObserver` deleted: `typeof` is `undefined` and every
+card stays at opacity 1. Reduced motion: `transition-duration` computes to `0s`
+and the cards still reveal.
+
+*Also verified.* `overflow.mjs` clean at 320/375 × EN/IT × light/dark
+(`docW == innerW`); `contrast.mjs` **0 failures** over 312 (EN) / 313 (IT)
+elements × light/dark, including the new soft pills, the tinted icon circle and
+the accent achievement dots; `t6probe.mjs` still **16/16** after the shared
+reveal refactor (timeline unaffected); `node --check assets/js/script.js` exit 0;
+Jekyll 4.4.1 and `jekyll _3.10.0_ build` both exit 0, the parity output contains
+the new rules and no `initializeCardsAnimation`, `_site/plans` is absent.
+
+*Visual review (`t7shots.mjs`, `t7shots2.mjs`).* Certification and experience
+sections reviewed at 1440/1024/375 × light/dark in EN and IT, plus the projects
+section (which shares the reveal). Icons, pill badges, hierarchy and the
+hairline all read correctly in both themes; no clipping or wrap problems at
+1024, the tightest 3-up width.
+
+*Independent review (2026-10-29): one P3, fixed.* The reviewer confirmed the JS
+guard ordering, the `translate`/`transform` decoupling, the cascade position of
+the reduced-motion block, the token set, the badge-alignment mechanism and the
+hand-recomputed contrast (≈5.26:1 light / ≈5.0:1 dark for the badge, ≈4.67:1 for
+the dark period pill), and found no defect introduced by the diff. Its P3 was
+that `.certifications-grid` still used `minmax(300px, 1fr)`: at a 320px viewport
+the `.container` content box is 273px (305px layout viewport minus 32px), so the
+300px track pushed the card's right edge to **316px**.
+
+That is the **11px classic-scrollbar overflow the plan has carried as unresolved
+since T4** — reproduced digit for digit and now fixed. `t7classic.mjs` (classic
+15px scrollbar, so it measures `documentElement.clientWidth`, which
+`overflow.mjs` cannot see with overlay scrollbars) before the fix:
+`innerW 320, clientW 305, docW 316`, certifications card `16→316`, i.e. 27px
+past the container edge and 11px past the layout viewport; projects and skills
+were already fine (their 273px columns come from the ≤768 `1fr` overrides).
+The rule is now
+`repeat(auto-fit, minmax(min(100%, 300px), 1fr))`, and after the fix:
+`docW 305 == clientW` at 320px in both languages, with the 360/375 columns
+unchanged (313/328) and 768/1024/1440 identical to the pre-fix measurements
+(`t7probe.mjs` re-run: still 16/16). `overflow.mjs` (overlay scrollbars) and
+`contrast.mjs` (0 failures × 4) were re-run after the change, and `t6probe.mjs`
+still passes 16/16.
+
+*Known limits / notes.*
+- **`--shadow-sm` on the experience card, `--shadow-xs` on certification
+  cards.** The experience card is 900px wide, where `--shadow-md` reads heavy;
+  in light mode it relies on the hairline border for definition, which the
+  screenshots confirm is enough. Documented rather than "fixed" because the
+  alternative is a visually louder card.
+- **The reveal now uses the `translate` property**, which needs Chrome 104+ /
+  Safari 14.1+ / Firefox 72+. On an older browser the pending state still only
+  sets `opacity: 0` (no offset) and the class is still removed, so cards appear
+  with a fade instead of a slide — degraded, not broken.
+- **`min(100%, 300px)` inside `minmax()`** needs the same generation of
+  browsers as `min()`/`clamp()` elsewhere in this stylesheet (already used by
+  `--font-size` clamps and the hero height), so it adds no new constraint. In a
+  browser without it the declaration is dropped and the grid falls back to a
+  single auto column — still no overflow.
+- **`white-space: nowrap` on the badge and both period pills is a content
+  assumption.** "Microsoft Certified" is ~133px against ~225px of inner card
+  width at 320px, and the period strings are shorter still, so nothing wraps or
+  overflows today. A future badge string long enough to exceed the card would
+  overflow it; `max-width: 100%` alone would not help (a `nowrap` box caps its
+  box, not its text), so the real fix would be dropping `nowrap` or adding an
+  ellipsis — deferred until there is such content rather than guessed at now.
+  The same caveat applies to `.timeline-period` (T6) and `.experience-period`.
+- **Project cards are touched by the same JS path.** Their `is-pending` rule and
+  `transition` had to change for the reveal to work at all once
+  `initializeCardsAnimation()` was removed. Their hover styling (the JS
+  `mouseenter` that writes `translateY(-8px) scale(1.02)` inline) is untouched
+  and remains T9's job — the plan's T9 acceptance explicitly targets that
+  scaling.
+- **Lighthouse was not re-run for T7** (the binary is still not installed in this
+  session; `npx` will not fetch it). No markup, roles, headings or focusable
+  elements changed, and `contrast.mjs` covers every changed surface. T11/T15
+  should re-baseline.
+
+*Second independent review (2026-10-29, after the grid fix): no actionable
+findings.* The reviewer re-checked token definitions in both schemes, the
+guard-before-arming ordering in `createObserver()`, that no later rule
+redefines `transition` on the cards (so the final reduced-motion block wins),
+the `translate`/`transform` decoupling, the `minmax(min(100%, 300px), 1fr)`
+arithmetic (273px track at a 305px layout viewport, 313/328px at 360/375, single
+`1fr` above), `nowrap` safety against the current strings, and the plan diff
+itself; it recomputed the badge contrast independently (≈5.27:1 light /
+≈4.9:1 dark) and got the same pass. Its only suggestion — `max-width: 100%` as
+future hardening for the badge — is recorded in the note above instead of being
+applied, because it does not actually constrain a `nowrap` box and would add a
+false sense of safety. It also repeated the two accepted, pre-existing
+project-card items (`scale(1.02)` in the JS hover and the un-transitioned
+`box-shadow`), both already assigned to T9.
 
 ### T8 – Skills as simple tags
 - [ ] **Objective:** Replace progress bars with pill tags grouped in category
@@ -1808,6 +2000,15 @@ coupling noted above — are already recorded here; nothing needed changing.
   hero or all other sections hidden, and no element's box is wider than 305 —
   so it is not the hero. Needs its own investigation; `overflow.mjs` should
   grow a classic-scrollbar mode (the round-5 T3 lesson again).
+  **Resolved in T7 (2026-10-29):** the cause was
+  `.certifications-grid`'s `minmax(300px, 1fr)`. At 320px the `.container`
+  content box is 273px (305 − 32), but the track floored at 300px, so the card
+  ran 16→316 — exactly the 316, and 27px past the container's right edge.
+  `overbisect.mjs` could not see it because it hid *sections*, and the card's
+  own box is 300px (narrower than 305); it was the position that overflowed.
+  Fixed with `minmax(min(100%, 300px), 1fr)`. `t7classic.mjs` (classic
+  scrollbar, `clientWidth` 305) now reports `scrollWidth` 305 at 320px in both
+  languages, with 360/375 columns unchanged (313/328).
 - **Wordmark is ellipsized at 320px** (found in T4, pre-existing):
   `.nav-logo` is 132px wide but its text needs 135px, so it renders
   "Simone Del Gros…" (measured `scrollWidth` 135 vs `clientWidth` 132,

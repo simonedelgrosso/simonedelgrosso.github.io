@@ -1618,70 +1618,119 @@ section {
 /* Certifications Grid */
 .certifications-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* `min(100%, 300px)` lets the track shrink to the container instead of
+     flooring at 300px: at a 320px viewport the content box is 273px (a classic
+     scrollbar leaves a 305px layout viewport), and a hard 300px minimum pushed
+     the card 27px past the container's right padding. Same columns as before
+     from 360px up. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: var(--space-24);
 }
 
 .certification-card {
+  /* Flex column so the badge can be pushed to the bottom: the grid already
+     stretches every card in a row to the same height, and `margin-top: auto`
+     then lines the badges up even when one title wraps. */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background: var(--color-surface);
-  padding: var(--space-24);
+  padding: var(--space-32) var(--space-24);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-card-border);
+  box-shadow: var(--shadow-xs);
   text-align: center;
-  transition: transform var(--duration-normal) var(--ease-standard);
+  /* script.js reveals the card with `translate`, which composes with
+     `transform`, so the hover lift keeps its own (shorter) timing. */
+  transition: translate 0.5s var(--ease-standard),
+    opacity 0.5s var(--ease-standard),
+    transform var(--duration-normal) var(--ease-standard),
+    box-shadow var(--duration-normal) var(--ease-standard),
+    border-color var(--duration-normal) var(--ease-standard);
 }
 
+/* Subtle lift, no scaling. */
 .certification-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border);
 }
 
+/* Cards revealed by script.js. Hidden from JS only (a no-JS visitor still sees
+   them), and offset with `translate` so the hover `transform` stays free. */
+.certification-card.is-pending,
+.project-card.is-pending {
+  opacity: 0;
+  translate: 0 24px;
+}
+
+/* Tinted circle behind the vendor glyph. */
 .cert-icon {
-  font-size: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--portfolio-primary-soft);
   color: var(--portfolio-primary);
-  margin-bottom: var(--space-16);
+  font-size: 22px;
+  margin-bottom: var(--space-20);
 }
 
 .certification-card h3 {
   font-size: var(--font-size-xl);
   margin-bottom: var(--space-8);
+  text-wrap: balance;
 }
 
 .cert-code {
   font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
   background: var(--color-background);
-  padding: var(--space-4) var(--space-8);
+  padding: var(--space-2) var(--space-8);
   border-radius: var(--radius-sm);
-  display: inline-block;
   margin-bottom: var(--space-8);
 }
 
 .cert-year {
   color: var(--color-text-secondary);
-  margin-bottom: var(--space-16);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-20);
 }
 
+/* Pushed to the bottom of the flex column, so the badges line up across a row. */
 .cert-badge {
-  background: var(--portfolio-gradient);
-  color: var(--color-on-accent);
-  padding: var(--space-6) var(--space-12);
+  margin-top: auto;
+  background: var(--portfolio-primary-soft);
+  color: var(--portfolio-primary);
+  padding: var(--space-4) var(--space-12);
   border-radius: var(--radius-full);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
 }
 
 /* Experience Section */
 .experience-item {
-  background: var(--color-background);
+  /* Raised above .section--alt, the same step as the timeline cards. */
+  background: var(--color-surface-raised);
   padding: var(--space-32);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-card-border);
+  box-shadow: var(--shadow-sm);
   max-width: 900px;
   margin: 0 auto;
 }
 
+/* Header block: company + period, then role and location, separated from the
+   body by a hairline so the hierarchy reads top to bottom. */
 .experience-header {
-  margin-bottom: var(--space-24);
+  padding-bottom: var(--space-20);
+  border-bottom: 1px solid var(--color-card-border-inner);
+  margin-bottom: var(--space-20);
 }
 
 .experience-company {
@@ -1690,7 +1739,7 @@ section {
   align-items: flex-start;
   margin-bottom: var(--space-8);
   flex-wrap: wrap;
-  gap: var(--space-8);
+  gap: var(--space-12);
 }
 
 .experience-company h3 {
@@ -1699,11 +1748,14 @@ section {
 }
 
 .experience-period {
-  background: var(--color-secondary);
-  padding: var(--space-6) var(--space-12);
+  background: var(--portfolio-primary-soft);
+  color: var(--portfolio-primary);
+  padding: var(--space-4) var(--space-12);
   border-radius: var(--radius-full);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .experience-role {
@@ -1714,31 +1766,43 @@ section {
 
 .experience-location {
   color: var(--color-text-secondary);
-  margin-bottom: var(--space-16);
+  font-size: var(--font-size-md);
 }
 
 .experience-description p {
   font-size: var(--font-size-lg);
   line-height: 1.7;
   margin-bottom: var(--space-16);
+  text-wrap: pretty;
 }
 
 .experience-achievements {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .experience-achievements li {
   position: relative;
-  padding-left: var(--space-24);
+  padding-left: var(--space-20);
   margin-bottom: var(--space-8);
+  line-height: 1.6;
 }
 
+/* Accent dot instead of the old ▶ glyph, which rendered at text size. */
 .experience-achievements li::before {
-  content: "▶";
+  content: "";
   position: absolute;
-  left: 0;
-  color: var(--portfolio-primary);
+  left: 2px;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--portfolio-primary);
+}
+
+.experience-achievements li:last-child {
+  margin-bottom: 0;
 }
 
 /* Skills Section */
@@ -1834,7 +1898,11 @@ section {
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-card-border);
   overflow: hidden;
-  transition: transform var(--duration-normal) var(--ease-standard);
+  /* `translate`/`opacity` are the reveal that script.js drives (shared with the
+     certification cards); `transform` is the hover lift. */
+  transition: transform var(--duration-normal) var(--ease-standard),
+    translate 0.5s var(--ease-standard),
+    opacity 0.5s var(--ease-standard);
 }
 
 .project-card:hover {
@@ -2370,6 +2438,15 @@ section {
    appear when they scroll in; they just do not fade or move. */
 @media (prefers-reduced-motion: reduce) {
   .timeline-item {
+    transition: none;
+  }
+}
+
+/* Same for the card reveal (T7): the cards still appear, instantly. This also
+   removes the hover transition, which is the intended reduced-motion behaviour. */
+@media (prefers-reduced-motion: reduce) {
+  .certification-card,
+  .project-card {
     transition: none;
   }
 }
