@@ -1448,21 +1448,37 @@ section {
 
 .about-highlights {
   display: flex;
-  gap: var(--space-32);
+  gap: var(--space-12);
   justify-content: center;
   flex-wrap: wrap;
   margin-top: var(--space-32);
 }
 
+/* Chips: a tinted accent pill with the icon in its own dot. */
 .highlight-item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-8);
+  gap: var(--space-10);
+  padding: var(--space-6) var(--space-16) var(--space-6) var(--space-6);
+  border-radius: var(--radius-full);
+  background: var(--portfolio-primary-soft);
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-text);
+  font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
 }
 
 .highlight-item i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--color-surface);
   color: var(--portfolio-primary);
+  font-size: 11px;
 }
 
 /* Timeline Styles */
@@ -1472,22 +1488,43 @@ section {
   margin: 0 auto;
 }
 
+/* The spine: 2px, faded at both ends so it never stops on a hard cut behind
+   the first and last dot. */
 .timeline::before {
   content: "";
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 0;
-  bottom: 0;
+  top: 8px;
+  bottom: 8px;
   width: 2px;
-  background: linear-gradient(to bottom, var(--portfolio-primary), transparent);
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    to bottom,
+    transparent 0,
+    var(--portfolio-primary) 10%,
+    var(--portfolio-primary) 70%,
+    transparent 100%
+  );
 }
 
 .timeline-item {
   position: relative;
-  margin-bottom: var(--space-32);
+  margin-bottom: var(--space-40);
+  /* script.js adds .is-pending once the observer is armed and removes it on
+     intersection. The hidden state is applied from JS, not CSS, so a no-JS
+     visitor (or a script error) still sees the list. */
+  transition: opacity 0.45s var(--ease-standard),
+    transform 0.45s var(--ease-standard);
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-item.is-pending {
   opacity: 0;
-  animation: slideInUp 0.6s ease-out forwards;
+  transform: translateY(24px);
 }
 
 .timeline-item:nth-child(odd) .timeline-content {
@@ -1495,29 +1532,45 @@ section {
   text-align: right;
 }
 
+/* The header is a flex row, so text-align does not reach it. On the left card
+   the pill would otherwise drop to a second line at the card's left edge,
+   while the school name and the body sit at the right. */
+.timeline-item:nth-child(odd) .timeline-header {
+  justify-content: flex-end;
+}
+
 .timeline-item:nth-child(even) .timeline-content {
   margin-left: calc(50% + 2rem);
 }
 
+/* Ringed dot: the surface-colored ring punches it out of the spine, the soft
+   accent ring lifts it. box-shadow keeps the 12px geometry. */
 .timeline-item::before {
   content: "";
   position: absolute;
+  /* Center on the card's first line: 24px card padding + half a 23px h3. */
+  top: 29px;
   left: 50%;
   transform: translateX(-50%);
-  width: 16px;
-  height: 16px;
+  width: 12px;
+  height: 12px;
   background: var(--portfolio-primary);
   border-radius: 50%;
-  border: 4px solid var(--color-background);
+  box-shadow: 0 0 0 4px var(--color-surface),
+    0 0 0 5px var(--portfolio-primary-soft);
   z-index: 1;
 }
 
 .timeline-content {
-  background: var(--color-background);
+  /* Raised above .section--alt. In light mode surface-raised is white, one step
+     above the #f8f9fb page; in dark it is #171b24 against the #12151c section,
+     so the card is visible instead of relying on a shadow that cannot darken
+     an already dark background. */
+  background: var(--color-surface-raised);
   padding: var(--space-24);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-card-border);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 .timeline-header {
@@ -1526,7 +1579,7 @@ section {
   align-items: flex-start;
   margin-bottom: var(--space-16);
   flex-wrap: wrap;
-  gap: var(--space-8);
+  gap: var(--space-12);
 }
 
 .timeline-header h3 {
@@ -1535,11 +1588,14 @@ section {
 }
 
 .timeline-period {
-  background: var(--color-secondary);
+  background: var(--portfolio-primary-soft);
+  color: var(--portfolio-primary);
   padding: var(--space-4) var(--space-12);
   border-radius: var(--radius-full);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .timeline-degree {
@@ -1549,6 +1605,14 @@ section {
 
 .timeline-grade {
   color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+}
+
+/* The data uses <strong>; Inter is loaded up to 600, so pin it instead of
+   letting the browser synthesize a 700. */
+.timeline-grade strong {
+  color: var(--color-text);
+  font-weight: var(--font-weight-semibold);
 }
 
 /* Certifications Grid */
@@ -2004,18 +2068,6 @@ section {
   }
 }
 
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @keyframes blink {
 
   0%,
@@ -2197,6 +2249,11 @@ section {
     text-align: left;
   }
 
+  /* Single column: the left-card right alignment above must not survive. */
+  .timeline-item:nth-child(odd) .timeline-header {
+    justify-content: space-between;
+  }
+
   .skills-grid {
     grid-template-columns: 1fr;
   }
@@ -2306,5 +2363,13 @@ section {
   .nav-menu.active {
     transition-duration: 0.01ms;
     transition-delay: 0s;
+  }
+}
+
+/* The timeline reveal (T6) is a transition. With reduced motion the items still
+   appear when they scroll in; they just do not fade or move. */
+@media (prefers-reduced-motion: reduce) {
+  .timeline-item {
+    transition: none;
   }
 }

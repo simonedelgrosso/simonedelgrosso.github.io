@@ -2,7 +2,7 @@
 
 Status: **In progress.** Created 2026-10-24. Revised 2026-10-24
 after the user answered the open questions.
-Completed: **T0, T1, T2, T3, T4, T5**. Next: **T6**.
+Completed: **T0, T1, T2, T3, T4, T5, T6**. Next: **T7**.
 Previous plan: none (`plans/` did not exist before this file).
 
 ## 0. Progress log
@@ -14,7 +14,8 @@ Previous plan: none (`plans/` did not exist before this file).
 | T2 – Theme toggle | **Done** | `togglecheck.mjs` **28/28** (OS following, persistence, no-flash, ARIA correct before parsing, no init event, live OS follow, storage blocked, Space key, IT label); strict overflow audit clean at 320/375/768/1024/1440 for EN+IT in both themes; contrast 0 failures; Lighthouse a11y **95** EN+IT; both Jekyll builds clean. Two independent review rounds: 2 P3 + 2 minor in round 2, all fixed and re-verified. See the T2 completion log. |
 | T3 – Navbar and language switcher | **Done** | `navprobe.mjs` at 320/375/1440 × EN/IT (menu offset == navbar height, `aria-expanded` round-trip, scroll lock, Escape + focus return, closed menu out of the tab order); `navcheck.mjs` (Enter/Space/Escape with real key events, 44px hit-area hit tests, scrolled glass + hairline, per-theme computed styles); `navflow.mjs` (real mouse clicks: open → link click → closed + scrolled + focus returned; open → resize past the breakpoint → unlocked); `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 0 failures / 311 elements × 4 combinations; Lighthouse a11y **93** EN+IT with no new failures (the three remaining are the pre-existing `heading-order`, `landmark-one-main`, `.project-link` `link-name`; `label-content-name-mismatch` was **removed**); both Jekyll builds clean. See the T3 completion log. Six P3s from independent reviews (dead reduced-motion override; focus lost to `<body>` when the drawer closed by widening; no focus containment while the drawer is open; stale focus tracking; over-broad `inert` cleanup; anchor measured while the drawer's scroll lock was still applied, plus the navbar's scrollbar compensation snapping) fixed and re-verified. |
 | T4 – Hero section | **Done** | `heroprobe.mjs` 16 runs (1440×900 / 768×900 / 375×800 / 320×700 × EN/IT × light/dark): hero 880 at 1440/768, indicator hidden ≤768 and never overlapping the stats, ring `8px` + image 284/240/216, typing advances, counters reach 3/1/3 (after a scroll at 375/320, where the last cards start below the fold), particles 1516–3594 px and recolour on toggle in every run, 0 console/page errors; `overflow.mjs` clean at 320/375 × EN/IT; `contrast.mjs` 311 scanned / 0 failures × 4; `navprobe.mjs` + `navcheck.mjs` unchanged after moving the navbar's `backdrop-filter` to the scrolled/drawer states (documented deviation); Lighthouse `/en/` a11y **93**, CLS **0.002**. See the T4 completion log. |
-| T5 – Section shell | **Done** | `shellprobe.mjs` 16 runs (1440/768/375/320 × EN/IT × light/dark): exactly one `<main>` (child of `<body>`), **0** heading-order skips, the section backgrounds equal the intended base/alt pair **both while `#preloader` is present and after it is removed**, no `.section-title` overflow (all seven fit on one line at 375/320 in both languages), contact `h3` at 19px, 0 console/page errors; real-key-event skip-link flow (one Tab → visible at 8/8, Enter → `#main` focused, `scrollY` 0); `shellnav.mjs` section `offsetTop == rectTop` with `offsetParent = BODY` and the active nav link correct after the wrap; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; `navprobe.mjs` + `navcheck.mjs` unchanged (focus return, 44px hit areas, scrolled glass) with the skip link now the first tab stop; Lighthouse a11y **0.96** EN+IT — `landmark-one-main`, `heading-order` and `skip-link` now pass, only the pre-existing `.project-link` `link-name` (T9) remains; Jekyll 4.4.1 and 3.10.0 builds clean. See the T5 completion log. |
+| T5 - Section shell | **Done** | `shellprobe.mjs` 16 runs (1440/768/375/320 × EN/IT × light/dark): exactly one `<main>` (child of `<body>`), **0** heading-order skips, the section backgrounds equal the intended base/alt pair **both while `#preloader` is present and after it is removed**, no `.section-title` overflow (all seven fit on one line at 375/320 in both languages), contact `h3` at 19px, 0 console/page errors; real-key-event skip-link flow (one Tab → visible at 8/8, Enter → `#main` focused, `scrollY` 0); `shellnav.mjs` section `offsetTop == rectTop` with `offsetParent = BODY` and the active nav link correct after the wrap; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; `navprobe.mjs` + `navcheck.mjs` unchanged (focus return, 44px hit areas, scrolled glass) with the skip link now the first tab stop; Lighthouse a11y **0.96** EN+IT - `landmark-one-main`, `heading-order` and `skip-link` now pass, only the pre-existing `.project-link` `link-name` (T9) remains; Jekyll 4.4.1 and 3.10.0 builds clean. See the T5 completion log. |
+| T6 - About and Education | **Done** | `t6probe.mjs` **16/16** runs (1440/768/375/320 × EN/IT × light/dark): items hidden before (`is-pending`, opacity 0) and revealed on scroll (opacity 1, `transform: none`, mid-transition 0.72-0.87 at 150ms), no-JS shows both items at opacity 1, reduced motion keeps `transition: none` but still reveals; 3 chips at a uniform 40px with `9999px` radius and 26×26 icon dots; desktop cards staggered, ≤768 a single left-aligned column (66-344 at 375, 66-289 at 320); dot 12px with two rings, 2px centred spine, card `box-shadow` present, 2 grade lines per page, 0 console/page errors; `t6head.mjs` odd-card header/pill inside the card at 375-1280 (EN/IT); `t6noio.mjs` (IntersectionObserver deleted) leaves both items visible; `t6bg.mjs` confirms the card sits one step above the alt section in both schemes; grade guard proven on a throwaway copy (EN 1 / IT 2 with one `grade:` removed); `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; Jekyll 4.4.1 build clean. Lighthouse not re-run (not installed in this session); contrast covered the changed surfaces. See the T6 completion log. |
 
 Verification tooling used (temporary, outside the repo, in
 `%LOCALAPPDATA%\Temp\opencode\`): `shot.mjs` (headless Chrome via CDP,
@@ -45,9 +46,16 @@ subtitle metrics, underline geometry, per-section padding and background),
 `shellnav.mjs` (section `offsetTop`/`offsetParent` and nav-link highlighting
 after the `<main>` wrap) and `shellshots.mjs` (section-header screenshots,
 including the focused skip link).
+T6 added: `t6probe.mjs` (16-run timeline reveal/chip/mobile sweep: opacity and
+`transform` before, during and after the reveal, no-JS visibility, reduced
+motion, dot geometry, card elevation), `t6-analyze.mjs` (reads the probe's
+UTF-16 output), `t6shots.mjs` (About/Education clips at 1440/375 × light/dark),
+`t6bg.mjs` (section vs card background per scheme), `t6head.mjs` (odd-card
+header/pill containment at 769–1280) and `t6noio.mjs` (deletes
+`IntersectionObserver` before the page scripts run).
 Screenshots: `baseline\` (before), `t1-dark\`, `t1-light\`, `t1-final\`,
 `t1-review*\`, `t1-320*`, `t2-light\`, `t2-nav\`, `navshots\`,
-`navstates*\`, `hero-1440-*`, `hero2-*`, `hero3-*`, `t5shots\`.
+`navstates*\`, `hero-1440-*`, `hero2-*`, `hero3-*`, `t5shots\`, `t6shots\`.
 
 ## 1. Objective
 
@@ -1383,18 +1391,20 @@ all three inline scripts in both pages still parse; Jekyll 4.4.1 and
 - **The English About header has no subtitle.** `_data/about.yml` only defines
   `it.subtitle`; the empty `<p>` is now guarded, but the text itself is a content
   gap, not a shell gap. Adding the English sentence is a content decision, so it
-  is left for T6/T13 rather than invented here.
+  is left for T13 rather than invented here (T6 kept the guard and added no
+  English copy).
 - The 11px horizontal overflow at 320px with a **classic** scrollbar is unchanged
   (layout viewport 305, `documentElement.scrollWidth` 316, the same 316 as
   recorded in T4); `overflow.mjs` uses overlay scrollbars and stays clean.
 - `.project-link` still fails `link-name` (T9), and the skip link now precedes
   the theme toggle in the tab order by design.
 
-### T6 – About and Education (timeline)
-- [ ] **Objective:**
+### T6 – About and Education (timeline) ✅ Done (2026-10-29)
+- [x] **Objective:**
   - About highlights shown as icon chips.
   - Timeline with a thin gradient line, ringed dots, and raised cards.
-- **Files:** `style.css` around lines 1203–1319.
+- **Files:** `style.css` around lines 1203–1319 (the About and timeline blocks
+  now live at 1437–1616); `script.js` `createObserver()`.
 - **Notes:** Keep the `.timeline-item` reveal driven by the observer. `.age`
   is filled by JS.
 - **Acceptance:**
@@ -1402,6 +1412,134 @@ all three inline scripts in both pages still parse; Jekyll 4.4.1 and
   - The timeline becomes a single left-aligned column on mobile.
   - The grade line shows only when it exists.
 - **Verify:** manual check.
+
+**Completion log (T6)**
+
+*What changed.* `assets/css/style.css`:
+- `.about-highlights`: `gap` 32px → 12px. `.highlight-item` is now a pill
+  (`inline-flex`, `--space-6`/`--space-16` padding, `--radius-full`) on
+  `--portfolio-primary-soft` with a `--color-border-subtle` hairline; the Font
+  Awesome glyph sits in its own 26px white dot (`--color-surface`, accent
+  colour, 11px). The chip's height is therefore 40px in every language and the
+  three chips wrap and centre on mobile.
+- `.timeline::before` is a 2px `--radius-full` spine, inset 8px top and bottom,
+  with a three-stop gradient (`transparent → accent 10% → accent 70% →
+  transparent`) so it fades instead of ending on a hard cut behind the dots.
+- `.timeline-item`: `margin-bottom` 32px → 40px, and the reveal is now a
+  0.45s opacity/`translateY(24px)` **transition** that only applies while the
+  item carries `.is-pending`. The old `opacity: 0; animation: slideInUp …`
+  pair is gone (the keyframes were deleted).
+- `.timeline-item::before`: 16px dot with a 4px `--color-background` border
+  becomes a 12px accent dot with two `box-shadow` rings (4px
+  `--color-surface`, then 1px `--portfolio-primary-soft`), `top: 29px` so it
+  centres on the card's first line (24px card padding + half a 23px `h3`).
+- `.timeline-content`: `background` `--color-background` → **`--color-surface-raised`**,
+  `--shadow-sm` → `--shadow-md`, `gap` 8px → 12px in the header.
+- `.timeline-period`: accent-tinted pill (`--portfolio-primary-soft` +
+  accent text, 600, tabular numerals, `nowrap`) instead of a grey chip.
+- `.timeline-grade`: 15px secondary text; `.timeline-grade strong` pinned to
+  600 (Inter is loaded at 400/500/600, so the data's `<strong>` would otherwise
+  get a synthesized 700).
+- `.timeline-item:nth-child(odd) .timeline-header { justify-content: flex-end }`
+  and the same rule reset to `space-between` in the ≤768 block: the header is a
+  flex row, so `text-align: right` on the left card never reached it and the
+  period pill dropped to a second line at the card's *left* edge while the
+  school name and body sat at the right.
+- `@keyframes slideInUp` removed; a scoped
+  `@media (prefers-reduced-motion: reduce) { .timeline-item { transition: none } }`
+  was added at the end of the file (after the `max-width: 768px` block).
+
+`assets/js/script.js`, `createObserver()`:
+- before observing, `.timeline-item` elements get `.is-pending`;
+- on intersection the class is removed instead of setting
+  `style.animationDelay` / `style.animationFillMode`;
+- `createObserver()` now returns early when `IntersectionObserver` is not a
+  function (`typeof … !== 'function'`, matching the existing `ResizeObserver`
+  guard). Without it the class would be added and never removed, so the list
+  would stay invisible forever on a browser that lacks the API.
+
+*Why JS applies the hidden state.* The old CSS animation started on load, so
+both cards had finished long before anyone scrolled to them: the reveal was
+dead code. Applying `.is-pending` from JS (and keeping the hidden rule scoped to
+that class) means a no-JS visitor, or a visitor whose script failed, still sees
+the list — verified with `Emulation.setScriptExecutionDisabled`.
+
+*Measured (`t6probe.mjs`, 16 runs = 1440/768/375/320 × EN/IT × light/dark).*
+- before the scroll: both items `is-pending`, opacity `0`;
+- 150ms after scrolling the section into view: opacity 0.72–0.87 (timing-dependent);
+- settled: opacity `1`, `transform: none`, `transition` `opacity, transform
+  0.45s`;
+- desktop (1440): cards at 313–681 and 745–1113 (staggered); ≤768: one column
+  (66–344 at 375, 66–289 at 320) with `text-align: left`;
+- chips: 3 per page, uniform 40px height, `9999px` radius, 26×26 icon dots;
+- dot 12px with two `rgb(...)` rings; spine `2px`, centred;
+- `.timeline-grade` count 2 on every run; `docW == innerW`; 0 console/page
+  errors.
+
+*No-JS / reduced motion / no-IO.* No-JS: both items opacity `1`, `is-pending`
+absent. Reduced motion: `transition: none 0s` before and after, and the items
+still go from hidden to visible when scrolled in (the class change is not the
+animation). No `IntersectionObserver` (`t6noio.mjs` deletes it before the page
+scripts run): `typeof IntersectionObserver === 'undefined'` and both items stay
+at opacity `1` with `transform: none`.
+
+*Grade conditional.* Proven on a throwaway copy of the site
+(`%LOCALAPPDATA%\Temp\opencode\t6-nograde`, one English `grade:` line deleted):
+built EN output has 1 `.timeline-grade`, IT still has 2, the real site has 2.
+The guard (`{% if item.grade %}`) already existed and is unchanged.
+
+*Visual review (`t6shots.mjs`, About + Education clips at 1440/375 ×
+light/dark).* Two issues were found and fixed before sign-off: the card and the
+alt section were the **same** colour (invisible elevation, worst in dark), which
+is why `.timeline-content` moved to `--color-surface-raised` (#fff light /
+#171b24 dark against the #12151c section); and the odd card's period pill was
+left-aligned against a right-aligned body, hence the header alignment rule.
+Re-shot after both fixes; `t6head.mjs` then confirmed the heading and pill stay
+inside the card at 375/768 (where the mobile reset applies: header
+`space-between`, text `left`) and at 769/800/900/1024/1280 in both languages
+(odd header `flex-end`, even `space-between`).
+
+*Also verified.* `overflow.mjs` clean at 320/375 × EN/IT × light/dark
+(`docW == innerW`, re-run after the card-background change); `contrast.mjs`
+**0 failures** over 312 (EN) / 313 (IT) elements × light/dark, including the new
+`#171b24` card surface; `node --check assets/js/script.js` exit 0; Jekyll 4.4.1
+build exit 0 and `_site/plans` still absent.
+
+*Known limits / notes.*
+- **No hover lift on the timeline cards.** They are not links or buttons, so a
+  hover affordance would promise an interaction that does not exist; elevation
+  is carried by the surface step, the hairline and the shadow.
+- **The reveal is not gated on `preloaderActive`** (unlike the stat counters,
+  which return early). It does not need to be today: `createPreloader()` always
+  inserts an opaque full-viewport overlay (`--portfolio-dark`, `z-index: 9999`)
+  and removes it ~1.5s after `load`, so both the initial hide and any early
+  reveal happen behind it. If T11 makes the preloader translucent or skips it,
+  revisit this (and note that under reduced motion the hide transition is
+  already `none`, so nothing flashes).
+- **Lighthouse was not re-run for T6** (the binary is not installed in this
+  session and `npx` refused to fetch it). The change adds no markup, roles or
+  focusable elements, and `contrast.mjs` covers the two surfaces that changed;
+  T11/T15 should re-baseline the audit.
+- `data-year="{{ edu.period }}"` in `_includes/education_section.html` is dead
+  markup (`edu.period` is undefined and no script reads it). Left untouched —
+  removing it is a markup cleanup outside this task's CSS brief.
+- The English About section still has no subtitle (content gap, see T5).
+
+*Independent review (2026-10-29): no actionable findings.* The reviewer
+re-checked the diff against the code rather than the log: `node --check` exit 0;
+every new token (`--portfolio-primary-soft`, `--color-surface-raised`,
+`--space-10`, `--space-40`, `--radius-full`, `--shadow-md`,
+`--color-border-subtle`) exists in both schemes; no `slideInUp` reference
+remains; the reduced-motion block sits after the `max-width: 768px` block, so it
+wins the cascade (the T3 round-1 trap is not repeated); `.timeline` has only
+`.timeline-item` children, so the `nth-child(odd)` header rule and its ≤768 reset
+are sound; `.timeline-period` computes to ≈5.2:1 (light) and ≈4.7:1 (dark)
+against the card, above AA for 13px/600; the `IntersectionObserver` guard is
+strictly better than HEAD, where a missing API threw inside `init()` and took
+particles, event listeners, the footer year and the age fill down with it; the
+photo asset state is consistent (no deploy 404). Residual risks it listed — the
+probes living outside the repo, Lighthouse not re-run, and the preloader
+coupling noted above — are already recorded here; nothing needed changing.
 
 ### T7 – Certifications and Experience
 - [ ] **Objective:**

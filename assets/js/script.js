@@ -233,18 +233,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Intersection Observer for Animations
     function createObserver() {
+        // Everything here is observer-driven. Without the API the items must stay
+        // in their default, visible state rather than being hidden below.
+        if (typeof IntersectionObserver !== 'function') {
+            return;
+        }
+
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
 
+        // Timeline items start hidden from JS, not from CSS: a no-JS visitor (or a
+        // script error) still sees the list. The observer below reveals each item
+        // as it scrolls in. The old markup used a CSS animation that started on
+        // load, so both cards had finished long before anyone scrolled to them.
+        document.querySelectorAll('.timeline-item').forEach(el => el.classList.add('is-pending'));
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    // Animate timeline items
+                    // Reveal timeline items
                     if (entry.target.classList.contains('timeline-item')) {
-                        entry.target.style.animationDelay = '0.25s';
-                        entry.target.style.animationFillMode = 'forwards';
+                        entry.target.classList.remove('is-pending');
                     }
 
                     // Animate stat numbers
