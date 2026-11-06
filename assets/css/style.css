@@ -1808,8 +1808,13 @@ section {
 /* Skills Section */
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: var(--space-32);
+  /* `min(100%, 280px)` keeps the tracks from flooring at a width the container
+     cannot hold (the T7 lesson from the certifications grid). Measured: 2
+     columns at 769-1023, 3 at 1024-1279, and at 1280+ auto-fit creates a 4th
+     track that collapses (only 3 categories), so the 3 cards still fill the
+     row. The ≤768 block below pins one column, leaving mobile unchanged. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: var(--space-24);
 }
 
 .skill-category {
@@ -1817,38 +1822,43 @@ section {
   padding: var(--space-24);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-card-border);
+  box-shadow: var(--shadow-xs);
 }
 
 .skill-category h3 {
   color: var(--portfolio-primary);
   font-size: var(--font-size-xl);
-  margin-bottom: var(--space-24);
+  margin-bottom: var(--space-20);
   text-align: center;
 }
 
-.skill-item {
-  margin-bottom: var(--space-16);
+/* Tags, not bars: a flex row that wraps, so a category reads at a glance. */
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-8);
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.skill-name {
-  display: block;
+.skill-tag {
+  padding: var(--space-6) var(--space-12);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-card-border);
+  background: var(--portfolio-primary-soft);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  margin-bottom: var(--space-8);
+  /* Tags are not interactive: the border colour is emphasis only, no lift. */
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
 }
 
-.skill-bar {
-  height: 8px;
-  background: var(--color-secondary);
-  border-radius: var(--radius-full);
-  overflow: hidden;
-}
-
-.skill-progress {
-  height: 100%;
-  background: var(--portfolio-gradient);
-  border-radius: var(--radius-full);
-  width: 0%;
-  transition: width 1s ease-out;
+.skill-tag:hover {
+  border-color: var(--portfolio-primary);
+  color: var(--portfolio-primary);
 }
 
 /* Projects Section */

@@ -2,7 +2,7 @@
 
 Status: **In progress.** Created 2026-10-24. Revised 2026-10-24
 after the user answered the open questions.
-Completed: **T0, T1, T2, T3, T4, T5, T6, T7**. Next: **T8**.
+Completed: **T0, T1, T2, T3, T4, T5, T6, T7, T8**. Next: **T9**.
 Previous plan: none (`plans/` did not exist before this file).
 
 ## 0. Progress log
@@ -19,6 +19,7 @@ Previous plan: none (`plans/` did not exist before this file).
 
 | T7 - Certifications and Experience | **Done** | `t7probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): 3 columns at 1440/1024 (400px / 309.66px each), 2 at 768, 1 at 375; every row has equal card heights and **identical badge tops**; icon 56×56 at `border-radius: 50%` on the accent tint in both schemes; badge is a 9999px pill (133×28, 600) narrower than the card; cards hidden before (`is-pending`, opacity 0) and revealed on scroll with **no inline styles**; 0 console/page errors; `t7shared.mjs` real mouse hover lifts a card exactly **2px with `scale: none`** and returns, project cards still reveal through the same path, and with `IntersectionObserver` deleted all certification and project cards stay visible; `t7wrap.mjs` on a throwaway copy with one deliberately long title: 2 lines at 1440 / 3 lines at 1024, heights still equal and badges still aligned; `t7count.mjs` hero counters read 3/1/3 (EN) and 3/1/3 (IT); reduced motion `transition: 0s` yet still reveals; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; `t6probe.mjs` 16/16 unchanged (timeline untouched); **`t7classic.mjs` resolved the long-open 320px/316 classic-scrollbar overflow** (`.certifications-grid` `minmax(300px,1fr)` → `minmax(min(100%,300px),1fr)`; `docW` 316 → 305 == `clientWidth`); Jekyll 4.4.1 and 3.10.0 builds clean, `_site/plans` absent. See the T7 completion log. |
 
+| T8 - Skills as simple tags | **Done** | `t8probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): **11 tags in 3 categories** on every run with the expected translated titles (EN "Programming Languages / Frameworks & Libraries / Markup & Styling", IT "Linguaggi di Programmazione / Frameworks & Librerie / Markup & Styling"), all `<ul class="skill-tags" role="list">` with `list-style: none`, tags 92×35 pills at `9999px` with a non-transparent tint, 13px/500, none crossing its category card; 3 columns at 1440/1024, 1 at 375 (and 1 at 768, unchanged by the pre-existing override); **0 leftover `.skill-bar`/`.skill-progress`/`.skill-item`/`.skill-name`/`data-skill` references** in the built HTML; hover changes only border+colour (`rgba(15,23,42,.08)` → `#4f46e5`, geometry 92×35 unchanged); 320px with a classic scrollbar: `docW 305 == clientW`, no overflow, widest tag 264 < card 289; no-JS renders all 11 tags; 0 console/page errors; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` **0 failures** over 279/280 elements × 4 (down from 312/313 — the 33 bar/name/progress elements no longer exist); `t6probe.mjs` and `t7probe.mjs` still **16/16** after the observer selector change; Jekyll 4.4.1 and 3.10.0 builds clean, no bar markup in parity output, `_site/plans` absent. See the T8 completion log. |
 Verification tooling used (temporary, outside the repo, in
 `%LOCALAPPDATA%\Temp\opencode\`): `shot.mjs` (headless Chrome via CDP,
 per-width full-page screenshots), `themecheck.mjs` (theme-resolution
@@ -66,10 +67,19 @@ alignment when a title wraps, run against the throwaway `t7-longtitle` copy) and
 `t7classic.mjs` (classic-scrollbar width audit that reads
 `documentElement.clientWidth` instead of `innerWidth`, which is what finally
 located the 320px/316 overflow).
+T8 added: `t8probe.mjs` (16-run skills-tag sweep: category titles per language,
+tag/category counts, pill geometry, list semantics, per-card containment,
+columns, plus 320px classic-scrollbar, hover, no-JS and reduced-motion passes),
+`t8-analyze.mjs` (UTF-16 reader and assertions; filters the zero-width tracks
+`auto-fit` reports), `t8shots.mjs` (section clips at 1440/1024/375 ×
+light/dark), `t8view.mjs` (plain viewport captures after `scrollIntoView`,
+which avoids the clip-offset artefact `t8shots.mjs` hit at 375) and
+`t8grid.mjs` (column map across every container breakpoint:
+360/600/768/769/900/1023/1024/1279/1280/1440).
 Screenshots: `baseline\` (before), `t1-dark\`, `t1-light\`, `t1-final\`,
 `t1-review*\`, `t1-320*`, `t2-light\`, `t2-nav\`, `navshots\`,
 `navstates*\`, `hero-1440-*`, `hero2-*`, `hero3-*`, `t5shots\`, `t6shots\`,
-`t7shots\`, `t7shots2\`.
+`t7shots\`, `t7shots2\`, `t8shots\`, `t8views\`.
 
 ## 1. Objective
 
@@ -144,7 +154,7 @@ Visual changes come mainly from CSS. Markup changes are small and targeted.
 | Theme selectors | The CSS uses bare `[data-color-scheme="…"]` selectors, not `body[...]`, so moving the attribute to `<html>` works once the body attribute is removed. |
 | Fonts | The CSS asks for `"Space Grotesk"` first, but only Inter is loaded. |
 | Theme toggle | `createThemeToggle()` is commented out (around lines 429–460). It uses inline styles, has no persistence, and toggles `document.body`. |
-| Skills | `_data/skills.yml`: `items.{programming_languages, frameworks, markup}[]` with `name` and `value`, plus `translations.{it,en}.sections`. The bar is animated through `.skill-progress[data-skill]` → `animateSkillBar()` (around line 162) and the observer selector (around line 212). |
+| Skills | `_data/skills.yml`: `items.{programming_languages, frameworks, markup}[]` with `name` and `value`, plus `translations.{it,en}.sections`. The bar is animated through `.skill-progress[data-skill]` → `animateSkillBar()` (around line 162) and the observer selector (around line 212). **As of T8 this is history**: the bars are replaced by `.skill-tag` pills, `animateSkillBar()` and the `.skill-progress` hook are gone, and `value` is no longer rendered (see the T8 log). |
 | Particles | Colors are hard-coded in JS: `rgba(255,255,255,…)` and `rgba(0,200,255,…)` around lines 587–608. They would be invisible or wrong in light mode. |
 | JS hooks to keep | `#navbar`, `.navbar.scrolled`, `#nav-menu`, `#hamburger .bar`, `.nav-link.active`, `#typing-text`, `.typing-container .cursor.blinking`, `.stat-number[data-target]`, `.timeline-item`, `.certification-card`, `.project-card[data-category]`, `.filter-badge.active[aria-pressed]`, `#contact-form`, `#contact-me`, `.lang-switch.en-active/.it-active`, `.lang-slider`, `.lang-link.active`, `#scroll-progress`, `.age`, `.animated`, and the preloader, scroll-to-top button and particle canvas that JS creates. |
 | Inline JS styling | Preloader `cssText`, project-card hover `style.transform` (around lines 816–826), hamburger bar transforms (around lines 41–66), and card reveal opacity/transform in the observer. |
@@ -1745,8 +1755,8 @@ false sense of safety. It also repeated the two accepted, pre-existing
 project-card items (`scale(1.02)` in the JS hover and the un-transitioned
 `box-shadow`), both already assigned to T9.
 
-### T8 – Skills as simple tags
-- [ ] **Objective:** Replace progress bars with pill tags grouped in category
+### T8 – Skills as simple tags ✅ Done (2026-11-06)
+- [x] **Objective:** Replace progress bars with pill tags grouped in category
   cards.
 - **Files:**
   - `_includes/skills_section.html`: replace `.skill-item`, `.skill-bar` and
@@ -1779,6 +1789,132 @@ project-card items (`scale(1.02)` in the JS hover and the un-transitioned
   - No overflow at 320px.
   - Tags are readable in both themes.
 - **Verify:** `jekyll build`, the `rg` command above, then a manual check.
+
+**Completion log (T8)**
+
+*What changed.* `_includes/skills_section.html`:
+- the `.skills-list` → `.skill-item` → `.skill-name`/`.skill-bar` →
+  `.skill-progress` tree collapses to
+  `<ul class="skill-tags" role="list"><li class="skill-tag">{{ subitem.name }}</li></ul>`;
+- `.skills-grid`, `.skill-category` and the `h3` label wrappers are unchanged, so
+  the section header, heading order and anchors are untouched;
+- `role="list"` is explicit because `list-style: none` drops list semantics in
+  Safari/VoiceOver; the `value` field is no longer read.
+
+`assets/js/script.js`:
+- the unused `skillBars` const is gone (it was declared and never referenced);
+- `animateSkillBar()` is deleted;
+- the `.skill-progress` branch is removed from the observer callback and from
+  the observed-element selector, which is now
+  `.timeline-item, .stat-number, .certification-card, .project-card`.
+
+`assets/css/style.css`:
+- `.skill-item`, `.skill-name`, `.skill-bar`, `.skill-progress` deleted;
+- `.skill-tags`: `display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 8px`, `list-style: none`, zero margin/padding;
+- `.skill-tag`: pill (`--radius-full`), `--portfolio-primary-soft` background,
+  `--color-card-border` hairline, `--color-text`, 13px/500, `6px 12px` padding;
+  hover moves the border and text to `--portfolio-primary` with a
+  `--duration-fast` transition — emphasising without implying an action, so no
+  lift/transform (the T6 rule for non-interactive surfaces);
+- `.skills-grid`: `repeat(auto-fit, minmax(350px, 1fr))` →
+  `repeat(auto-fit, minmax(min(100%, 280px), 1fr))`;
+- `.skill-category` gains `--shadow-xs` and its `h3` margin tightens to 20px,
+  matching the certification cards from T7.
+
+*Deviation from the plan's stated reason (observed fact).* The plan says
+`minmax(350px, 1fr)` "overflows at 320px". It did **not**: the pre-existing
+`@media (max-width: 768px) { .skills-grid { grid-template-columns: 1fr } }`
+override (still present, untouched) already prevented that, and T7's
+`t7classic.mjs` measured the skills cards at 273px wide / inside the container at
+320px before this change. The `minmax(min(100%, 280px), 1fr)` change is
+therefore about removing the arbitrary 350px floor, and its only visible effect
+is above 768px: 3 columns at 1024 (was 2) and a denser grid through ~1100px.
+The ≤768 override was deliberately **not** removed, to keep the mobile layout
+exactly as it was.
+
+*Measured (`t8probe.mjs`, 16 runs = 1440/1024/768/375 × EN/IT × light/dark).*
+- 11 tags in 3 categories on every run; 0 leftover `.skill-bar`,
+  `.skill-progress`, `.skill-item`, `.skill-name` nodes;
+- titles match the data in both languages (see the progress row);
+- every category is `<ul class="skill-tags" role="list">` with
+  `list-style-type: none`; tags are `radius: 9999px`, 13px/500, 92×35, tinted;
+- no tag crosses its card's right edge in any run;
+- columns: 3 at 1440 and 1024, 1 at 768 and 375; `docW == clientW` everywhere;
+  the full breakpoint map (including 2 columns at 769–1023 and the collapsed
+  4th track at ≥1280) is in the `t8grid.mjs` sweep below;
+- 320px with a classic scrollbar: `clientW 305`, `docW 305`, one 273px column,
+  widest tag right edge 264 < card 289;
+- hover: border `rgba(15, 23, 42, 0.08)` → `rgb(79, 70, 229)`, colour
+  `rgb(15, 23, 42)` → `rgb(79, 70, 229)`, geometry unchanged at 92×35;
+- no-JS: 11 tags, 3 categories (static markup, nothing to reveal);
+- 0 console/page errors.
+
+*Readability.* `contrast.mjs` reports **0 failures** over 279 (EN) / 280 (IT)
+elements × light/dark. The count fell from 312/313 by exactly 33 — 11 names, 11
+bars and 11 progress tracks no longer exist — which confirms nothing else
+dropped out of the audit. Tag text is `--color-text` on the accent tint (very
+high contrast both ways); the hover accent is the same pairing used by the T7
+badge, already measured at ≈5.2:1 / ≈4.7:1.
+
+*Regression checks.* `t6probe.mjs` and `t7probe.mjs` still report **16/16** with
+0 console errors after the observer selector change (timeline, certification and
+project reveals share it); `overflow.mjs` clean at 320/375 × EN/IT × light/dark;
+`t7classic.mjs` confirms `docW == clientW == 305` at 320px with the certifications
+and projects grids unchanged at 273px; `node --check` exit 0; Jekyll 4.4.1 and
+`jekyll _3.10.0_ build` exit 0, parity output has 11 tags per language and no bar
+markup, `_site/plans` absent, `apps/piano/` untouched.
+
+*Visual review (`t8shots.mjs`, `t8view.mjs`).* Reviewed at 1440/1024/375 ×
+light/dark in EN and IT. Tags read as a compact, scannable list; the 5-tag
+category wraps to two rows at 1024 and on phones while the 3-tag categories stay
+on one. `t8shots.mjs`'s clip maths misframed the 375 capture (title clipped at
+the top), so the 375 and dark-1440 review used `t8view.mjs`, which scrolls the
+section into view and captures the plain viewport — the section itself was
+correct in both.
+
+*Column map (`t8grid.mjs`, 360/600/768/769/900/1023/1024/1279/1280/1440).* The
+CSS comment on `.skills-grid` claimed "2 in the 769-1000 range"; the sweep showed
+it runs to 1023 and that a 4th track appears at 1280+. Measured: 1 column at
+≤768 (the override), 2 at 769–1023 (cards 349–356px), 3 at 1024–1279 (310–315px),
+and 4 tracks at ≥1280 with the empty one collapsed, so the three cards still fill
+the row (395–400px). `docW == clientWidth` at every width. The comment was
+corrected to match.
+
+*Independent review (2026-11-06): no actionable findings.* The reviewer confirmed
+the `skillBars` const was genuinely unused on HEAD, that all four bar rules and
+every JS reference were removed together, that every token the new rules consume
+exists in both schemes, that no generic `ul`/`li` rule interferes, that the ≤768
+`1fr` override really is still inside the `max-width: 768px` block, and that a
+repo-wide sweep finds no `skill-progress`/`skill-bar`/`data-skill`/
+`animateSkillBar`/`skillBars`/`skills-list` references outside this plan. It
+independently recomputed the column arithmetic and flagged one thing worth
+checking: my CSS comment's upper bound for the 2-column range (see the sweep
+above, now fixed). Residual risks it listed — probes outside the repo, Lighthouse
+not re-baselined, the reduced-motion colour transition, and a future
+`t.sections`/`items` key mismatch rendering an empty `<ul>` — are already noted
+here or are data-drift concerns rather than defects.
+
+*Known limits / notes.*
+- **`value` in `_data/skills.yml` is now unreferenced.** Left in place on
+  purpose (the plan asks for it), so the bars could be restored without a data
+  migration. It is not output, so it cannot leak into the page.
+- **The `.skill-tag` hover keeps a 150ms colour transition under
+  `prefers-reduced-motion`.** It is colour only — no movement — so it does not
+  need suppressing, and the probe reports `0.15s, 0.15s` as expected. T11 is the
+  task that sweeps every animated surface and should confirm this decision
+  rather than inherit it silently.
+- **The plan's 320px-overflow premise was wrong** (see the deviation note); the
+  grid change is a density improvement above 768px, not a fix for an active
+  overflow. Recorded so T12/T14 do not hunt for a regression that never existed.
+- **An empty `<ul>` would render if a `t.sections` key ever lost its matching
+  `items` key** (`section_items` would be nil). The two files are co-versioned
+  and correct today, so this is data-drift hygiene, not a defect; a
+  `{% if section_items %}` guard could be added if the data ever becomes
+  dynamic.
+- Lighthouse was not re-run (still not installed in this session). The change
+  removes 33 elements and adds list semantics (`ul[role=list]` + `li`), so the
+  `list`/`listitem` axe rules change shape; T11/T15 should re-baseline.
 
 ### T9 – Projects
 - [ ] **Objective:** Refine project cards (gradient icon panel, overlay link,
@@ -1989,8 +2125,11 @@ project-card items (`scale(1.02)` in the JS hover and the un-transitioned
 - `100vh` on `.hero` produces a large blank band under the fixed navbar on
   short/mobile viewports (**fixed in T4**: `min(100vh, 880px)` +
   `min(100svh, 880px)` with `padding: 96px 0 80px`).
-- `.skills-grid` uses `minmax(350px, 1fr)`, which overflows below 350px
-  (T8).
+- `.skills-grid` used `minmax(350px, 1fr)`; the plan predicted an overflow below
+  350px, but the `≤768px` `1fr` override already prevented one (measured at
+  273px at 320px in T7). **Resolved in T8** as a density change:
+  `minmax(min(100%, 280px), 1fr)`, which yields 3 columns at 1024 instead of 2;
+  mobile is unchanged because the override was kept.
 - **11px horizontal overflow at 320px, only with a classic scrollbar** (found
   in T4, pre-existing and verified identical at HEAD): with a 15px scrollbar
   the layout viewport is 305px and `documentElement.scrollWidth` is 316, so a

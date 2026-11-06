@@ -11,10 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const typingText = document.getElementById('typing-text');
     const heroCursor = document.querySelector('.typing-container .cursor');
     const statNumbers = document.querySelectorAll('.stat-number');
-    
-    // Skills Elements
-    const skillBars = document.querySelectorAll('.skill-progress');
-    
+
     // Form Element
     const contactForm = document.getElementById('contact-form');
     const contactMeBtn = document.getElementById('contact-me');
@@ -225,12 +222,6 @@ document.addEventListener('DOMContentLoaded', function() {
         requestAnimationFrame(tick);
     }
 
-    // Animate Skills Progress Bars
-    function animateSkillBar(skillBar) {
-        const targetWidth = skillBar.getAttribute('data-skill');
-        skillBar.style.width = targetWidth + '%';
-    }
-
     // Intersection Observer for Animations
     function createObserver() {
         // Everything here is observer-driven. Without the API the items must stay
@@ -273,12 +264,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         animateCounter(entry.target);
                     }
 
-                    // Animate skill bars
-                    if (entry.target.classList.contains('skill-progress') && !entry.target.classList.contains('animated')) {
-                        entry.target.classList.add('animated');
-                        setTimeout(() => animateSkillBar(entry.target), 500);
-                    }
-
                     // Add fade-in animation to cards
                     if (entry.target.classList.contains('certification-card') || 
                         entry.target.classList.contains('project-card')) {
@@ -289,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, observerOptions);
 
         // Observe elements
-        document.querySelectorAll('.timeline-item, .stat-number, .skill-progress, .certification-card, .project-card')
+        document.querySelectorAll('.timeline-item, .stat-number, .certification-card, .project-card')
             .forEach(el => observer.observe(el));
     }
 

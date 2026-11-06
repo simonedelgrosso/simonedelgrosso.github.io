@@ -14,16 +14,16 @@
             {% assign section_items = items[section_name] %}
             <div class="skill-category">
             <h3>{{ section_label }}</h3>
-            <div class="skills-list">
+            {%- comment -%}
+                role="list" keeps the list semantics that list-style: none drops
+                in Safari/VoiceOver. `value` stays in the data file but is no
+                longer rendered, so the bars could be restored later.
+            {%- endcomment -%}
+            <ul class="skill-tags" role="list">
                 {% for subitem in section_items %}
-                <div class="skill-item">
-                    <span class="skill-name">{{ subitem.name }}</span>
-                    <div class="skill-bar">
-                    <div class="skill-progress" data-skill="{{ subitem.value }}"></div>
-                    </div>
-                </div>
+                <li class="skill-tag">{{ subitem.name }}</li>
                 {% endfor %}
-            </div>
+            </ul>
             </div>
             {% endfor %}
         </div>
