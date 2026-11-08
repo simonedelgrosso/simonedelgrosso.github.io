@@ -19,7 +19,7 @@ Previous plan: none (`plans/` did not exist before this file).
 | T5 - Section shell | **Done** | `shellprobe.mjs` 16 runs (1440/768/375/320 × EN/IT × light/dark): exactly one `<main>` (child of `<body>`), **0** heading-order skips, the section backgrounds equal the intended base/alt pair **both while `#preloader` is present and after it is removed**, no `.section-title` overflow (all seven fit on one line at 375/320 in both languages), contact `h3` at 19px, 0 console/page errors; real-key-event skip-link flow (one Tab → visible at 8/8, Enter → `#main` focused, `scrollY` 0); `shellnav.mjs` section `offsetTop == rectTop` with `offsetParent = BODY` and the active nav link correct after the wrap; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; `navprobe.mjs` + `navcheck.mjs` unchanged (focus return, 44px hit areas, scrolled glass) with the skip link now the first tab stop; Lighthouse a11y **0.96** EN+IT - `landmark-one-main`, `heading-order` and `skip-link` now pass, only the pre-existing `.project-link` `link-name` (T9) remains; Jekyll 4.4.1 and 3.10.0 builds clean. See the T5 completion log. |
 | T6 - About and Education | **Done** | `t6probe.mjs` **16/16** runs (1440/768/375/320 × EN/IT × light/dark): items hidden before (`is-pending`, opacity 0) and revealed on scroll (opacity 1, `transform: none`, mid-transition 0.72-0.87 at 150ms), no-JS shows both items at opacity 1, reduced motion keeps `transition: none` but still reveals; 3 chips at a uniform 40px with `9999px` radius and 26×26 icon dots; desktop cards staggered, ≤768 a single left-aligned column (66-344 at 375, 66-289 at 320); dot 12px with two rings, 2px centred spine, card `box-shadow` present, 2 grade lines per page, 0 console/page errors; `t6head.mjs` odd-card header/pill inside the card at 375-1280 (EN/IT); `t6noio.mjs` (IntersectionObserver deleted) leaves both items visible; `t6bg.mjs` confirms the card sits one step above the alt section in both schemes; grade guard proven on a throwaway copy (EN 1 / IT 2 with one `grade:` removed); `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; Jekyll 4.4.1 build clean. Lighthouse not re-run (not installed in this session); contrast covered the changed surfaces. See the T6 completion log. |
 | T7 - Certifications and Experience | **Done** | `t7probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): 3 columns at 1440/1024 (400px / 309.66px each), 2 at 768, 1 at 375; every row has equal card heights and **identical badge tops**; icon 56×56 at `border-radius: 50%` on the accent tint in both schemes; badge is a 9999px pill (133×28, 600) narrower than the card; cards hidden before (`is-pending`, opacity 0) and revealed on scroll with **no inline styles**; 0 console/page errors; `t7shared.mjs` real mouse hover lifts a card exactly **2px with `scale: none`** and returns, project cards still reveal through the same path, and with `IntersectionObserver` deleted all certification and project cards stay visible; `t7wrap.mjs` on a throwaway copy with one deliberately long title: 2 lines at 1440 / 3 lines at 1024, heights still equal and badges still aligned; `t7count.mjs` hero counters read 3/1/3 (EN) and 3/1/3 (IT); reduced motion `transition: 0s` yet still reveals; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; `t6probe.mjs` 16/16 unchanged (timeline untouched); **`t7classic.mjs` resolved the long-open 320px/316 classic-scrollbar overflow** (`.certifications-grid` `minmax(300px,1fr)` → `minmax(min(100%,300px),1fr)`; `docW` 316 → 305 == `clientWidth`); Jekyll 4.4.1 and 3.10.0 builds clean, `_site/plans` absent. See the T7 completion log. |
-| T8 - Skills as simple tags | **Done** | `t8probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): **11 tags in 3 categories** on every run with the expected translated titles (EN "Programming Languages / Frameworks & Libraries / Markup & Styling", IT "Linguaggi di Programmazione / Frameworks & Librerie / Markup & Styling"), all `<ul class="skill-tags" role="list">` with `list-style: none`, tags 92×35 pills at `9999px` with a non-transparent tint, 13px/500, none crossing its category card; 3 columns at 1440/1024, 1 at 375 (and 1 at 768, unchanged by the pre-existing override); **0 leftover `.skill-bar`/`.skill-progress`/`.skill-item`/`.skill-name`/`data-skill` references** in the built HTML; hover changes only border+colour (`rgba(15,23,42,.08)` → `#4f46e5`, geometry 92×35 unchanged); 320px with a classic scrollbar: `docW 305 == clientW`, no overflow, widest tag 264 < card 289; no-JS renders all 11 tags; 0 console/page errors; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` **0 failures** over 279/280 elements × 4 (down from 312/313 — the 33 bar/name/progress elements no longer exist); `t6probe.mjs` and `t7probe.mjs` still **16/16** after the observer selector change; Jekyll 4.4.1 and 3.10.0 builds clean, no bar markup in parity output, `_site/plans` absent. See the T8 completion log. |
+| T8 - Skills as simple tags | **Done** | `t8probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): **11 tags in 3 categories** on every run with the expected translated titles (EN "Programming Languages / Frameworks & Libraries / Markup & Styling", IT "Linguaggi di Programmazione / Frameworks & Librerie / Markup & Styling"), all `<ul class="skill-tags" role="list">` with `list-style: none`, tags 92×35 pills at `9999px` with a non-transparent tint, 13px/500, none crossing its category card; 3 columns at 1440/1024, 1 at 375 (and 1 at 768, unchanged by the pre-existing override); **0 leftover `.skill-bar`/`.skill-progress`/`.skill-item`/`.skill-name`/`data-skill` references** in the built HTML; hover changes only border+colour (`rgba(15,23,42,.08)` → `#4f46e5`, geometry 92×35 unchanged); 320px with a classic scrollbar: `docW 305 == clientW`, no overflow, widest tag 264 < card 289; no-JS renders all 11 tags; 0 console/page errors; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` **0 failures** over 279/280 elements × 4 (down from 312/313 — the 33 bar/name/progress elements no longer exist); `t6probe.mjs` and `t7probe.mjs` still **16/16** after the observer selector change; Jekyll 4.4.1 and 3.10.0 builds clean, no bar markup in parity output, `_site/plans` absent. See the T8 completion log. *(Chip geometry was later changed to mirror the About badges — see §13.)* |
 | T9 - Projects | **Done** | `t9probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): one card, 420×410 (328×434 at 375), centred in the grid at every width (offset 0–0.5px), raised surface + shadow, 200px gradient image panel, 92px `50%` mark disc, overlay hidden at rest, link `aria-label="GitHub: …"` + `rel="noopener noreferrer"` + `target="_blank"` + 56×56 hit area, 4 tech pills at `9999px`/12px, 3 filter pills (`9999px`, ≥38px high, 13px), hierarchy 12/22/15px, hero projects target `1`, 0 console/page errors; **real-click filters** All→Mobile→Web→All toggle `aria-pressed` correctly (Mobile hides the single web card: display `none`), and **real Enter** on a focused filter does the same (`focusedBeforeEnter: mobile`); **real mouse hover** lifts `matrix(1,0,0,1,0,-4)` with `scale` untouched and raises the overlay 0→1, returning on leave; **real Tab walk** reaches `.project-link` with `:focus-visible` true, a `rgb(255,255,255) solid 2px` outline, overlay opacity 1 and the mark faded to 0; throwaway 4-project copy: 3-across at 1440 (equal 434px heights, tech pills on one line) / 2×2 at 1024 / 1 column at 768+375, filters Mobile=3, Web=1, All=4 with correct `aria-pressed`; 320px classic scrollbar `docW 305 == clientW` (card 273, 16–289); no-JS renders the card and the static `aria-pressed`; reduced motion `card 0s`; `overflow.mjs` clean ×8; `contrast.mjs` **0 failures** over 279/280 × 4; `t6probe`/`t7probe`/`t8probe` still **0 failures**; `t9focus2.mjs` cold-state focus (forced `.is-pending`) reveals the card at `opacity 1`/`translate none` with the scrim at `0s` **in the first frame**, and blurring no longer fades it out; `t9rm.mjs` proves reduced motion still zeroes the card transition in the focused **and** focused+hover states (`0s` / `property: none`, lift applied instantly) while normal hover still animates; Jekyll 4.4.1 and 3.10.0 builds clean, `_site/plans` absent. See the T9 completion log. |
 | T10 - Contact and Footer | **Done** | `t10probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): 5 contact cards with 44×44 soft accent discs, 12px radius and shadows; the form has 4 controls at **45px** high with a **10px** radius, labels 13px, and a 44px submit; the footer renders 5 social discs (40px, `50%`, hairline), each with a label, `aria-hidden` glyph and `rel="noopener noreferrer"` on the four `target="_blank"` links (5 rels per page including the project link); contact grid 2 columns at ≥769, 1 at ≤768; `docW == clientW` everywhere; 0 console/page errors. **Focus** (real `:focus` on all four controls, both themes): accent border + `rgba(79,70,229,.35)`/`rgba(129,140,248,.45)` ring, `h 45`; focusing a contact link accents the card border and shows `:focus-within`. **Validation**: an empty submit is blocked natively (`valid false`, handler never runs, focus moves to `#name`); a filled submit runs the handler once, resets the form, stays in the same document and produces `Page.frameScheduledNavigation` → `mailto:simonedelgrosso@outlook.it?subject=Hello%20there&body=A%20message%20body.%0A%0A--%0ATest%20User%0A%3Ctest%40example.com%3E`. 320px classic: `docW 305 == clientW`; no-JS renders 5 cards, 4 inputs, 5 social links; Jekyll 4.4.1 + 3.10.0 clean, `_site/plans` absent. See the T10 completion log. |
 | T11 - JS-generated UI and reduced motion | **Done** | `t11probe.mjs` / `t11extra.mjs` / `t11nav.mjs`, 0 failures. **Normal motion**: preloader observed with **no inline style**, `rgb(248,249,251)` in light and `rgb(11,13,18)` in dark (equal to the theme's page colour), removed **700 ms after `load`**; particle canvas present; typing runs (`cursorAnim: blink`); counters animate; smooth scroll is 1398 at 60 ms after clicking the button, then 0; the button is `visibility: hidden` at the top with no inline style and gains `.is-visible` after scrolling; progress bar advances (395.8px). **Reduced motion** (`prefers-reduced-motion: reduce`): preloader removed **305 ms after load**, **no canvas**, typing shows `Full-Stack Developer` immediately, `cursorAnim: none`, counters already at their targets (3/1/3), scroll is **instant** (0 at 60 ms), and every audited surface computes `1e-05s` for `transition-duration`/`animation-duration` (scroll-to-top, progress bar, skill tag, social link, stat, button) versus real values (0.25/0.05/0.15 s) without the preference. Drawer still opens/closes with `aria-expanded`, `nav-open` and focus return in both modes. Footer clearance: no overlap at 375 or 320 (`docW 305 == clientW`), and `t11clear.mjs` found none anywhere in 320–768. `contrast.mjs` 0 failures ×4; `overflow.mjs` clean ×8; `t6`/`t7`/`t8`/`t9`/`t10` probes all still 0 failures; Jekyll 4.4.1 + 3.10.0 clean. See the T11 completion log. |
@@ -1874,8 +1874,11 @@ project-card items (`scale(1.02)` in the JS hover and the un-transitioned
 - `.skill-tag`: pill (`--radius-full`), `--portfolio-primary-soft` background,
   `--color-card-border` hairline, `--color-text`, 13px/500, `6px 12px` padding;
   hover moves the border and text to `--portfolio-primary` with a
-  `--duration-fast` transition — emphasising without implying an action, so no
+  `--duration-fast` transition - emphasising without implying an action, so no
   lift/transform (the T6 rule for non-interactive surfaces);
+  **changed later — see §13**: the chip now mirrors the About badge (26px icon
+  dot, 15px type, `6px 16px 6px 6px` padding), so the 13px/92×35 numbers in this
+  log describe the T8 state, not the shipped one;
 - `.skills-grid`: `repeat(auto-fit, minmax(350px, 1fr))` →
   `repeat(auto-fit, minmax(min(100%, 280px), 1fr))`;
 - `.skill-category` gains `--shadow-xs` and its `h3` margin tightens to 20px,
@@ -3084,3 +3087,84 @@ remain with the owner.
   these sessions; `contrast.mjs` and the probes cover the same surfaces), a
   Safari/iOS check (no WebKit available), and the missing English About
   subtitle (a content decision).
+
+## 13. Post-plan follow-up — skill chips mirror the About badges
+
+Requested by the owner on 2026-11-08, after T14 closed: *"I want the skill pills
+to resemble the badges in the about section, with icons for the languages and
+frameworks."*
+
+**What changed.**
+- `_data/skills.yml`: every item gains an `icon` (additive; `name`/`value`
+  untouched). Brand icons where Font Awesome 6.7.2 has one — `fa-js`, `fa-java`,
+  `fa-python`, `fa-angular`, `fa-react`, `fa-html5`, `fa-css3-alt`,
+  `fa-microsoft` (.NET) — and solid stand-ins where it does not: `fa-hashtag`
+  for C#, `fa-database` for SQL, `fa-code` for XML.
+- `_includes/skills_section.html`: each tag is now
+  `<li class="skill-tag"><i class="{{ icon }}" aria-hidden="true"></i><span>{{ name }}</span></li>`.
+  The icon is decorative, so the accessible name stays the visible text. The
+  list semantics (`ul[role=list]`, `li`) and the category wrappers are unchanged.
+- `assets/css/style.css`: `.skill-tag` now uses the About chip geometry —
+  `inline-flex`, `gap: 10px`, `padding: 6px 16px 6px 6px`,
+  `--color-border-subtle` hairline, `--portfolio-primary-soft` background,
+  15px/500. New `.skill-tag i` is the 26px surface dot with the accent glyph.
+  `.skill-tags` gap 8 → 12 to match `.about-highlights`.
+- `tools/probes/t8probe.mjs` + `t8-analyze.mjs`: the probe now also reads each
+  chip's icon box and its `::before` glyph, and the analyzer asserts 11 chips,
+  15px/500 type, a 26×26 `50%` dot with a non-transparent background, **and a
+  resolved glyph** (an unknown icon class renders an empty `::before`).
+
+**Measured parity with `.highlight-item`** (both themes, computed):
+
+| | About chip | Skill chip |
+|---|---|---|
+| height / radius | 40px / `9999px` | **40px / `9999px`** |
+| background | `rgba(79,70,229,.12)` / `rgba(129,140,248,.14)` | **identical** |
+| border | `--color-border-subtle` | **identical** |
+| padding | `6px 16px 6px 6px` | **identical** |
+| font | 15px / 500 | **identical** |
+| icon dot | 26px, `50%`, `--color-surface` | **identical** |
+| icon size | 11px | **13px** (deliberate: brand marks need one more pixel) |
+
+**Verification (executed).** All 22 glyphs resolve (`≠ none`, and C# correctly
+renders `#`); `t8probe` **16/16** with `failures 0` (chips 136×40 at 1440, 11
+tags, containment at 320: widest chip right edge 259 < card 289); `contrast.mjs`
+**0 failures**, now scanning **301/302** elements (up from 279/280 — the icon
+dots added text-bearing nodes); `overflow.mjs` clean (8 runs); `t12probe accept`
+**20/20**; screenshots reviewed at 1440 light/dark and 375.
+
+**Notes.**
+- The 13px icon is the only deviation from the About chip; 11px made the JS,
+  React and Angular marks mushy at 40% zoom.
+- Chips are still non-interactive; the hover border/colour from T8 remains
+  (it changes nothing at rest, where they match About exactly).
+
+*Review response (2026-11-08): two P3s, both fixed.* The review confirmed the
+token-for-token parity with `.highlight-item`, that all 11 class names exist in
+FA 6.7.2 and that `all.min.css` carries the Brands set, and that the icon is
+correctly `aria-hidden` with the label carrying the name. Two robustness gaps:
+
+1. **The glyph assertion only blacklisted `none`/`""`.** A `content` of
+   `normal` (the property's initial value) is truthy and would have passed.
+   Measured what Chrome actually reports: a valid icon → `"\uf3b8"`, an unknown
+   class → `none`, and with the Font Awesome stylesheet blocked (CDP
+   `Network.setBlockedURLs`) **`none` as well** — `normal` never appeared in
+   either failure mode, so the old rule did catch them. The rule is still
+   inverted to a positive test (`/^".+"$/`) because it now asserts "a real
+   glyph resolved" rather than enumerating bad values. Proven both ways on a
+   throwaway copy (`icon: "fa-brands fa-nonexistent-xyz"` plus one entry with
+   the key deleted): the probe fails with
+   `missing glyph ["JavaScript=none","Java=null"]`.
+2. **A missing `icon` key rendered an empty 26px dot.** The include now emits
+   the `<i>` only when `subitem.icon` exists and adds `skill-tag--text-only`,
+   which re-balances the padding so the label is not glued to the left edge.
+   The probe fails on such a chip (the same throwaway copy proves it), so the
+   data must be fixed rather than silently degrading.
+
+Also taken from the review: the 320px containment figures were only printed.
+They are now assertions — every chip must stay inside its category card and
+`docW` must not exceed the layout viewport; the run prints
+`tallestTagRight=259 catRight=289`.
+
+Re-verified after the changes: `t8probe` **16/16**, `contrast` **0 failures**
+(301/302 scanned), `t12probe accept` **20/20**, `jekyll build` 0.

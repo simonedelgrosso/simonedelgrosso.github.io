@@ -17,11 +17,16 @@
             {%- comment -%}
                 role="list" keeps the list semantics that list-style: none drops
                 in Safari/VoiceOver. `value` stays in the data file but is no
-                longer rendered, so the bars could be restored later.
+                longer rendered, so the bars could be restored later. The icon
+                is decorative (aria-hidden): the name carries the meaning, and
+                it matches the About chips' icon-dot pill. A missing `icon` key
+                drops the dot and re-balances the padding instead of rendering
+                an empty 26px circle; `t8probe` fails on such a chip, so it
+                should not reach a deploy unnoticed.
             {%- endcomment -%}
             <ul class="skill-tags" role="list">
                 {% for subitem in section_items %}
-                <li class="skill-tag">{{ subitem.name }}</li>
+                <li class="skill-tag{% unless subitem.icon %} skill-tag--text-only{% endunless %}">{% if subitem.icon %}<i class="{{ subitem.icon }}" aria-hidden="true"></i>{% endif %}<span>{{ subitem.name }}</span></li>
                 {% endfor %}
             </ul>
             </div>

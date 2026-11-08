@@ -2,28 +2,39 @@ items:
   programming_languages:
     - name: "JavaScript"
       value: 90
+      icon: "fa-brands fa-js"
     - name: "C#"
       value: 85
+      icon: "fa-brands fa-microsoft"
     - name: "Java"
       value: 70
+      icon: "fa-brands fa-java"
     - name: "Python"
       value: 75
+      icon: "fa-brands fa-python"
     - name: "SQL"
       value: 85
+      icon: "fa-solid fa-database"
   frameworks:
     - name: "Angular"
       value: 90
+      icon: "fa-brands fa-angular"
     - name: "React.js"
       value: 80
+      icon: "fa-brands fa-react"
     - name: ".NET"
       value: 85
+      icon: "fa-brands fa-microsoft"
   markup:
     - name: "HTML"
       value: 90
+      icon: "fa-brands fa-html5"
     - name: "CSS"
       value: 85
+      icon: "fa-brands fa-css3-alt"
     - name: "XML"
       value: 75
+      icon: "fa-solid fa-code"
 
 translations:
   it:

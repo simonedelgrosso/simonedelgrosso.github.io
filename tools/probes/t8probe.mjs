@@ -63,7 +63,14 @@ const STATE = `(function () {
     var h3 = c.querySelector('h3');
     var ul = c.querySelector('ul.skill-tags');
     var tags = Array.prototype.map.call(c.querySelectorAll('.skill-tag'), function (t) {
-      return { text: t.textContent.trim(), box: box(t) };
+      var i = t.querySelector('i');
+      var ics = i ? getComputedStyle(i) : null;
+      var glyph = i ? getComputedStyle(i, '::before').content : null;
+      return { text: t.textContent.trim(), box: box(t),
+        icon: i ? { w: Math.round(i.getBoundingClientRect().width),
+          h: Math.round(i.getBoundingClientRect().height),
+          radius: ics.borderRadius, bg: ics.backgroundColor, color: ics.color,
+          glyph: glyph } : null };
     });
     return { title: h3 ? h3.textContent.trim() : null, hasUl: !!ul,
       role: ul ? ul.getAttribute('role') : null, listStyle: ul ? getComputedStyle(ul).listStyleType : null,

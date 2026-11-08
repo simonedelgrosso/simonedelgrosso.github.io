@@ -1719,28 +1719,55 @@ section {
   text-align: center;
 }
 
-/* Tags, not bars: a flex row that wraps, so a category reads at a glance. */
+/* Tags, not bars: a flex row that wraps, so a category reads at a glance.
+   Geometry, colour and type mirror the About chips (.highlight-item) so the
+   two "technology" surfaces read the same. */
 .skill-tags {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: var(--space-8);
+  gap: var(--space-12);
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
 .skill-tag {
-  padding: var(--space-6) var(--space-12);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-10);
+  /* Asymmetric on purpose: the icon dot sits 6px from the edge, the label gets
+     the roomier side, exactly like .highlight-item. */
+  padding: var(--space-6) var(--space-16) var(--space-6) var(--space-6);
   border-radius: var(--radius-full);
-  border: 1px solid var(--color-card-border);
+  border: 1px solid var(--color-border-subtle);
   background: var(--portfolio-primary-soft);
   color: var(--color-text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
   /* Tags are not interactive: the border colour is emphasis only, no lift. */
   transition: border-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard);
+}
+
+/* The icon in its own surface dot, same 26px circle as the About chips. */
+.skill-tag i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--portfolio-primary);
+  font-size: 13px;
+}
+
+/* Fallback for a data entry without an icon: no dot, but the label keeps a
+   symmetric inset instead of hugging the left edge. */
+.skill-tag--text-only {
+  padding-left: var(--space-16);
 }
 
 .skill-tag:hover {

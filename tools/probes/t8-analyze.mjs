@@ -24,7 +24,21 @@ for (const r of d.runs.filter(x => x.lang)) {
   const tags = s.cats.flatMap(c => c.tags);
   if (!tags.every(t => t.box.radius === '9999px')) problems.push('radius ' + tags[0].box.radius);
   if (!tags.every(t => t.box.bg !== 'rgba(0, 0, 0, 0)')) problems.push('tag bg transparent');
-  if (!tags.every(t => t.box.fs === '13px' && t.box.fw === '500')) problems.push('tag font ' + tags[0].box.fs + '/' + tags[0].box.fw);
+  if (!tags.every(t => t.box.fs === '15px' && t.box.fw === '500')) problems.push('tag font ' + tags[0].box.fs + '/' + tags[0].box.fw);
+  // Chips mirror the About badges: every one carries a 26px icon dot with a
+  // resolved Font Awesome glyph. The computed `content` must be a quoted string
+  // (e.g. `"\uf3b8"`): an unknown icon class yields `none`, and a blocked or
+  // missing stylesheet yields `normal` — a truthy value that a bare
+  // "not none" check would wave through.
+  const isGlyph = (g) => typeof g === 'string' && /^".+"$/.test(g);
+  if (!tags.every(t => t.icon && t.icon.w === 26 && t.icon.h === 26)) {
+    problems.push('icon dot ' + JSON.stringify(tags.map(t => t.icon && t.icon.w + 'x' + t.icon.h)));
+  }
+  if (!tags.every(t => t.icon && t.icon.radius === '50%')) problems.push('icon radius ' + (tags[0].icon && tags[0].icon.radius));
+  if (!tags.every(t => t.icon && t.icon.bg !== 'rgba(0, 0, 0, 0)')) problems.push('icon bg transparent');
+  if (!tags.every(t => t.icon && isGlyph(t.icon.glyph))) {
+    problems.push('missing glyph ' + JSON.stringify(tags.filter(t => !t.icon || !isGlyph(t.icon.glyph)).map(t => t.text + '=' + (t.icon && t.icon.glyph))));
+  }
   if (!tags.every(t => t.box.w < t.box.h * 12)) problems.push('tag too wide ' + Math.max(...tags.map(t => t.box.w)));
   // Tags must stay inside their category card.
   for (const c of s.cats) {
@@ -49,6 +63,20 @@ console.log('320px:', 'clientW=' + n.narrow.clientW, 'docW=' + n.narrow.docW, 'c
   'overflow=' + (n.narrow.docW > n.narrow.clientW ? 'YES' : 'no'),
   'tallestTagRight=' + Math.max(...n.narrow.cats.flatMap(c => c.tags.map(t => t.box.r))),
   'catRight=' + n.narrow.cats[0].cat.r);
+// Enforce what used to be printed only: at 320px every chip must stay inside
+// its own category card, and the page must not overflow the layout viewport.
+for (const c of n.narrow.cats) {
+  for (const t of c.tags) {
+    if (t.box.r > c.cat.r + 1) {
+      fail++;
+      console.log(`FAIL 320px: chip "${t.text}" right ${t.box.r} > card right ${c.cat.r}`);
+    }
+  }
+}
+if (n.narrow.docW > n.narrow.clientW) {
+  fail++;
+  console.log(`FAIL 320px: document ${n.narrow.docW} > layout viewport ${n.narrow.clientW}`);
+}
 const h = d.runs.find(x => x.hover);
 const hb = h.hover.before.box, ha = h.hover.after.box;
 console.log('hover: border ' + hb.border + ' -> ' + ha.border,
