@@ -469,13 +469,16 @@ pre code {
 .form-control {
   display: block;
   width: 100%;
-  padding: var(--space-8) var(--space-12);
+  /* Padding + line-height land at ~44.5px; min-height guarantees the target
+     never drops below 44 if the font or line-height changes. */
+  min-height: 44px;
+  padding: var(--space-10) var(--space-16);
   font-size: var(--font-size-md);
   line-height: 1.5;
   color: var(--color-text);
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-base);
+  border-radius: var(--radius-md);
   transition:
     border-color var(--duration-fast) var(--ease-standard),
     box-shadow var(--duration-fast) var(--ease-standard);
@@ -484,6 +487,8 @@ pre code {
 textarea.form-control {
   font-family: var(--font-family-base);
   font-size: var(--font-size-base);
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-12);
 }
 
 select.form-control {
@@ -507,13 +512,16 @@ select.form-control {
   background-image: var(--select-caret-light);
 }
 
+/* A border colour alone is a weak indicator; the ring makes focus obvious in
+   both themes without moving the layout. */
 .form-control:focus {
   border-color: var(--color-primary);
   outline: none;
-  box-shadow: none;
+  box-shadow: var(--focus-ring);
 }
 
-/* Prevent global focus-visible outline from adding a second border on inputs */
+/* Prevent the global focus-visible outline from stacking a second ring on the
+   inputs; the box-shadow above already covers the visible ring. */
 .form-control:focus-visible {
   outline: none;
 }
@@ -2130,21 +2138,35 @@ section {
   display: flex;
   align-items: center;
   gap: var(--space-16);
-  padding: var(--space-16);
+  padding: var(--space-16) var(--space-20);
   background: var(--color-surface);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-card-border);
+  box-shadow: var(--shadow-xs);
+  transition: border-color var(--duration-normal) var(--ease-standard),
+    box-shadow var(--duration-normal) var(--ease-standard);
 }
 
+/* The card contains the only link, so the emphasis belongs on hover and on
+   keyboard focus, not on a lift that would suggest the whole card is clickable. */
+.contact-item:hover,
+.contact-item:focus-within {
+  border-color: var(--portfolio-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Soft accent disc, matching the certification and project marks. The old
+   gradient circle read differently from the rest of the page in both themes. */
 .contact-icon {
-  width: 48px;
-  height: 48px;
-  background: var(--portfolio-gradient);
-  border-radius: 50%;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-on-accent);
+  flex: none;
+  width: 44px;
+  height: 44px;
+  background: var(--portfolio-primary-soft);
+  border-radius: 50%;
+  color: var(--portfolio-primary);
   font-size: var(--font-size-lg);
 }
 
@@ -2170,24 +2192,29 @@ section {
   padding: var(--space-32);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-card-border);
-  transition: border 250ms;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration-normal) var(--ease-standard),
+    box-shadow var(--duration-normal) var(--ease-standard);
   min-width: 0;
-}
-
-.contact-form:hover {
-  border: 1px solid var(--portfolio-primary);
 }
 
 .contact-form input:focus,
 .contact-form textarea:focus {
-  border: 1px solid var(--portfolio-primary);
+  border-color: var(--portfolio-primary);
+}
+
+/* Match the 44px controls above it: the primary action should not be the
+   shortest thing in the form. Scoped here rather than on `.btn` so the hero
+   buttons keep their own sizing. */
+.contact-form .btn {
+  min-height: 44px;
 }
 
 /* Footer */
 .footer {
   background: var(--color-background-alt);
   border-top: 1px solid var(--color-border-subtle);
-  padding: var(--space-32) 0;
+  padding: var(--space-40) 0;
   text-align: center;
 }
 
@@ -2199,30 +2226,42 @@ section {
   gap: var(--space-16);
 }
 
+.footer-content p {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+}
+
 .text-accent {
   color: var(--portfolio-primary);
 }
 
 .social-links {
   display: flex;
-  gap: var(--space-16);
+  gap: var(--space-8);
 }
 
+/* The hairline gives the disc a shape on the white footer surface, where a
+   surface-coloured circle on a surface-coloured background was invisible. */
 .social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 40px;
   height: 40px;
   background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text);
-  transition: all var(--duration-fast) var(--ease-standard);
+  color: var(--color-text-secondary);
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
 }
 
 .social-links a:hover {
   background: var(--portfolio-primary);
-  color: var(--color-on-accent);
+  border-color: var(--portfolio-primary);
+  color: var(--color-btn-primary-text);
   transform: translateY(-2px);
 }
 

@@ -2,7 +2,7 @@
 
 Status: **In progress.** Created 2026-10-24. Revised 2026-10-24
 after the user answered the open questions.
-Completed: **T0, T1, T2, T3, T4, T5, T6, T7, T8, T9**. Next: **T10**.
+Completed: **T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10**. Next: **T11**.
 Previous plan: none (`plans/` did not exist before this file).
 
 ## 0. Progress log
@@ -21,6 +21,8 @@ Previous plan: none (`plans/` did not exist before this file).
 
 | T8 - Skills as simple tags | **Done** | `t8probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): **11 tags in 3 categories** on every run with the expected translated titles (EN "Programming Languages / Frameworks & Libraries / Markup & Styling", IT "Linguaggi di Programmazione / Frameworks & Librerie / Markup & Styling"), all `<ul class="skill-tags" role="list">` with `list-style: none`, tags 92×35 pills at `9999px` with a non-transparent tint, 13px/500, none crossing its category card; 3 columns at 1440/1024, 1 at 375 (and 1 at 768, unchanged by the pre-existing override); **0 leftover `.skill-bar`/`.skill-progress`/`.skill-item`/`.skill-name`/`data-skill` references** in the built HTML; hover changes only border+colour (`rgba(15,23,42,.08)` → `#4f46e5`, geometry 92×35 unchanged); 320px with a classic scrollbar: `docW 305 == clientW`, no overflow, widest tag 264 < card 289; no-JS renders all 11 tags; 0 console/page errors; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` **0 failures** over 279/280 elements × 4 (down from 312/313 — the 33 bar/name/progress elements no longer exist); `t6probe.mjs` and `t7probe.mjs` still **16/16** after the observer selector change; Jekyll 4.4.1 and 3.10.0 builds clean, no bar markup in parity output, `_site/plans` absent. See the T8 completion log. |
 | T9 - Projects | **Done** | `t9probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): one card, 420×410 (328×434 at 375), centred in the grid at every width (offset 0–0.5px), raised surface + shadow, 200px gradient image panel, 92px `50%` mark disc, overlay hidden at rest, link `aria-label="GitHub: …"` + `rel="noopener noreferrer"` + `target="_blank"` + 56×56 hit area, 4 tech pills at `9999px`/12px, 3 filter pills (`9999px`, ≥38px high, 13px), hierarchy 12/22/15px, hero projects target `1`, 0 console/page errors; **real-click filters** All→Mobile→Web→All toggle `aria-pressed` correctly (Mobile hides the single web card: display `none`), and **real Enter** on a focused filter does the same (`focusedBeforeEnter: mobile`); **real mouse hover** lifts `matrix(1,0,0,1,0,-4)` with `scale` untouched and raises the overlay 0→1, returning on leave; **real Tab walk** reaches `.project-link` with `:focus-visible` true, a `rgb(255,255,255) solid 2px` outline, overlay opacity 1 and the mark faded to 0; throwaway 4-project copy: 3-across at 1440 (equal 434px heights, tech pills on one line) / 2×2 at 1024 / 1 column at 768+375, filters Mobile=3, Web=1, All=4 with correct `aria-pressed`; 320px classic scrollbar `docW 305 == clientW` (card 273, 16–289); no-JS renders the card and the static `aria-pressed`; reduced motion `card 0s`; `overflow.mjs` clean ×8; `contrast.mjs` **0 failures** over 279/280 × 4; `t6probe`/`t7probe`/`t8probe` still **0 failures**; `t9focus2.mjs` cold-state focus (forced `.is-pending`) reveals the card at `opacity 1`/`translate none` with the scrim at `0s` **in the first frame**, and blurring no longer fades it out; `t9rm.mjs` proves reduced motion still zeroes the card transition in the focused **and** focused+hover states (`0s` / `property: none`, lift applied instantly) while normal hover still animates; Jekyll 4.4.1 and 3.10.0 builds clean, `_site/plans` absent. See the T9 completion log. |
+
+| T10 - Contact and Footer | **Done** | `t10probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): 5 contact cards with 44×44 soft accent discs, 12px radius and shadows; the form has 4 controls at **45px** high with a **10px** radius, labels 13px, and a 44px submit; the footer renders 5 social discs (40px, `50%`, hairline), each with a label, `aria-hidden` glyph and `rel="noopener noreferrer"` on the four `target="_blank"` links (5 rels per page including the project link); contact grid 2 columns at ≥769, 1 at ≤768; `docW == clientW` everywhere; 0 console/page errors. **Focus** (real `:focus` on all four controls, both themes): accent border + `rgba(79,70,229,.35)`/`rgba(129,140,248,.45)` ring, `h 45`; focusing a contact link accents the card border and shows `:focus-within`. **Validation**: an empty submit is blocked natively (`valid false`, handler never runs, focus moves to `#name`); a filled submit runs the handler once, resets the form, stays in the same document and produces `Page.frameScheduledNavigation` → `mailto:simonedelgrosso@outlook.it?subject=Hello%20there&body=A%20message%20body.%0A%0A--%0ATest%20User%0A%3Ctest%40example.com%3E`. 320px classic: `docW 305 == clientW`; no-JS renders 5 cards, 4 inputs, 5 social links; Jekyll 4.4.1 + 3.10.0 clean, `_site/plans` absent. See the T10 completion log. |
 
 Verification tooling used (temporary, outside the repo, in
 `%LOCALAPPDATA%\Temp\opencode\`): `shot.mjs` (headless Chrome via CDP,
@@ -90,6 +92,14 @@ the card transition), `t9-multi.mjs` + `t9multi-probe.mjs` (throwaway
 `t9-multi` copy with the three mobile projects uncommented, to prove the grid
 with 4 cards and the Mobile/Web/All filters with 3+1), and `static.mjs` (tiny
 static server, rebuilt after the temp cleanup removed the original).
+T10 added: `t10probe.mjs` (16-run contact/footer sweep plus real focus on every
+control in both themes, an empty-submit validation check, a filled submit whose
+`mailto:` navigation is captured through CDP `Page.frameScheduledNavigation`,
+320px classic-scrollbar, no-JS), `t10-analyze.mjs` (UTF-16 reader and
+assertions), `t10base.mjs` (before captures and baseline metrics) and
+`t10shots.mjs` (contact/footer at 1440/375 × light/dark plus focus and hover),
+and `t10socialfocus.mjs` (the social disc's ring after the redundant override
+was removed).
 Screenshots: `baseline\` (before), `t1-dark\`, `t1-light\`, `t1-final\`,
 `t1-review*\`, `t1-320*`, `t2-light\`, `t2-nav\`, `navshots\`,
 `navstates*\`, `hero-1440-*`, `hero2-*`, `hero3-*`, `t5shots\`, `t6shots\`,
@@ -2182,12 +2192,13 @@ here and required no change.
   the footer icons, and the probe asserts the accessible name exists; a real
   audit is still outstanding for T11/T15.
 
-### T10 – Contact and Footer
-- [ ] **Objective:** Contact rows as elegant cards; a refined form (larger
+### T10 – Contact and Footer ✅ Done (2026-11-08)
+- [x] **Objective:** Contact rows as elegant cards; a refined form (larger
   inputs, soft borders, accent focus ring); a minimal footer with refined
   social icons.
 - **Files:**
-  - `style.css` around lines 505–575 and 1634–1743
+  - `style.css` around lines 505–575 and 1634–1743 (the form controls are at
+    468–530, contact/footer at 2105–2270)
   - `_includes/footer_section.html`: add `aria-label`s and
     `rel="noopener noreferrer"`
 - **Notes:** Keep the `mailto:` submit behaviour.
@@ -2196,6 +2207,127 @@ here and required no change.
   - Submitting opens the mail client.
   - Focus states are visible in both themes.
 - **Verify:** manual check.
+
+**Completion log (T10)**
+
+*What changed.* `_includes/footer_section.html`:
+- the four `target="_blank"` social links gain `rel="noopener noreferrer"`.
+  Their `aria-label`s and `aria-hidden` glyphs were already added in T2, so
+  nothing else changed. (Five links per page now carry the attribute — four in
+  the footer, one on the project card.)
+
+`assets/css/style.css`, form controls (shared design-system block, used only by
+the contact form):
+- `.form-control`: `min-height: 44px` (padding + line-height already land at
+  ~44.5px, so the floor only matters if the font metrics change), padding
+  `10px 16px` (was `8px 12px`), `--radius-md` (10px, was `--radius-base` 8px).
+  Textareas get `12px` vertical padding.
+- `.form-control:focus` now sets `box-shadow: var(--focus-ring)`; it previously
+  set `box-shadow: none` and relied on a border colour change alone, which was
+  the weakest possible focus indicator. The global outline stays suppressed to
+  avoid a double ring.
+- `.contact-form .btn { min-height: 44px }` so the primary action matches the
+  controls above it (the shared `.btn` is 40px; scoped here so the hero buttons
+  keep their size).
+
+Contact section:
+- `.contact-item`: padding `16/20`, `--shadow-xs`, and a border/shadow
+  transition; `:hover` and **`:focus-within`** move the border to the accent
+  and the shadow to `--shadow-sm`. No lift — only the link is clickable, so a
+  lift would misrepresent the target.
+- `.contact-icon`: the accent **gradient** circle becomes a 44px soft accent
+  disc (`--portfolio-primary-soft` + accent glyph), matching the certification
+  and project marks.
+- `.contact-form`: gains `--shadow-sm`; the `:hover { border: … }` rule is
+  removed (hovering a form is not a meaningful affordance — nothing happens
+  until you type) and the bare `transition: border 250ms` is replaced with an
+  explicit `border-color`/`box-shadow` transition.
+
+Footer:
+- padding 32 → 40; `.footer-content p` is 15px `--color-text-secondary`.
+- `.social-links` gap 16 → 8; each link is 40px with a **hairline border**
+  (the surface-coloured disc was invisible on the surface-coloured footer) and
+  `--color-text-secondary` glyph; hover fills with the accent and uses
+  `--color-btn-primary-text`; `transition: all` replaced with four explicit
+  properties. The focus ring comes from the global `:focus-visible` rule
+  (accent, 2px, 2px offset) — see the review note below.
+
+*Measured (`t10probe.mjs`, 16 runs = 1440/1024/768/375 × EN/IT × light/dark).*
+- 5 contact cards, each with a 44×44 disc at `50%`, 12px card radius, shadow;
+- form 484×571 at 1440 (328×539 at 375), 12px radius, shadow;
+- four controls at **45px** high (44 + 1px borders), 10px radius, all
+  `required`, email `type="email"`; labels 13px; submit 44px;
+- footer 5 social discs at 40px / `50%` with a visible border, every one
+  labelled, every glyph `aria-hidden`, and `rel="noopener noreferrer"` on all
+  four `target="_blank"` links;
+- contact grid 2 columns at 1024/1440 and 1 at 768/375; `docW == clientW` in
+  every run; 0 console/page errors.
+
+*Focus (both themes, real `:focus`).* Every control reports an accent border
+plus `rgba(79,70,229,.35) 0 0 0 ~3px` (light) or
+`rgba(129,140,248,.45) 0 0 0 ~3px` (dark) — a ring, not just a hue change, and
+visible against both surfaces. Focusing a contact link accents that card's
+border and reports `:focus-within` true, so the keyboard path gets the same
+emphasis as hover.
+
+*Validation and mailto (real clicks).* Empty submit: `checkValidity()` false,
+the submit handler never runs (`submits: 0`, `resets: 0`) and focus moves to
+`#name` — native validation, untouched. Filled submit: handler runs once, the
+form resets, the document does not change, and Chrome reports
+`Page.frameScheduledNavigation` / `Page.frameRequestedNavigation` with
+`mailto:simonedelgrosso@outlook.it?subject=Hello%20there&body=A%20message%20body.%0A%0A--%0ATest%20User%0A%3Ctest%40example.com%3E`
+— the exact encoded recipient, subject and signature block, i.e. the mail
+client hand-off is real and not just a string in the code. (A `location.href`
+setter on `Location.prototype` cannot spy on this: `location` is an exotic
+object whose `[[Set]]` bypasses JS accessors, which is why the probe switched
+to the CDP navigation event.)
+
+*Independent review (2026-11-08): one P3, fixed.* The reviewer confirmed the
+three files are T10-only, that every token used exists in both themes, that the
+`.contact-form input:focus` / `.form-control:focus` accent tokens resolve to the
+same value in both schemes (redundant but not divergent), the 44.5px control
+arithmetic under the global `border-box`, the 320px width budget, that
+`rel="noopener noreferrer"` now covers exactly the five `target="_blank"` links
+(and correctly none of the `mailto:` ones), and hand-checked contrast
+(≈7.4:1 footer text light, ≈5.6:1 contact glyph). Its P3: the
+`.social-links a:focus-visible { outline-offset: 2px }` I added was a **no-op**,
+because the global `:focus-visible` already sets `2px` — the rule could not do
+what its comment claimed and would have silently pinned the discs if the global
+offset were ever retuned.
+
+Removed the rule. `t10socialfocus.mjs` then measured the focused disc in both
+themes: `outlineColor` `rgb(79,70,229)` / `rgb(129,140,248)`, `solid`, `2px`,
+`offset 2px`, `:focus-visible` true, `40×40` — i.e. the ring still renders
+exactly as before, from the global rule.
+
+*Also verified.* `contrast.mjs` **0 failures** over 279/280 elements × 4
+including the new footer text, social glyphs and the accent-on-soft contact
+discs; `overflow.mjs` clean ×8; `t7classic.mjs` still `docW 305 == clientW`;
+`t6probe.mjs`, `t7probe.mjs`, `t8probe.mjs` and `t9probe.mjs` all still
+**0 failures** (the shared `.form-control` change does not touch them);
+`node --check` exit 0; Jekyll 4.4.1 and `jekyll _3.10.0_ build` exit 0 with
+5 `rel` links per page, `_site/plans` absent, `apps/piano/` untouched.
+
+*Visual review (`t10base.mjs`, `t10shots.mjs`).* Contact and footer reviewed at
+1440/375 × light/dark in EN and IT, plus a focused input and a hovered social
+icon in both themes. The form reads as a card on both surfaces, the focus ring
+is unmistakable, and the social discs have a visible edge on the white footer.
+
+*Known limits / notes.*
+- **The scroll-to-top button overlaps the last social icon at 375px.** It is a
+  fixed 56px disc inset 20px from the bottom-right; at that width the footer
+  spans the full container, so the button sits on top of the "X" icon when the
+  page is scrolled to the very bottom. It is T11's element (its own task says
+  "restyle … the scroll-to-top button"), so the fix belongs with that
+  rework — either its geometry or a footer `padding-bottom` that clears it.
+  Recorded here rather than guessed at now.
+- **The `.social-links a:hover` lift is 2px of motion** and is not suppressed
+  under `prefers-reduced-motion`; T11 owns the full reduced-motion sweep.
+- **`.form-control` is a design-system class**, so the 44px height and 10px
+  radius also apply to any future form. Only the contact form uses it today
+  (verified: no other include references it).
+- **Lighthouse was not re-run** (still unavailable). The footer `link-name`
+  audit was already fixed in T2; nothing here adds or removes accessible names.
 
 ### T11 – JS-generated UI and reduced motion
 - [ ] **Objective:**
