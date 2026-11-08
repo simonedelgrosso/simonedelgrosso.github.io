@@ -800,6 +800,41 @@ select.form-control {
   pointer-events: none;
 }
 
+/* Preloader: created by script.js and removed once the page has loaded. The
+   background is the canonical page token, so it follows the active theme. (The
+   old JS read --portfolio-dark, a per-theme alias that already carried the same
+   value as --color-background in both schemes — this just stops relying on the
+   alias.) */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: var(--color-background);
+  opacity: 1;
+  transition: opacity 0.3s var(--ease-standard);
+}
+
+#preloader.is-hidden {
+  opacity: 0;
+}
+
+.preloader__spinner {
+  width: 52px;
+  height: 52px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--portfolio-primary);
+  border-radius: 50%;
+  animation: preloader-spin 0.9s linear infinite;
+}
+
+@keyframes preloader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Navigation Styles */
 .navbar {
   position: fixed;
@@ -1378,12 +1413,43 @@ body.nav-open {
   justify-content: center;
   font-size: 18px;
   z-index: 990;
-  transition: background-color var(--duration-normal) var(--ease-standard),
-    transform var(--duration-normal) var(--ease-standard);
   box-shadow: var(--shadow-md);
+  /* Visibility is a class set by script.js. `visibility` keeps the button out
+     of the tab order and out of the accessibility tree while it is hidden. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity var(--duration-normal) var(--ease-standard),
+    visibility 0s linear var(--duration-normal),
+    transform var(--duration-normal) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
 
-  i {
-    color: var(--color-on-accent);
+.scroll-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.scroll-to-top:hover {
+  background: var(--color-primary-hover);
+}
+
+.scroll-to-top i {
+  color: var(--color-on-accent);
+}
+
+/* On phones the footer spans the full width, so a 50px disc inset 30px sat on
+   top of the last social icon. Smaller + closer to the corner, and the footer
+   below reserves room for it. */
+@media (max-width: 480px) {
+  .scroll-to-top {
+    bottom: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
   }
 }
 
@@ -2548,6 +2614,12 @@ section {
   .contact-form {
     padding: var(--space-16);
   }
+
+  /* Room for the fixed scroll-to-top disc (44px at 16px inset) so it cannot
+     overlap the last social icon when the page is scrolled to the bottom. */
+  .footer {
+    padding-bottom: 72px;
+  }
 }
 
 @media (max-width: 360px) {
@@ -2594,5 +2666,31 @@ section {
   .project-card,
   .project-card:focus-within {
     transition: none;
+  }
+}
+
+/* The whole-site catch-all. The blocks above document the intentional cases;
+   this one guarantees that no surface added later can animate movement under
+   reduced motion (hover lifts, the drawer, the progress bar, the preloader
+   spinner, the cursor blink). Colours and opacities end up instant too, which
+   is harmless — they are not motion, but there is nothing to gain from keeping
+   a 150 ms fade when the preference is set.
+
+   The cursor is forced visible: the blink keyframes end on `opacity: 0`, so a
+   0.01 ms single iteration would otherwise leave an invisible caret. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+
+  .typing-container .cursor {
+    animation: none !important;
+    opacity: 1;
   }
 }

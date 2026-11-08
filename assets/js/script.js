@@ -22,6 +22,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Runtime flags
     let preloaderActive = true;
 
+    // Read once at startup. The CSS block at the end of style.css turns off
+    // transitions/animations; this flag covers the effects driven from JS
+    // (particle canvas, typing, counters, smooth scrolling). Changing the OS
+    // setting takes effect on the next load, which is the norm for this kind of
+    // preference and keeps the effects from being torn down mid-animation.
+    const reduceMotion = typeof window.matchMedia === 'function' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     // Typing Effect Configuration
     const phrases = [
         'Full-Stack Developer',
@@ -136,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const offsetTop = element.offsetTop - 80; // Account for fixed navbar
             window.scrollTo({
                 top: offsetTop,
-                behavior: 'smooth'
+                behavior: reduceMotion ? 'auto' : 'smooth'
             });
         }
     }
@@ -186,6 +194,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Animate Counter Numbers (fixed per-increment interval, idempotent, no overshoot)
     function animateCounter(element) {
         const target = parseInt(element.getAttribute('data-target')) || 0;
+
+        // Reduced motion: show the final value immediately.
+        if (reduceMotion) {
+            element.textContent = String(target);
+            return;
+        }
+
         const currentValue = parseInt((element.textContent || '0').replace(/\D/g, '')) || 0;
         if (element.dataset.animating === 'true' || currentValue === target) return;
 
@@ -392,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function scrollToTop() {
         window.scrollTo({
             top: 0,
-            behavior: 'smooth'
+            behavior: reduceMotion ? 'auto' : 'smooth'
         });
     }
 
@@ -404,74 +419,60 @@ document.addEventListener('DOMContentLoaded', function() {
         scrollBtn.setAttribute('aria-label', document.documentElement.dataset.scrollTopLabel || 'Back to top');
 
         scrollBtn.addEventListener('click', scrollToTop);
-        
-        // Show/hide based on scroll position
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 500) {
-                scrollBtn.style.display = 'flex';
-            } else {
-                scrollBtn.style.display = 'none';
-            }
-        });
+
+        // Visibility is a class, not an inline style, so CSS owns the transition
+        // and the reduced-motion block can turn it off.
+        const syncVisibility = () => {
+            scrollBtn.classList.toggle('is-visible', window.scrollY > 500);
+        };
+        window.addEventListener('scroll', syncVisibility, { passive: true });
 
         document.body.appendChild(scrollBtn);
+        // A restored scroll position does not fire a scroll event, so the first
+        // state must be painted explicitly.
+        syncVisibility();
     }
 
     // Preloader Function
+    // Markup and styling live in CSS (#preloader / .preloader__spinner); this only
+    // inserts it, then removes it once the page has loaded. The old version
+    // carried a cssText block and injected its own @keyframes, kept the overlay
+    // for a fixed 1.5s and always animated the fade.
     function createPreloader() {
         const preloader = document.createElement('div');
         preloader.id = 'preloader';
-        preloader.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--portfolio-dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        `;
-        
-        preloader.innerHTML = `
-            <div style="text-align: center;">
-                <div style="
-                    width: 60px;
-                    height: 60px;
-                    border: 3px solid var(--color-bg-1);
-                    border-top: 3px solid var(--portfolio-primary);
-                    border-radius: 50%;
-                    animation: spin 1s linear infinite;
-                    margin: 0 auto 20px auto;
-                "></div>
-            </div>
-        `;
-
-        // Add spinner animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-        `;
-        document.head.appendChild(style);
+        preloader.setAttribute('aria-hidden', 'true');
+        preloader.innerHTML = '<div class="preloader__spinner"></div>';
 
         document.body.insertBefore(preloader, document.body.firstChild);
 
-        // Remove preloader after page load
+        // Let a very fast load still show the overlay for a moment instead of
+        // flashing it, but never hold the page for longer than this.
+        const MIN_VISIBLE_MS = 250;
+
         window.addEventListener('load', () => {
             setTimeout(() => {
-                preloader.style.opacity = '0';
-                setTimeout(() => {
+                preloader.classList.add('is-hidden');
+                let removed = false;
+                const done = () => {
+                    // Both the transitionend and the safety timeout can fire.
+                    if (removed) return;
+                    removed = true;
                     preloader.remove();
                     // Mark preloader as done and trigger pending hero counters if already in view
                     preloaderActive = false;
                     triggerHeroCountersIfVisible();
-                }, 500);
-            }, 1000);
+                };
+                if (reduceMotion) {
+                    // No fade to wait for.
+                    done();
+                } else {
+                    preloader.addEventListener('transitionend', done, { once: true });
+                    // Safety net: if the transition never fires (element already
+                    // gone, transition disabled), remove anyway.
+                    setTimeout(done, 600);
+                }
+            }, MIN_VISIBLE_MS);
         });
     }
 
@@ -565,6 +566,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add particle effect to hero section with connected faint lines
     function createParticles() {
+        // Decorative only: with reduced motion the canvas is not created at all,
+        // so there is no loop, no resize listener and nothing repainting.
+        if (reduceMotion) return;
+
         const hero = document.querySelector('.hero');
         if (!hero) return;
 
@@ -1001,12 +1006,20 @@ document.addEventListener('DOMContentLoaded', function() {
             el.textContent = computedAge.toString();
         });
         
-        // Start typing effect after a short delay
-        setTimeout(() => {
+        // Start the typing effect after a short delay. With reduced motion the
+        // first phrase is simply there: no loop, no deleting, no cursor blink
+        // (the CSS block also stops the blink).
+        if (reduceMotion) {
             if (typingText) {
-                typeEffect();
+                typingText.textContent = phrases[0];
             }
-        }, 1500);
+        } else {
+            setTimeout(() => {
+                if (typingText) {
+                    typeEffect();
+                }
+            }, 1500);
+        }
 
         // Counters are triggered via IntersectionObserver; avoid double-starts
 

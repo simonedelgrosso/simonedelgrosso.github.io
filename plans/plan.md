@@ -2,7 +2,7 @@
 
 Status: **In progress.** Created 2026-10-24. Revised 2026-10-24
 after the user answered the open questions.
-Completed: **T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10**. Next: **T11**.
+Completed: **T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11**. Next: **T12**.
 Previous plan: none (`plans/` did not exist before this file).
 
 ## 0. Progress log
@@ -23,6 +23,8 @@ Previous plan: none (`plans/` did not exist before this file).
 | T9 - Projects | **Done** | `t9probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): one card, 420×410 (328×434 at 375), centred in the grid at every width (offset 0–0.5px), raised surface + shadow, 200px gradient image panel, 92px `50%` mark disc, overlay hidden at rest, link `aria-label="GitHub: …"` + `rel="noopener noreferrer"` + `target="_blank"` + 56×56 hit area, 4 tech pills at `9999px`/12px, 3 filter pills (`9999px`, ≥38px high, 13px), hierarchy 12/22/15px, hero projects target `1`, 0 console/page errors; **real-click filters** All→Mobile→Web→All toggle `aria-pressed` correctly (Mobile hides the single web card: display `none`), and **real Enter** on a focused filter does the same (`focusedBeforeEnter: mobile`); **real mouse hover** lifts `matrix(1,0,0,1,0,-4)` with `scale` untouched and raises the overlay 0→1, returning on leave; **real Tab walk** reaches `.project-link` with `:focus-visible` true, a `rgb(255,255,255) solid 2px` outline, overlay opacity 1 and the mark faded to 0; throwaway 4-project copy: 3-across at 1440 (equal 434px heights, tech pills on one line) / 2×2 at 1024 / 1 column at 768+375, filters Mobile=3, Web=1, All=4 with correct `aria-pressed`; 320px classic scrollbar `docW 305 == clientW` (card 273, 16–289); no-JS renders the card and the static `aria-pressed`; reduced motion `card 0s`; `overflow.mjs` clean ×8; `contrast.mjs` **0 failures** over 279/280 × 4; `t6probe`/`t7probe`/`t8probe` still **0 failures**; `t9focus2.mjs` cold-state focus (forced `.is-pending`) reveals the card at `opacity 1`/`translate none` with the scrim at `0s` **in the first frame**, and blurring no longer fades it out; `t9rm.mjs` proves reduced motion still zeroes the card transition in the focused **and** focused+hover states (`0s` / `property: none`, lift applied instantly) while normal hover still animates; Jekyll 4.4.1 and 3.10.0 builds clean, `_site/plans` absent. See the T9 completion log. |
 
 | T10 - Contact and Footer | **Done** | `t10probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): 5 contact cards with 44×44 soft accent discs, 12px radius and shadows; the form has 4 controls at **45px** high with a **10px** radius, labels 13px, and a 44px submit; the footer renders 5 social discs (40px, `50%`, hairline), each with a label, `aria-hidden` glyph and `rel="noopener noreferrer"` on the four `target="_blank"` links (5 rels per page including the project link); contact grid 2 columns at ≥769, 1 at ≤768; `docW == clientW` everywhere; 0 console/page errors. **Focus** (real `:focus` on all four controls, both themes): accent border + `rgba(79,70,229,.35)`/`rgba(129,140,248,.45)` ring, `h 45`; focusing a contact link accents the card border and shows `:focus-within`. **Validation**: an empty submit is blocked natively (`valid false`, handler never runs, focus moves to `#name`); a filled submit runs the handler once, resets the form, stays in the same document and produces `Page.frameScheduledNavigation` → `mailto:simonedelgrosso@outlook.it?subject=Hello%20there&body=A%20message%20body.%0A%0A--%0ATest%20User%0A%3Ctest%40example.com%3E`. 320px classic: `docW 305 == clientW`; no-JS renders 5 cards, 4 inputs, 5 social links; Jekyll 4.4.1 + 3.10.0 clean, `_site/plans` absent. See the T10 completion log. |
+
+| T11 - JS-generated UI and reduced motion | **Done** | `t11probe.mjs` / `t11extra.mjs` / `t11nav.mjs`, 0 failures. **Normal motion**: preloader observed with **no inline style**, `rgb(248,249,251)` in light and `rgb(11,13,18)` in dark (equal to the theme's page colour), removed **700 ms after `load`**; particle canvas present; typing runs (`cursorAnim: blink`); counters animate; smooth scroll is 1398 at 60 ms after clicking the button, then 0; the button is `visibility: hidden` at the top with no inline style and gains `.is-visible` after scrolling; progress bar advances (395.8px). **Reduced motion** (`prefers-reduced-motion: reduce`): preloader removed **305 ms after load**, **no canvas**, typing shows `Full-Stack Developer` immediately, `cursorAnim: none`, counters already at their targets (3/1/3), scroll is **instant** (0 at 60 ms), and every audited surface computes `1e-05s` for `transition-duration`/`animation-duration` (scroll-to-top, progress bar, skill tag, social link, stat, button) versus real values (0.25/0.05/0.15 s) without the preference. Drawer still opens/closes with `aria-expanded`, `nav-open` and focus return in both modes. Footer clearance: no overlap at 375 or 320 (`docW 305 == clientW`), and `t11clear.mjs` found none anywhere in 320–768. `contrast.mjs` 0 failures ×4; `overflow.mjs` clean ×8; `t6`/`t7`/`t8`/`t9`/`t10` probes all still 0 failures; Jekyll 4.4.1 + 3.10.0 clean. See the T11 completion log. |
 
 Verification tooling used (temporary, outside the repo, in
 `%LOCALAPPDATA%\Temp\opencode\`): `shot.mjs` (headless Chrome via CDP,
@@ -100,6 +102,15 @@ assertions), `t10base.mjs` (before captures and baseline metrics) and
 `t10shots.mjs` (contact/footer at 1440/375 × light/dark plus focus and hover),
 and `t10socialfocus.mjs` (the social disc's ring after the redundant override
 was removed).
+T11 added: `t11probe.mjs` (both motion modes: preloader sampled mid-life and
+timed from the `load` event, canvas presence, typing, counters, smooth-scroll
+distance 60 ms after a click, button visibility class, progress bar, footer
+clearance at 375/320), `t11-analyze.mjs` (UTF-16 reader and assertions),
+`t11extra.mjs` (dark-mode preloader background, computed durations in both
+modes), `t11shots.mjs` (preloader, footer, button and top-of-page captures) and
+`t11nav.mjs` (mobile drawer under reduced motion, since `navprobe.mjs` was
+removed by the temp cleanup), plus `t11clear.mjs` (scroll-to-top vs social-row
+clearance across 320–768px).
 Screenshots: `baseline\` (before), `t1-dark\`, `t1-light\`, `t1-final\`,
 `t1-review*\`, `t1-320*`, `t2-light\`, `t2-nav\`, `navshots\`,
 `navstates*\`, `hero-1440-*`, `hero2-*`, `hero3-*`, `t5shots\`, `t6shots\`,
@@ -1926,9 +1937,9 @@ here or are data-drift concerns rather than defects.
   migration. It is not output, so it cannot leak into the page.
 - **The `.skill-tag` hover keeps a 150ms colour transition under
   `prefers-reduced-motion`.** It is colour only — no movement — so it does not
-  need suppressing, and the probe reports `0.15s, 0.15s` as expected. T11 is the
-  task that sweeps every animated surface and should confirm this decision
-  rather than inherit it silently.
+  need suppressing, and the probe reports `0.15s, 0.15s` as expected. **T11
+  resolved this:** the global reduced-motion block now zeroes it too (0.01ms),
+  which is simpler than keeping a per-surface exception.
 - **The plan's 320px-overflow premise was wrong** (see the deviation note); the
   grid change is a density improvement above 768px, not a fix for an active
   overflow. Recorded so T12/T14 do not hunt for a regression that never existed.
@@ -2181,10 +2192,10 @@ here and required no change.
   "`box-shadow` not transitioned" note is also fixed by adding it to the
   transition list.
 - **Reduced motion does not disable the overlay/mark fades** (they are opacity
-  fades, like the pre-existing overlay behaviour); T11 owns the full sweep and
-  should decide whether to include them. Note the focus path is now
-  `transition-duration: 0s` regardless of preference, so a keyboard user never
-  waits for the scrim, and the card's own transition is `none` in **every**
+  fades, like the pre-existing overlay behaviour); **T11 resolved this** with
+  the site-wide `reduce` block, so they are instant now too. Note the focus path
+  was already `transition-duration: 0s` regardless of preference, so a keyboard
+  user never waits for the scrim, and the card's own transition is `none` in **every**
   state under reduced motion (the `:focus-within` rule is listed in that block
   for the same reason).
 - **Lighthouse was not re-run** (unavailable in this session). The `link-name`
@@ -2314,23 +2325,22 @@ icon in both themes. The form reads as a card on both surfaces, the focus ring
 is unmistakable, and the social discs have a visible edge on the white footer.
 
 *Known limits / notes.*
-- **The scroll-to-top button overlaps the last social icon at 375px.** It is a
-  fixed 56px disc inset 20px from the bottom-right; at that width the footer
-  spans the full container, so the button sits on top of the "X" icon when the
-  page is scrolled to the very bottom. It is T11's element (its own task says
-  "restyle … the scroll-to-top button"), so the fix belongs with that
-  rework — either its geometry or a footer `padding-bottom` that clears it.
-  Recorded here rather than guessed at now.
-- **The `.social-links a:hover` lift is 2px of motion** and is not suppressed
-  under `prefers-reduced-motion`; T11 owns the full reduced-motion sweep.
+- **The scroll-to-top button overlaps the last social icon at 375px** — the
+  button is a fixed disc inset from the bottom-right, and at that width the
+  footer spans the full container, so it sat on top of the "X" icon when
+  scrolled to the very bottom. **Fixed in T11**: the button is 44px at a 16px
+  inset on phones and the footer reserves 72px of bottom padding, so the icons
+  end 12px above it at both 375 and 320 (measured; no overlap).
+- **The `.social-links a:hover` lift is 2px of motion** and was not suppressed
+  under `prefers-reduced-motion`; **T11's global block** zeroes it.
 - **`.form-control` is a design-system class**, so the 44px height and 10px
   radius also apply to any future form. Only the contact form uses it today
   (verified: no other include references it).
 - **Lighthouse was not re-run** (still unavailable). The footer `link-name`
   audit was already fixed in T2; nothing here adds or removes accessible names.
 
-### T11 – JS-generated UI and reduced motion
-- [ ] **Objective:**
+### T11 – JS-generated UI and reduced motion ✅ Done (2026-11-08)
+- [x] **Objective:**
   - Restyle the preloader, the scroll-to-top button and the scroll progress
     bar with tokens, moving the preloader's inline CSS into classes.
   - Add `prefers-reduced-motion` support in CSS and JS: no particles, typing
@@ -2346,6 +2356,142 @@ is unmistakable, and the social discs have a visible edge on the white footer.
   - The preloader matches the active theme, with no dark flash in light mode.
   - The preloader is gone within about 1 s after `load`.
 - **Verify:** DevTools → Rendering → Emulate `prefers-reduced-motion`.
+
+**Completion log (T11)**
+
+*What changed.* `assets/js/script.js`:
+- a single `reduceMotion` flag, read once from
+  `matchMedia('(prefers-reduced-motion: reduce)')` (guarded for engines without
+  `matchMedia`), drives every JS effect;
+- `smoothScroll()` and `scrollToTop()` use `behavior: 'auto'` when it is set;
+- `animateCounter()` writes the target value and returns instead of ticking;
+- `typeEffect()` is not started: `init()` sets the first phrase directly, so
+  there is no deleting loop and no cursor blink;
+- `createParticles()` returns before creating the canvas, so there is no loop,
+  no resize listener and nothing repainting;
+- `createPreloader()` no longer carries a `cssText` block and no longer injects
+  its own `@keyframes`. It builds
+  `<div id="preloader" aria-hidden="true"><div class="preloader__spinner">`,
+  waits for `load`, holds the overlay for a 250 ms minimum (so a fast load does
+  not flash), then adds `.is-hidden` and removes the node on `transitionend`
+  (with a 600 ms safety timeout and a `removed` guard, because both can fire).
+  Under reduced motion it removes immediately — **1.5 s → ~0.3–0.7 s after
+  load**;
+- `createScrollToTopButton()` toggles an `.is-visible` class instead of writing
+  `style.display`, uses a passive scroll listener, and paints the initial state
+  explicitly (a restored scroll position fires no scroll event, and the button
+  used to be visible on every fresh load until the first scroll).
+
+`assets/css/style.css`:
+- new `#preloader` (fixed inset overlay, `background: var(--color-background)`,
+  0.3s opacity transition) and `.preloader__spinner` (52px, accent top border,
+  `preloader-spin 0.9s`), so the theme tokens decide both colours. The old JS
+  read `--portfolio-dark`, a per-theme alias that already equals
+  `--color-background` in both schemes (`#f8f9fb` / `#0b0d12`) — this switches
+  to the canonical token rather than fixing a bug;
+- `.scroll-to-top` is now hidden by default (`opacity: 0`, `visibility:
+  hidden`, `translateY(8px)`) and shown by `.is-visible`; the nested `i { }`
+  rule is un-nested (it was the only instance of plain CSS nesting in the
+  file), `:hover` uses `--color-primary-hover`, and `@media (max-width: 480px)`
+  makes the disc 44px at a 16px inset;
+- `.footer` reserves 72px of bottom padding at ≤480px so the fixed disc cannot
+  cover the last social icon (the T10 finding);
+- a final site-wide block:
+
+  ```css
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      transition-delay: 0s !important;
+      scroll-behavior: auto !important;
+    }
+    .typing-container .cursor { animation: none !important; opacity: 1; }
+  }
+  ```
+
+  The catch-all is deliberate: enumerating every surface by hand is how T6/T7/T9
+  each ended up missing one. The cursor needs the explicit override because the
+  blink keyframes end at `opacity: 0`, which a single 0.01 ms iteration would
+  otherwise leave as an invisible caret.
+
+*Measured (`t11probe.mjs`, both modes; timings relative to the `load` event).*
+
+| | normal | reduced |
+|---|---|---|
+| preloader background | `rgb(248,249,251)` light / `rgb(11,13,18)` dark | same |
+| preloader inline style | none | none |
+| removed after `load` | **700 ms** | **305 ms** |
+| particle canvas | present | **absent** |
+| typing text | animates (`cursorAnim: blink`) | `Full-Stack Developer`, `cursorAnim: none` |
+| counters | animate from 0 | final (3/1/3) immediately |
+| scroll 60 ms after click | 1398 of 1400 (smooth) | **0 (instant)** |
+| button at top | `visibility: hidden`, no inline style | same |
+| button after scroll | `.is-visible`, `visible` | same |
+| progress bar after scroll | 395.8px | 395.8px |
+
+`t11extra.mjs` confirms the preloader's dark-mode background equals the dark
+theme's `--color-background` (`#0b0d12`) and its spinner arc is the accent
+(`rgb(129,140,248)`), so there is no dark flash in light mode and no light flash
+in dark mode. Computed `transition-duration`/`animation-duration` under reduced
+motion are `1e-05s` on every audited surface (scroll-to-top, progress bar, skill
+tag, social link, stat, button); without the preference they are real
+(`0.25s, 0s, 0.25s, 0.15s` / `0.05s` / `0.15s` / `0.25s`).
+
+*Drawer check (`t11nav.mjs`).* The global block touches every element, so the
+mobile drawer was re-verified in both modes: closed → `visibility: hidden`,
+off-canvas at 360, links out of the flow; open → visible at 0, `aria-expanded`
+true, `nav-open` set, focus on the hamburger; Escape → closed, focus returned.
+Identical in both modes.
+
+*Footer clearance.* `t11probe.mjs` at 375 and 320, scrolled to the very bottom:
+no rectangle overlap between the button and `.social-links` (icons end 12px
+above the button at both widths), `docW == clientW`. `t11clear.mjs` then swept
+the whole mobile band — 320/360/375/400/420/480/481/500/600/700/768 — and found
+**no overlap at any width**. Above 480px the button keeps its 50px/30px
+geometry; there the rectangles overlap vertically (`dy ≈ −40`) but never
+horizontally (`dx` ≥ 37), so nothing collides. The tightest case is 360px:
+`dx = −3` (3px of horizontal overlap) is covered by the 12px vertical gap the
+footer padding creates.
+
+*Review response (2026-11-08).* An independent review found no runtime defect
+and one documentation error: the comment (and this log) claimed the old
+preloader "happened to match" the page background via `--portfolio-dark`, when
+in fact that token is theme-defined and already equal to `--color-background`
+in both schemes. Both texts now say the change switches to the canonical token
+rather than fixing a mismatch. The same review asked whether the 481–768px band
+could still collide; the `t11clear.mjs` sweep above answers it (no overlap),
+and that probe is now part of the record for T12's breakpoint pass.
+
+*Also verified.* `contrast.mjs` **0 failures** over 279/280 elements × 4;
+`overflow.mjs` clean ×8; `t7classic.mjs` still `docW 305 == clientW`;
+`t6probe`, `t7probe`, `t8probe`, `t9probe` and `t10probe` all still
+**0 failures**; `node --check` exit 0; Jekyll 4.4.1 and
+`jekyll _3.10.0_ build` exit 0; `_site/plans` absent; `apps/piano/` untouched.
+
+*Visual review (`t11shots.mjs`).* Preloader captured in both themes (theme-colour
+overlay, accent arc), the footer at 375/320 with the button clear of the icons,
+and the top of the page with no button visible.
+
+*Known limits / notes.*
+- **The preference is read once per page load.** Changing the OS setting takes
+  effect on the next navigation rather than mid-session. A live
+  `matchMedia` listener could tear down the canvas/typing loop, but that adds
+  state to unwind for a preference that rarely changes; recorded rather than
+  hidden.
+- **The catch-all `!important` block is broad by design.** It also zeroes
+  colour/opacity transitions that are not motion. That is harmless (state
+  changes simply apply instantly) and it means no future surface can forget the
+  preference.
+- **The preloader still lets the page scroll behind it** (no scroll lock) for
+  its ~0.3–0.7 s lifetime. Locking would add a scroll-bar-width compensation
+  dance for a very short window; not done.
+- **Other inline `cssText` remains** on the particle canvas (line ~581) and the
+  project filter's `style.display` (T9 code). The plan scoped T11's inline-style
+  cleanup to the preloader; both are recorded for T12/T14 rather than changed
+  here.
+- **Lighthouse was not re-run** (still unavailable in this session).
 
 ### T12 – Responsive and cross-browser QA
 - [ ] **Objective:** Final polish across breakpoints. Add a 1024px breakpoint
