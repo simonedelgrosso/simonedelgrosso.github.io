@@ -244,6 +244,15 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.timeline-item, .certification-card, .project-card')
             .forEach(el => el.classList.add('is-pending'));
 
+        // A keyboard user can focus a card's link before the observer has fired
+        // (the browser scrolls it into view to focus it). CSS keeps a focused
+        // card fully visible, but the pending state must also be cleared for
+        // real: otherwise leaving focus would fade the card back out until the
+        // observer catches up, and the user would have seen it vanish.
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('focusin', () => card.classList.remove('is-pending'));
+        });
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1000,17 +1009,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1500);
 
         // Counters are triggered via IntersectionObserver; avoid double-starts
-
-        // Add some interactive hover effects
-        projectCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-8px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0) scale(1)';
-            });
-        });
 
         // Console welcome message
         console.log('%c👋 Ciao! Benvenuto nel mio portfolio!', 'color: #22D3EE; font-size: 16px; font-weight: bold;');

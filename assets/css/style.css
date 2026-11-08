@@ -1866,27 +1866,37 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-12);
-  margin-bottom: var(--space-24);
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin-bottom: var(--space-32);
 }
 
 .filter-badge {
   display: inline-flex;
   align-items: center;
   gap: var(--space-6);
-  padding: var(--space-6) var(--space-12);
+  min-height: 38px;
+  padding: var(--space-8) var(--space-16);
   border-radius: var(--radius-full);
   border: 1px solid var(--color-card-border);
   background: var(--color-surface);
-  color: var(--color-text);
+  color: var(--color-text-secondary);
+  font-family: inherit;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-standard);
+  /* Explicit properties instead of `all`: the T2 note about waiting for a
+     transition still applies, just to a shorter, predictable list. */
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
 }
 
 .filter-badge:hover {
   background: var(--color-secondary);
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
 
 .filter-badge.active {
@@ -1899,42 +1909,79 @@ section {
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: var(--space-32);
+  /* `min(100%, ...)` keeps the track from flooring above the container width
+     (T7/T8 lesson). */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: var(--space-24);
 }
 
 .project-card {
-  background: var(--color-background);
+  /* Raised above .section--alt, same step as the timeline/experience cards.
+     Flex column so the tech pills can sit at the bottom of every card. */
+  display: flex;
+  flex-direction: column;
+  /* Without this a lone card stretches to the full 1248px container and the
+     200px image strip reads as a banner; `justify-self: center` keeps it
+     centred instead of pinned to the left track edge. */
+  width: 100%;
+  max-width: 420px;
+  justify-self: center;
+  background: var(--color-surface-raised);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-card-border);
+  box-shadow: var(--shadow-xs);
   overflow: hidden;
-  /* `translate`/`opacity` are the reveal that script.js drives (shared with the
-     certification cards); `transform` is the hover lift. */
+  /* `translate`/`opacity` are the reveal that script.js drives; `transform` is
+     the hover lift, now the only thing that moves on hover. */
   transition: transform var(--duration-normal) var(--ease-standard),
+    box-shadow var(--duration-normal) var(--ease-standard),
+    border-color var(--duration-normal) var(--ease-standard),
     translate 0.5s var(--ease-standard),
     opacity 0.5s var(--ease-standard);
 }
 
+/* Subtle lift, no scaling (the JS `scale(1.02)` handlers are gone). */
 .project-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
+  border-color: var(--color-border);
 }
 
 .project-image {
   position: relative;
   height: 200px;
-  background: var(--color-secondary);
-  overflow: hidden;
-}
-
-.project-placeholder {
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
+  /* Soft accent glow instead of a flat grey strip. */
+  background:
+    radial-gradient(circle at 50% 18%, var(--portfolio-primary-soft), transparent 70%),
+    var(--color-background);
+  overflow: hidden;
+}
+
+/* The project mark: a tinted disc, matching the certification icon shape. */
+.project-placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-card-border);
+  box-shadow: var(--shadow-xs);
   color: var(--portfolio-primary);
+  font-size: 36px;
+  transition: opacity var(--duration-normal) var(--ease-standard);
+}
+
+/* Without this the disc shows through the semi-transparent overlay and the
+   GitHub link reads as a second circle inside it. */
+.project-card:hover .project-placeholder,
+.project-card:focus-within .project-placeholder {
+  opacity: 0;
 }
 
 .project-overlay {
@@ -1951,14 +1998,44 @@ section {
   transition: opacity var(--duration-normal) var(--ease-standard);
 }
 
-.project-card:hover .project-overlay {
+/* `:focus-within` is what makes the link visible for keyboard users: without
+   it the overlay stayed at opacity 0 and the focus ring appeared to hang in
+   the middle of the image. */
+.project-card:hover .project-overlay,
+.project-card:focus-within .project-overlay {
   opacity: 1;
 }
 
+/* On the keyboard path the scrim has to be there from the first frame: the
+   white focus ring is invisible against the pale image panel while the
+   overlay is still fading in (250ms). Hover keeps the fade. */
+.project-card:focus-within .project-overlay {
+  transition-duration: 0s;
+}
+
+/* A card that the reveal is still holding at opacity 0 must not swallow focus:
+   the browser scrolls the link into view to focus it, which can land before
+   the observer fires. A focused card is shown at once and without a fade, so
+   the focus ring is visible immediately. */
+.project-card:focus-within {
+  opacity: 1;
+  translate: none;
+  transition: transform var(--duration-normal) var(--ease-standard),
+    box-shadow var(--duration-normal) var(--ease-standard),
+    border-color var(--duration-normal) var(--ease-standard);
+}
+
 .project-link {
+  /* A fixed box, not padding around a glyph: the icon's line-height is taller
+     than its width, which turned `border-radius: 50%` into an oval. 56px also
+     keeps the hit area comfortably above 44px. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
   color: #ffffff;
   font-size: 1.5rem;
-  padding: var(--space-12);
   border: 2px solid currentColor;
   border-radius: 50%;
   transition: background-color var(--duration-fast) var(--ease-standard),
@@ -1970,42 +2047,58 @@ section {
   color: var(--color-slate-950);
 }
 
+/* The overlay is always dark (both themes), so the accent focus ring would sit
+   accent-on-dark; a white ring is unambiguous there. */
+.project-link:focus-visible {
+  outline-color: #ffffff;
+  outline-offset: 3px;
+}
+
 .project-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   padding: var(--space-24);
 }
 
 .project-category {
   color: var(--portfolio-primary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   margin-bottom: var(--space-8);
 }
 
 .project-title {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-semibold);
-  margin-bottom: var(--space-12);
+  margin-bottom: var(--space-8);
 }
 
 .project-description {
   color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
   line-height: 1.6;
-  margin-bottom: var(--space-16);
+  margin-bottom: var(--space-20);
+  text-wrap: pretty;
 }
 
 .project-tech {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-8);
+  /* Pushes the pills to the bottom, so they line up across cards of unequal
+     title/description length. */
+  margin-top: auto;
 }
 
 .tech-tag {
+  padding: var(--space-4) var(--space-10);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-card-border);
   background: var(--color-secondary);
-  padding: var(--space-4) var(--space-8);
-  border-radius: var(--radius-sm);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
 }
 
@@ -2453,10 +2546,14 @@ section {
 }
 
 /* Same for the card reveal (T7): the cards still appear, instantly. This also
-   removes the hover transition, which is the intended reduced-motion behaviour. */
+   removes the hover transition, which is the intended reduced-motion behaviour.
+   `:focus-within` is listed explicitly because the T9 focus rule sets its own
+   `transition` at (0,2,0) — a media query adds no specificity, so without this
+   a focused card would animate its hover lift again. */
 @media (prefers-reduced-motion: reduce) {
   .certification-card,
-  .project-card {
+  .project-card,
+  .project-card:focus-within {
     transition: none;
   }
 }

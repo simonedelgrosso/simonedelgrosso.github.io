@@ -2,7 +2,7 @@
 
 Status: **In progress.** Created 2026-10-24. Revised 2026-10-24
 after the user answered the open questions.
-Completed: **T0, T1, T2, T3, T4, T5, T6, T7, T8**. Next: **T9**.
+Completed: **T0, T1, T2, T3, T4, T5, T6, T7, T8, T9**. Next: **T10**.
 Previous plan: none (`plans/` did not exist before this file).
 
 ## 0. Progress log
@@ -20,6 +20,8 @@ Previous plan: none (`plans/` did not exist before this file).
 | T7 - Certifications and Experience | **Done** | `t7probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): 3 columns at 1440/1024 (400px / 309.66px each), 2 at 768, 1 at 375; every row has equal card heights and **identical badge tops**; icon 56×56 at `border-radius: 50%` on the accent tint in both schemes; badge is a 9999px pill (133×28, 600) narrower than the card; cards hidden before (`is-pending`, opacity 0) and revealed on scroll with **no inline styles**; 0 console/page errors; `t7shared.mjs` real mouse hover lifts a card exactly **2px with `scale: none`** and returns, project cards still reveal through the same path, and with `IntersectionObserver` deleted all certification and project cards stay visible; `t7wrap.mjs` on a throwaway copy with one deliberately long title: 2 lines at 1440 / 3 lines at 1024, heights still equal and badges still aligned; `t7count.mjs` hero counters read 3/1/3 (EN) and 3/1/3 (IT); reduced motion `transition: 0s` yet still reveals; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; `t6probe.mjs` 16/16 unchanged (timeline untouched); **`t7classic.mjs` resolved the long-open 320px/316 classic-scrollbar overflow** (`.certifications-grid` `minmax(300px,1fr)` → `minmax(min(100%,300px),1fr)`; `docW` 316 → 305 == `clientWidth`); Jekyll 4.4.1 and 3.10.0 builds clean, `_site/plans` absent. See the T7 completion log. |
 
 | T8 - Skills as simple tags | **Done** | `t8probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): **11 tags in 3 categories** on every run with the expected translated titles (EN "Programming Languages / Frameworks & Libraries / Markup & Styling", IT "Linguaggi di Programmazione / Frameworks & Librerie / Markup & Styling"), all `<ul class="skill-tags" role="list">` with `list-style: none`, tags 92×35 pills at `9999px` with a non-transparent tint, 13px/500, none crossing its category card; 3 columns at 1440/1024, 1 at 375 (and 1 at 768, unchanged by the pre-existing override); **0 leftover `.skill-bar`/`.skill-progress`/`.skill-item`/`.skill-name`/`data-skill` references** in the built HTML; hover changes only border+colour (`rgba(15,23,42,.08)` → `#4f46e5`, geometry 92×35 unchanged); 320px with a classic scrollbar: `docW 305 == clientW`, no overflow, widest tag 264 < card 289; no-JS renders all 11 tags; 0 console/page errors; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` **0 failures** over 279/280 elements × 4 (down from 312/313 — the 33 bar/name/progress elements no longer exist); `t6probe.mjs` and `t7probe.mjs` still **16/16** after the observer selector change; Jekyll 4.4.1 and 3.10.0 builds clean, no bar markup in parity output, `_site/plans` absent. See the T8 completion log. |
+| T9 - Projects | **Done** | `t9probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): one card, 420×410 (328×434 at 375), centred in the grid at every width (offset 0–0.5px), raised surface + shadow, 200px gradient image panel, 92px `50%` mark disc, overlay hidden at rest, link `aria-label="GitHub: …"` + `rel="noopener noreferrer"` + `target="_blank"` + 56×56 hit area, 4 tech pills at `9999px`/12px, 3 filter pills (`9999px`, ≥38px high, 13px), hierarchy 12/22/15px, hero projects target `1`, 0 console/page errors; **real-click filters** All→Mobile→Web→All toggle `aria-pressed` correctly (Mobile hides the single web card: display `none`), and **real Enter** on a focused filter does the same (`focusedBeforeEnter: mobile`); **real mouse hover** lifts `matrix(1,0,0,1,0,-4)` with `scale` untouched and raises the overlay 0→1, returning on leave; **real Tab walk** reaches `.project-link` with `:focus-visible` true, a `rgb(255,255,255) solid 2px` outline, overlay opacity 1 and the mark faded to 0; throwaway 4-project copy: 3-across at 1440 (equal 434px heights, tech pills on one line) / 2×2 at 1024 / 1 column at 768+375, filters Mobile=3, Web=1, All=4 with correct `aria-pressed`; 320px classic scrollbar `docW 305 == clientW` (card 273, 16–289); no-JS renders the card and the static `aria-pressed`; reduced motion `card 0s`; `overflow.mjs` clean ×8; `contrast.mjs` **0 failures** over 279/280 × 4; `t6probe`/`t7probe`/`t8probe` still **0 failures**; `t9focus2.mjs` cold-state focus (forced `.is-pending`) reveals the card at `opacity 1`/`translate none` with the scrim at `0s` **in the first frame**, and blurring no longer fades it out; `t9rm.mjs` proves reduced motion still zeroes the card transition in the focused **and** focused+hover states (`0s` / `property: none`, lift applied instantly) while normal hover still animates; Jekyll 4.4.1 and 3.10.0 builds clean, `_site/plans` absent. See the T9 completion log. |
+
 Verification tooling used (temporary, outside the repo, in
 `%LOCALAPPDATA%\Temp\opencode\`): `shot.mjs` (headless Chrome via CDP,
 per-width full-page screenshots), `themecheck.mjs` (theme-resolution
@@ -76,10 +78,23 @@ light/dark), `t8view.mjs` (plain viewport captures after `scrollIntoView`,
 which avoids the clip-offset artefact `t8shots.mjs` hit at 375) and
 `t8grid.mjs` (column map across every container breakpoint:
 360/600/768/769/900/1023/1024/1279/1280/1440).
+T9 added: `t9probe.mjs` (16-run card/filter sweep plus real-click filters,
+real Enter on a focused filter, real mouse hover, a real **Tab walk** to the
+overlay link, 320px classic-scrollbar, no-JS and reduced-motion passes),
+`t9-analyze.mjs` (UTF-16 reader and assertions), `t9base.mjs` (before/after
+section captures), `t9shots.mjs` (section clips at 1440/1024/375 × light/dark
+plus hover), `t9focus.mjs` (keyboard-focused link in both themes),
+`t9focus2.mjs` (cold-state focus: forces `.is-pending`, Tabs to the link and
+measures the first frame), `t9rm.mjs` (reduced-motion × focus × hover matrix on
+the card transition), `t9-multi.mjs` + `t9multi-probe.mjs` (throwaway
+`t9-multi` copy with the three mobile projects uncommented, to prove the grid
+with 4 cards and the Mobile/Web/All filters with 3+1), and `static.mjs` (tiny
+static server, rebuilt after the temp cleanup removed the original).
 Screenshots: `baseline\` (before), `t1-dark\`, `t1-light\`, `t1-final\`,
 `t1-review*\`, `t1-320*`, `t2-light\`, `t2-nav\`, `navshots\`,
 `navstates*\`, `hero-1440-*`, `hero2-*`, `hero3-*`, `t5shots\`, `t6shots\`,
-`t7shots\`, `t7shots2\`, `t8shots\`, `t8views\`.
+`t7shots\`, `t7shots2\`, `t8shots\`, `t8views\`, `t9base\`, `t9shots\`,
+`t9multi\`.
 
 ## 1. Objective
 
@@ -1916,11 +1931,11 @@ here or are data-drift concerns rather than defects.
   removes 33 elements and adds list semantics (`ul[role=list]` + `li`), so the
   `list`/`listitem` axe rules change shape; T11/T15 should re-baseline.
 
-### T9 – Projects
-- [ ] **Objective:** Refine project cards (gradient icon panel, overlay link,
+### T9 – Projects ✅ Done (2026-11-08)
+- [x] **Objective:** Refine project cards (gradient icon panel, overlay link,
   category, title, description, tech pills) and the filter pill group.
 - **Files:**
-  - `style.css` around lines 1492–1633
+  - `style.css` around lines 1492–1633 (now the projects block at 1864–2100)
   - `script.js`: remove the inline hover transform at around lines 816–826
     and move hover into CSS. Check that the filter logic at around lines
     750–772 and the observer reveal (inline opacity/transform) still work
@@ -1940,6 +1955,232 @@ here or are data-drift concerns rather than defects.
   `transition: all 0.25s`, so computed-style checks must wait for the
   transition before reading the result.
 - **Verify:** manual check, including Tab navigation.
+
+**Completion log (T9)**
+
+*What changed.* `_includes/projects_section.html`:
+- the GitHub link gains `rel="noopener noreferrer"` and
+  `aria-label="GitHub: {{ item.title }}"`, and its glyph gets
+  `aria-hidden="true"`. This is the **`link-name` Lighthouse failure that has
+  followed the project since T1** (an icon-only link has no accessible name);
+  it now has one, with no new data keys (the label is language-neutral because
+  "GitHub" is a proper noun and the project title is already translated).
+- no other markup changed: the section, heading order, filter attributes and
+  `data-category` values are untouched. The filter wrapper gains
+  `role="group"` so its existing `aria-label` ("Filter projects" / "Filtra
+  progetti") is actually exposed — on a bare `div` the label was ignored.
+
+`assets/js/script.js`:
+- the `mouseenter`/`mouseleave` pair that wrote
+  `card.style.transform = 'translateY(-8px) scale(1.02)'` (and reset it on
+  leave) is deleted. Hover is now CSS only, so the inline style no longer
+  outranks the stylesheet and the card no longer scales.
+- the filter logic, the observer reveal and `projectCards` (still used by the
+  filter) are unchanged.
+
+`assets/css/style.css`:
+- `.filter-badge`: `padding` 6/12 → **8/16**, `min-height: 38px`, secondary
+  text colour, `font-family: inherit`, and the `transition: all` shorthand
+  replaced with the four properties that actually change
+  (`background-color`, `border-color`, `color`, `box-shadow`). Hover now also
+  lifts the border and text colour.
+- `.filter-badge.active` is unchanged apart from inheriting the shorter
+  transition; the T2-review `color-mix` glow is kept as the token-free value it
+  was, since no glow token exists (as the plan anticipated).
+- `.projects-filter`: `flex-wrap: wrap` and margin 24 → 32 (the gap stays 8).
+- `.projects-grid`: `minmax(350px, 1fr)` → `minmax(min(100%, 320px), 1fr)`;
+  gap 32 → 24.
+- `.project-card`: `--color-background` → **`--color-surface-raised`**
+  (the T6/T7 raised step above `.section--alt`) + `--shadow-xs`, flex column,
+  `width: 100%`, **`max-width: 420px`**, `justify-self: center`, and
+  `box-shadow`/`border-color` added to the transition list (the T7 review's
+  "shadow snaps" note). Hover: `translateY(-8px)` → **`-4px`**, `--shadow-lg`,
+  border to `--color-border`.
+- `.project-image`: flat `--color-secondary` → a soft accent
+  `radial-gradient` over `--color-background`, flex-centred.
+- `.project-placeholder` (the project mark): a full-bleed 100% box becomes a
+  **92px disc** on `--color-surface-raised` with the accent glyph at 36px,
+  matching the certification icon shape; it **fades out** on hover/focus so it
+  cannot show through the overlay (see the visual review below).
+- `.project-overlay`: revealed on `:hover` **and `:focus-within`** — the second
+  is what makes the link usable by keyboard.
+- `.project-link`: `display: inline-flex` with a fixed **56×56** box and no
+  padding (the glyph's line-height made the old `border-radius: 50%` pill an
+  **oval**, measured in the first screenshot pass); `:focus-visible` overrides
+  the ring to white because the overlay is dark in both themes.
+- `.project-content`: flex column, `flex: 1`; `.project-category` 12px/600
+  with 0.6px tracking; `.project-title` 19 → **22px**; `.project-description`
+  15px with `text-wrap: pretty`; `.project-tech` gets `margin-top: auto` so
+  pills line up across cards; `.tech-tag` becomes a `9999px` **pill** (was a
+  6px-radius chip) at 12px with a hairline.
+
+*Why the card is capped at 420px.* With one project in the data, `grid` +
+`auto-fit` gave the single card a **1248px** track at 1440 (measured
+`gridCols: "1248px 0px 0px"`), so the fixed 200px image read as a letterbox
+banner (`t9base.mjs` captures this). `auto-fit` collapses the empty tracks, so
+`justify-self: center` + `max-width` centres the lone card while multiple cards
+still fill their own tracks. Measured: card `l` equals
+`gridL + (gridW − 420) / 2` at every width (offset 0–0.5px), and the throwaway
+4-project copy lays out 3-across at 1440 / 2×2 at 1024 with equal row heights.
+
+*Measured (`t9probe.mjs`, 16 runs = 1440/1024/768/375 × EN/IT × light/dark).*
+- one card, 420×410 (328×434 at 375), centred (0–0.5px offset), revealed
+  (`is-pending` gone, opacity 1, `translate: none`), radius 12px, shadow present;
+- image panel 200px with a `radial-gradient`, mark disc 92×92 at `50%`;
+- overlay `opacity: 0` at rest with a non-transparent scrim;
+- link: label `GitHub: Portfolio`, `rel="noopener noreferrer"`,
+  `target="_blank"`, `https` href, **56×56** hit area;
+- tech pills: 4, `9999px`, 12px, tinted;
+- type hierarchy 12 / 22 / 15px;
+- filter pills: 3, `9999px`, ≥38px high, 13px, first one
+  `aria-pressed="true"` + `.active`, the other two `false`;
+- hero "Personal Projects" target still **1**; `docW == clientW` in every run;
+  0 console/page errors.
+
+*Filters (real mouse clicks).* All → Mobile → Web → All:
+Mobile `aria-pressed=true` and the single **web** card becomes `display: none`;
+Web `true` with the card back; All `true` with the card shown. **Real Enter** on
+a programmatically focused Mobile pill (`focusedBeforeEnter: "mobile"`) flips
+`All=false, Mobile=true, Web=false` and hides the card, so keyboard activation
+works. On the throwaway 4-project copy the same clicks show 3 / 1 / 4 cards.
+
+*Hover (real `Input.dispatchMouseEvent`).* Before: `transform: none`,
+overlay `0`. Over: `matrix(1, 0, 0, 1, 0, -4)`, overlay `1`, shadow raised —
+`scale` is untouched (the old JS wrote `1.02`). After moving away:
+`transform: none`, overlay `0`.
+
+*Keyboard (real Tab presses).* Focusing the last filter pill and pressing Tab
+lands on `.project-link` after **3** presses (All → Mobile → Web → link):
+`:focus-visible` true, outline `rgb(255, 255, 255) solid 2px`, overlay
+`opacity 1`, mark `opacity 0`, accessible name `GitHub: Portfolio`. Confirmed
+in both themes by `t9focus.mjs` screenshots.
+
+*320px / no-JS / reduced motion.* 320px with a classic scrollbar:
+`clientW 305`, `docW 305`, card 273px inside 16–289 — no overflow. No-JS: the
+card renders (`display: flex`, opacity 1) and the static markup carries
+`All=true, Mobile=false, Web=false`. Reduced motion: `.project-card`
+`transition-duration` is `0s` (T7 block) so the hover is instant; the filter
+pill keeps its 150 ms colour transition (colour only).
+
+*Visual review (`t9base.mjs`, `t9shots.mjs`, `t9focus.mjs`).* Three defects were
+found and fixed before sign-off: the 1248px letterbox card (→ 420px cap), the
+disc showing through the 72%-opaque overlay as a second ring (→ mark fades on
+hover/focus), and the GitHub link rendering as an **oval** because the glyph's
+line-height exceeds its width (→ fixed 56×56 flex box). Re-shot after each fix
+at 1440/1024/375 × light/dark and on the 4-card copy.
+
+*Independent review (2026-11-08): two P3s, both fixed.* The reviewer found no
+defect in the filter logic, the hover/reveal decoupling or the tokens, but
+raised two keyboard-focus gaps that the first Tab-walk did not exercise because
+it started from an already-revealed card:
+
+1. **The white ring was invisible for the first 250 ms in light mode** — the
+   scrim fades in, so the ring painted white-on-near-white until it landed.
+2. **A card still held at `opacity: 0` by the reveal could swallow focus** —
+   if the observer had not fired when the browser scrolled the link into view,
+   the whole subtree (card, overlay and focus ring) rendered invisible.
+
+Both are now covered in CSS **and** JS:
+
+- `.project-card:focus-within` sets `opacity: 1`, `translate: none` and drops
+  `translate`/`opacity` from its transition list, so a focused card is fully
+  visible in the same frame;
+- `.project-card:focus-within .project-overlay { transition-duration: 0s }`
+  makes the scrim instant on the keyboard path (hover keeps its 250 ms fade);
+- `createObserver()` adds a `focusin` listener on each project card that
+  removes `is-pending` for real, so blurring cannot fade a card the user has
+  already seen back to `opacity: 0` while the observer catches up.
+
+*Verified with `t9focus2.mjs`* (1440, light + dark). Forced cold state
+(`.is-pending` re-applied, 700 ms to settle): `pending true`, `opacity 0`,
+`translate 0px 24px`, overlay 0. **Immediately after a real Tab** (one CDP
+round-trip, no wait): `pending false`, `opacity 1`, `translate none`, overlay
+`1` with `transitionDuration 0s`, `:focus-visible true`, outline
+`rgb(255, 255, 255) solid 2px`, offset 3px — both themes identical. After
+blurring: `opacity 1`, `pending false` (no fade-out), overlay back to 0 with
+0.25 s. Hover path unchanged: overlay 0 → 1 with `transitionDuration 0.25s`.
+The immediate light-theme screenshot confirms the ring is legible over the
+scrim from the first frame.
+
+*Also verified.* `overflow.mjs` clean ×8 at 320/375 × EN/IT × light/dark;
+`t7classic.mjs` still `docW 305 == clientW`; `contrast.mjs` **0 failures** over
+279/280 elements × 4 (unchanged count — no text was added or removed);
+`t6probe.mjs`, `t7probe.mjs` and `t8probe.mjs` all still **0 failures** after the
+JS hover removal and the `focusin` listener; `t9probe.mjs` still **16/16** after
+the focus fixes; `node --check` exit 0; Jekyll 4.4.1 and
+`jekyll _3.10.0_ build` exit 0 with the new `rel`/`aria-label` in both language
+outputs and the filter wrapper's `role="group"` carrying "Filter projects" /
+"Filtra progetti"; `_site/plans` absent; `apps/piano/` untouched.
+
+*Second independent review (2026-11-08, after the focus fixes): one P3, fixed.*
+The reviewer confirmed the four changed files belong to T9, that
+`:focus-within` correctly out-cascades `.project-card.is-pending` (equal
+specificity, later in the file), that dropping `translate`/`opacity` from the
+focus-path transition makes the reveal instant without breaking blur behaviour,
+that the `focusin` listener sits after the `IntersectionObserver` guard, that
+every token exists in both schemes, and that the removed JS hover left no
+dangling references. Its P3: **the new `.project-card:focus-within`
+`transition` (0,2,0) out-specified the reduced-motion `transition: none`
+(0,1,0)**, so a card that contained focus would animate its hover lift even with
+"reduce motion" enabled — a small regression against HEAD, which zeroed the
+card transition in every state.
+
+Fixed by listing the focus state in the existing end-of-file block:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .certification-card,
+  .project-card,
+  .project-card:focus-within {
+    transition: none;
+  }
+}
+```
+
+*Verified with `t9rm.mjs`* (1440, light; `{reduce, normal} × {rest, focused,
+focused+hover, hover}`):
+
+- **reduce**: every state reports `transition-duration: 0s` and
+  `transition-property: none`; the lift is already at
+  `matrix(1, 0, 0, 1, 0, -4)` **50 ms** after the pointer enters (no animation).
+- **normal**: rest `0.25s, 0.25s, 0.25s, 0.5s, 0.5s`; focused
+  `0.25s, 0.25s, 0.25s` (transform/box-shadow/border only); hover at 50 ms is
+  mid-transition (`-2.41px`) and settles at `-4px`, so ordinary hover still
+  animates as designed.
+
+`t9probe.mjs` is still **16/16**, `t9focus2.mjs` still shows the cold-state card
+revealed at opacity 1 with the scrim at `0s` on the first frame, and the
+reduced-motion pass still reports `card 0s`. The reviewer's other notes (probes
+outside the repo, Lighthouse not re-run, empty "Mobile" filter, hard-coded
+`#ffffff` on the link/ring with a documented rationale) were already recorded
+here and required no change.
+
+*Known limits / notes.*
+- **"Mobile" shows an empty grid on the real site.** The three mobile projects
+  are commented out in `_data/projects.yml` (only the web Portfolio is live), so
+  the filter correctly hides everything and leaves the section blank. The
+  throwaway copy proves the logic works with 3 mobile + 1 web card. An
+  "empty state" message would need new EN/IT copy, which is a content decision,
+  not a styling one — left to T13/content work.
+- **The card cap is a layout decision, not a data one.** `max-width: 420px`
+  keeps a lone card from becoming a banner; with three live projects they fill
+  400px tracks at 1440 and the cap never binds. If more projects are added and a
+  wider card is wanted, the cap is the single value to change.
+- **`scale` is gone from the project hover.** The plan's T7 follow-up asked for
+  exactly this; the lift is now 4px (was 8px + 2% scale via JS). The T7 review's
+  "`box-shadow` not transitioned" note is also fixed by adding it to the
+  transition list.
+- **Reduced motion does not disable the overlay/mark fades** (they are opacity
+  fades, like the pre-existing overlay behaviour); T11 owns the full sweep and
+  should decide whether to include them. Note the focus path is now
+  `transition-duration: 0s` regardless of preference, so a keyboard user never
+  waits for the scrim, and the card's own transition is `none` in **every**
+  state under reduced motion (the `:focus-within` rule is listed in that block
+  for the same reason).
+- **Lighthouse was not re-run** (unavailable in this session). The `link-name`
+  fix uses the same `aria-label` + `aria-hidden` pattern that T2 used to clear
+  the footer icons, and the probe asserts the accessible name exists; a real
+  audit is still outstanding for T11/T15.
 
 ### T10 – Contact and Footer
 - [ ] **Objective:** Contact rows as elegant cards; a refined form (larger
@@ -2109,8 +2350,11 @@ here or are data-drift concerns rather than defects.
   `aria-label="Menu"`, `role="button"`, `tabindex="0"`); its remaining gap
   is keyboard *activation* and `aria-expanded`, owned by T3.
 - Lighthouse `link-name`: **fixed in T2** for the five footer social links
-  (`aria-label` + `aria-hidden` icons). The remaining `link-name` failure is
-  `.project-link` (T9).
+  (`aria-label` + `aria-hidden` icons). The remaining `link-name` failure was
+  `.project-link`, **fixed in T9** with `aria-label="GitHub: {{ item.title }}"`
+  plus `aria-hidden="true"` on the glyph (not re-confirmed by Lighthouse, which
+  is unavailable in these sessions, but it is the same pattern T2 used for the
+  footer icons that went from failing to passing).
 - Lighthouse `heading-order`: a heading level is skipped somewhere in the
   page (**fixed in T5**: the contact items were `<h4>` under an `<h2>` and are now
   `<h3>`, with the old 19px size pinned in CSS).

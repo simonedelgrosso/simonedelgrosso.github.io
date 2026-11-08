@@ -6,7 +6,7 @@
             <h2 class="section-title">{{ projs.title }}</h2>
             <p class="section-subtitle">{{ projs.subtitle }}</p>
         </div>
-        <div class="projects-filter" aria-label="{{ projs.filter_label }}">
+        <div class="projects-filter" role="group" aria-label="{{ projs.filter_label }}">
             <button class="filter-badge active" data-filter="all" aria-pressed="true">{{ projs.filter_1 }}</button>
             <button class="filter-badge" data-filter="mobile" aria-pressed="false">{{ projs.filter_2 }}</button>
             <button class="filter-badge" data-filter="web" aria-pressed="false">{{ projs.filter_3 }}</button>
@@ -19,8 +19,8 @@
                         <i class="{{ item.icon }}"></i>
                     </div>
                     <div class="project-overlay">
-                        <a href="{{ item.link }}" class="project-link" target="_blank">
-                            <i class="fab fa-github"></i>
+                        <a href="{{ item.link }}" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub: {{ item.title }}">
+                            <i class="fab fa-github" aria-hidden="true"></i>
                         </a>
                     </div>
                 </div>
