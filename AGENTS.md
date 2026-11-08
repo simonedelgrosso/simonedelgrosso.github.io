@@ -169,6 +169,7 @@ node tools/probes/t6-analyze.mjs "$env:TEMP\t6.json"
 | `t12edges.mjs` | The exact nav band boundaries (1024/1025 and 1199/1200) |
 | `t12nav.mjs` | Drawer state machine at 900/1024/1025/1100/1200, including resize-while-open |
 | `t7classic.mjs` | Width check that reads `documentElement.clientWidth`, i.e. with a classic scrollbar |
+| `t14theme.mjs` | `theme-color` meta equals the `--color-background` token on load (both stored themes) and after a real toggle, with `aria-pressed` in step |
 
 Caveats:
 

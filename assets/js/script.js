@@ -495,7 +495,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // The active scheme lives on <html data-color-scheme>, resolved before first paint
     // by the inline script in _layouts/default.html. These helpers only keep it in sync
     // afterwards: toggle state, storage, browser UI color and the `themechange` event.
-    const THEME_COLORS = { light: '#f8f9fb', dark: '#0b0d12' };
 
     function getTheme() {
         return document.documentElement.getAttribute('data-color-scheme') === 'dark' ? 'dark' : 'light';
@@ -523,7 +522,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const meta = document.getElementById('theme-color');
         if (meta) {
-            meta.setAttribute('content', THEME_COLORS[scheme] || THEME_COLORS.light);
+            // Read the token instead of a second hard-coded map: the browser UI
+            // colour can then never drift from the page background. The inline
+            // pre-paint script must keep its literals (the stylesheet is not
+            // guaranteed to be resolved yet), so the value now lives in exactly
+            // two places instead of three.
+            const bg = getComputedStyle(document.documentElement)
+                .getPropertyValue('--color-background').trim();
+            if (bg) {
+                meta.setAttribute('content', bg);
+            }
         }
 
         if (notify !== false) {

@@ -1,8 +1,10 @@
 # Plan: Modern & elegant restyle of the portfolio
 
-Status: **In progress.** Created 2026-10-24. Revised 2026-10-24
-after the user answered the open questions.
-Completed: **T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13**. Next: **T14**.
+Status: **All planned tasks complete.** Created 2026-10-24. Revised 2026-10-24
+after the user answered the open questions; completed 2026-11-08 with T14.
+Completed: **T0–T14**. Nothing outstanding in this plan; the residual items
+(Safari/iOS, a real Lighthouse run, English About subtitle) are listed in §9/§10
+as hand-offs rather than tasks.
 Previous plan: none (`plans/` did not exist before this file).
 
 ## 0. Progress log
@@ -23,6 +25,8 @@ Previous plan: none (`plans/` did not exist before this file).
 | T11 - JS-generated UI and reduced motion | **Done** | `t11probe.mjs` / `t11extra.mjs` / `t11nav.mjs`, 0 failures. **Normal motion**: preloader observed with **no inline style**, `rgb(248,249,251)` in light and `rgb(11,13,18)` in dark (equal to the theme's page colour), removed **700 ms after `load`**; particle canvas present; typing runs (`cursorAnim: blink`); counters animate; smooth scroll is 1398 at 60 ms after clicking the button, then 0; the button is `visibility: hidden` at the top with no inline style and gains `.is-visible` after scrolling; progress bar advances (395.8px). **Reduced motion** (`prefers-reduced-motion: reduce`): preloader removed **305 ms after load**, **no canvas**, typing shows `Full-Stack Developer` immediately, `cursorAnim: none`, counters already at their targets (3/1/3), scroll is **instant** (0 at 60 ms), and every audited surface computes `1e-05s` for `transition-duration`/`animation-duration` (scroll-to-top, progress bar, skill tag, social link, stat, button) versus real values (0.25/0.05/0.15 s) without the preference. Drawer still opens/closes with `aria-expanded`, `nav-open` and focus return in both modes. Footer clearance: no overlap at 375 or 320 (`docW 305 == clientW`), and `t11clear.mjs` found none anywhere in 320–768. `contrast.mjs` 0 failures ×4; `overflow.mjs` clean ×8; `t6`/`t7`/`t8`/`t9`/`t10` probes all still 0 failures; Jekyll 4.4.1 + 3.10.0 clean. See the T11 completion log. |
 | T12 - Responsive and cross-browser QA | **Done** | **Fixed two pre-existing responsive defects.** (1) Desktop-nav dead zone: the drawer only existed ≤768px, so at 769–899 (EN) / 769–999 (IT) the wordmark measured **0px** and `.nav-controls` sat **off-screen** (right 883–941 vs a 754–885 viewport). The drawer now covers ≤1024px (CSS split out of the layout block, `matchMedia` updated) with a 1025–1199px band at `gap: 8px`/15px. (2) The 320px wordmark clipped by 3px (132 vs 135); the ≤360px gutter is now 12px → **135/135**. Verified: `t12probe.mjs` swept 22 widths × 2 languages — **no document overflow, no truncation, no off-screen controls**, and the `accept` matrix (320/375/768/1024/1440 × EN/IT × light/dark) is **20/20**. `t12nav.mjs`: drawer opens/closes at 900 and 1024 with `aria-expanded` + focus return; inline nav at 1025/1100/1200; resizing 900→1100 while open closes it, clears `nav-open` and moves focus to a nav link. **Firefox 159 (WebDriver BiDi) 20/20** in both themes (via the `theme` storage key, since BiDi has no media emulation) with identical measurements; the drawer's geometry, `inert` on `main`/`footer`, scroll lock and Escape/focus return match Chromium (T3's open questions). Screenshots compared side by side at 1440/1024/375. `contrast.mjs` 0 failures ×4; `overflow.mjs` clean ×8; `t7classic` `docW 305`; `t6`–`t11` probes all still 0 failures; Jekyll 4.4.1 + 3.10.0 clean. Safari/iOS not checked (no device or engine available). See the T12 completion log. |
 | T13 - Update AGENTS.md | **Done** | `AGENTS.md` rewritten: real commands (`jekyll build`, `jekyll serve --livereload`, `jekyll _3.10.0_ build --destination _site-3.10`), the no-Gemfile/`bundle exec` note (verified to fail), an `htmlproofer` install note, new **Theming** and **Layout notes** sections, a **Verification Tooling** table, and a pre-push checklist. **Every documented command was executed**: `jekyll build` 0, parity build 0, `static.mjs` 200, `overflow.mjs` 10/10 widths clean, `t12probe` 44 runs 0 problems, `contrast.mjs` 279 scanned 0 failures, and the `t6probe`→`t6-analyze` flow 0 failures. **Probes committed** (user-approved deviation from "AGENTS.md only"): 21 scripts in `tools/probes/`, all `node --check` clean, Chrome path overridable via `CHROME_PATH`. `_config.yml` now excludes `tools` and `AGENTS.md` — with the old list **`AGENTS.md` was being published** at `/AGENTS.md` (verified by an old-config build), now absent from both builds, as are `plans/` and `tools/`. `.gitignore` gains `_site-3.10/`. Review round fixed six P3s (static.mjs traversal, Node version, script-kind wording, PowerShell temp path, stale headers, t7classic scrollbar guard). See the T13 completion log. |
+
+| T14 - Final build verification and cleanup | **Done** | **Cache-busting**: CSS/JS links carry `?v={{ site.time | date: '%s' }}` - one shared value per build on both pages, and it changes on rebuild (verified). **One hex source fewer**: `THEME_COLORS` removed from `script.js`; `applyTheme()` reads `--color-background`, so the page colour lives in the tokens + the pre-paint literals only. `t14theme.mjs` (now committed) 4/4 states: on load and after toggling, `meta == token` (`#f8f9fb`/`#0b0d12`) with matching `aria-pressed`. **Dead CSS**: a scripted selector-vs-usage sweep (plus repo-wide grep) found **29 unreferenced class tokens**; with the four the sweep had falsely matched (`.card`, `.flex`, `.block`, `.hidden`, whose names appear inside other tokens or attributes) that is **33 tokens / 35 rules / 36 selector lines / 187 lines** removed, and the sweep now reports **0 unreferenced** (147 → 114 tokens). **Acceptance**: `jekyll build` 0 and `jekyll _3.10.0_ build` 0; all six structure paths true in both; `git diff --quiet -- apps/piano` → 0; `git diff 610ed67 -- _data` is only `+2` lines in `navigation.yml` (`skip_to_content`). Post-deletion: contrast 0 failures ×4, overflow clean, `t12probe accept` 20/20, `t6`–`t11` probes all 0 failures, screenshots unchanged. See the T14 completion log. |
 
 Verification tooling. As of T13 the reusable suite lives in **`tools/probes/`**
 (committed, excluded from the Jekyll build, documented in `AGENTS.md`);
@@ -126,6 +130,10 @@ side-by-side screenshots), plus `t12edges.mjs` (the 1023/1024/1025 and
 1198/1199/1200/1201 band boundaries). A first attempt at measuring Firefox
 through a same-origin iframe harness inside `_site` was discarded because
 `firefox --screenshot` captures before the iframes finish loading.
+T14 added: `t14theme.mjs` (committed): the `theme-color` meta versus the
+`--color-background` token on load (both stored themes) and after a real toggle,
+with `aria-pressed` in step — the theme-color half of the deleted
+`togglecheck.mjs`.
 Screenshots: `baseline\` (before), `t1-dark\`, `t1-light\`, `t1-final\`,
 `t1-review*\`, `t1-320*`, `t2-light\`, `t2-nav\`, `navshots\`,
 `navstates*\`, `hero-1440-*`, `hero2-*`, `hero3-*`, `t5shots\`, `t6shots\`,
@@ -2738,7 +2746,8 @@ are part of this task. Everything else in T13 stayed documentation-only.
 - **`togglecheck.mjs`, `navprobe.mjs` and `shot.mjs`** (cited by earlier logs)
   no longer exist — the temp cleanup removed them between sessions. They are
   **not** in `tools/probes/`; their results remain recorded in the T2/T3 logs
-  but cannot be re-run. T14 may note this in the final summary.
+  but cannot be re-run. (`t14theme.mjs`, added in T14, now covers the
+  theme-color half of what `togglecheck.mjs` used to assert.)
 - **`_site-3.10/` is ignored but still produced on disk** by the documented
   parity command; delete it after checking.
 
@@ -2776,8 +2785,8 @@ before parsing (a page-side error used to surface as an opaque `JSON.parse`
 failure), AGENTS.md notes the `%LOCALAPPDATA%` scratch-profile assumption, and
 `.gitignore` gained its missing trailing newline.
 
-### T14 – Final build verification and cleanup
-- [ ] **Objective:** Confirm the production build and the scope of the diff.
+### T14 – Final build verification and cleanup ✅ Done (2026-11-08)
+- [x] **Objective:** Confirm the production build and the scope of the diff.
 - **Notes:** Remove dead CSS only after confirming with `rg` that nothing in
   `_includes/` or `script.js` uses it.
 - **Also owns (assigned after review):** cache-busting the CSS/JS links in
@@ -2790,8 +2799,9 @@ failure), AGENTS.md notes the `%LOCALAPPDATA%` scratch-profile assumption, and
   `script.js`. Nothing enforces sync. The head script must keep literals (it
   runs before the stylesheet is guaranteed to be available), but
   `applyTheme()` can read `--color-background` via `getComputedStyle` and
-  drop `THEME_COLORS`, leaving two sources instead of three. Re-run
-  `togglecheck.mjs` afterwards.
+  drop `THEME_COLORS`, leaving two sources instead of three. Re-check the
+  toggle afterwards (`togglecheck.mjs` no longer exists; `t14theme.mjs` now
+  covers the meta/token pairing, and T2's behaviour was re-verified in T11).
 - **Acceptance:**
   - `jekyll build` exits 0. The parity build with `jekyll _3.10.0_` also
     exits 0.
@@ -2809,6 +2819,108 @@ failure), AGENTS.md notes the `%LOCALAPPDATA%` scratch-profile assumption, and
   git diff --quiet -- apps/piano; $LASTEXITCODE        # expect 0
   git diff -- _data                                     # expect only additive navigation.yml keys
   ```
+
+**Completion log (T14)**
+
+*What changed.* `_layouts/default.html`:
+- the stylesheet and script links gain
+  `?v={{ site.time | date: '%s' }}`, so a deploy can never pair cached CSS/JS
+  with new HTML. Both pages carry the same value per build, and a rebuild a
+  couple of seconds later produces a different one.
+
+`assets/js/script.js`:
+- `THEME_COLORS` deleted. `applyTheme()` now reads
+  `--color-background` from `getComputedStyle(document.documentElement)` after
+  setting `data-color-scheme`, and only writes the meta tag when the token
+  resolves. The page-background hex therefore lives in **two** places (the CSS
+  tokens and the head pre-paint script, which must keep literals) instead of
+  three.
+
+`assets/css/style.css`:
+- dead CSS removed, after a scripted sweep (`.class`/`#id` tokens from every
+  rule compared against `_includes/`, `_layouts/`, `_data/`, `index.html` and
+  `script.js`) plus a repo-wide grep for each suspicious name. Totals, counted
+  from the diff: **35 rules / 36 selector lines / 187 lines removed**, i.e.
+  **33 distinct class tokens** (the sweep went from 147 to 114).
+  - The sweep's first pass listed **29** tokens not referenced anywhere.
+  - Four more were removed after a manual check showed the sweep counted them
+    as "used" only because their names appear inside other identifiers or
+    attributes: `.card` (matched inside `--color-card-border`), `.flex`
+    (inside `display: flex` in JS strings), `.block` (inside `code` blocks in
+    the docs) and `.hidden` (inside `aria-hidden`). `class="card"`,
+    `class="flex"`, `class="block"` and `class="hidden"` are all absent from
+    the markup, and no `classList` call uses `hidden`.
+  - Removed: `.btn--secondary` (+ hover/active), `.btn--sm`, `.btn--lg`, the
+    whole `.card` / `.card__*` block, `.status` and its four modifiers, the
+    utility layer (`.flex`, `.flex-col`, `.items-center`, `.justify-center`,
+    `.justify-between`, `.gap-4/8/16`, `.m-0`, `.mt-8`, `.mb-8`, `.mx-8`,
+    `.my-8`, `.p-0`, `.py-8`, `.px-8`, `.py-16`, `.px-16`), `.block`,
+    `.hidden` and `.sr-only`.
+  - The sweep now reports **0** unreferenced tokens.
+
+*Verification (acceptance commands, run as written).*
+- `jekyll build` → 0; `jekyll _3.10.0_ build -d …` → 0.
+- All six structure paths `True` in **both** outputs.
+- `git diff --quiet -- apps/piano` → 0.
+- `git diff 610ed67 -- _data` → `navigation.yml` only, **+2** lines
+  (`skip_to_content`); no content data changed.
+- The dead-CSS sweep: **147 → 114** distinct selector tokens (33 removed) and
+  **29 → 0** unreferenced.
+
+*Behaviour checks after the change.*
+- **Theme meta** (`tools/probes/t14theme.mjs`, both starting themes): on load
+  `meta == --color-background` (`#f8f9fb` / `#0b0d12`) with the matching
+  `aria-pressed`; after clicking the toggle the scheme flips and the meta
+  follows the new token. 4/4 states pass. The probe is committed, so the claim
+  is reproducible (`node tools/probes/t14theme.mjs http://127.0.0.1:4010`).
+- **Cache-busting**: `style.css?v=…` and `script.js?v=…` share one value on
+  `/en/` and `/it/`; a rebuild changes it; the asset still returns 200 with the
+  query.
+- `contrast.mjs` **0 failures** over 279/280 × 4; `overflow.mjs` clean at
+  320/375 × EN/IT × light/dark; `t12probe.mjs accept` **20/20** (no overflow, no
+  truncation, no off-screen controls).
+- `t6probe`, `t7probe`, `t8probe`, `t9probe`, `t10probe`, `t11probe` all still
+  **0 failures** after the deletion — the removed rules really were unused.
+- Screenshots at 1440 × EN/IT × light/dark show no visual change.
+
+*Known limits / notes.*
+- **Semantic tokens orphaned by the deletion were kept.** With `.status` and
+  `.btn--secondary` gone, `--status-bg-opacity`, `--status-border-opacity`,
+  `--color-secondary-active` and the four `--color-{success,error,warning,info}`
+  families (plus their `-rgb` forms) are defined but unused. They are the
+  design-system's colour vocabulary and the obvious base for future form
+  validation, so removing them was judged out of scope for "dead CSS rules";
+  they cost a few hundred bytes and cannot drift silently.
+- **`.btn--outline` was kept** even though its only consumer is a commented-out
+  CV button in `hero_section.html`, because the sweep counts that markup as a
+  reference. Re-enabling the button needs no CSS change.
+- **`?v=` changes on every build**, so each deploy re-downloads both assets.
+  That is the intended trade-off for correctness after a deploy.
+- The CSP-free inline head script still hard-codes the two colours; that is
+  deliberate (it runs before the stylesheet is guaranteed) and documented.
+
+*Review response (2026-11-08): two P3s, both fixed.* An independent review
+re-ran the selector sweep (0 unreferenced, braces balanced, nothing removed was
+referenced by markup/JS/data/probes, `apps/piano` does not load `style.css`),
+confirmed the `applyTheme()` ordering (`data-color-scheme` set before the token
+read; the head script seeds the meta before paint), and confirmed `static.mjs`
+strips query strings so `?v=` cannot break the committed tooling. Its two
+findings:
+
+1. **The theme-meta evidence was not reproducible.** `t14theme.mjs` lived only
+   in the temp folder, and the task text still said "re-run `togglecheck.mjs`"
+   — a probe the T13 cleanup had deleted. `tools/probes/t14theme.mjs` is now
+   committed (header rewritten to the suite convention, Chrome path via
+   `CHROME_PATH`), listed in the `AGENTS.md` table, and re-run from the repo:
+   4/4 states pass. The T14 task text now points at it instead of
+   `togglecheck.mjs`.
+2. **The dead-CSS counts did not reconcile.** The log said "37 selectors" while
+   also reporting "147 → 114" (= 33). Recounted from the diff: **35 rules /
+   36 selector lines / 187 lines**, **33 distinct class tokens**. The log now
+   states those numbers and explains the two-step process (the sweep found 29;
+   four more — `.card`, `.flex`, `.block`, `.hidden` — were removed after manual
+   checks showed the script had matched their names inside
+   `--color-card-border`, `display: flex`, doc code blocks and `aria-hidden`).
 
 ## 9. Risks, edge cases and failure modes
 
@@ -2931,6 +3043,10 @@ failure), AGENTS.md notes the `%LOCALAPPDATA%` scratch-profile assumption, and
 
 ## 11. Overall acceptance criteria
 
+Status at the end of T14: criteria 2–6 are verified in-repo (see the per-task
+logs); criterion 1 (the user's visual approval) and a real Lighthouse/axe run
+remain with the owner.
+
 1. A modern, elegant look in **both** light and dark themes, with a coherent
    indigo accent, the new fonts, and consistent cards and spacing. The user
    approves it against the T0 baseline.
@@ -2957,7 +3073,14 @@ failure), AGENTS.md notes the `%LOCALAPPDATA%` scratch-profile assumption, and
 - **First recommended task:** T0 (baseline screenshots), then T1 (design
   tokens for both themes). T1 is what makes T2 and every later section task
   work in both themes.
-- **Current state (2026-10-24):** T0, T1 and T2 are complete and verified.
-  The page now has the indigo palette, Plus Jakarta Sans headings, both theme
-  token sets, the theme resolved before paint on `<html>`, and a working
-  accessible theme toggle in the navbar. Section-level restyling starts at T3.
+- **Final state (2026-11-08):** T0–T14 complete. The site has the indigo
+  palette and both token sets, a pre-paint theme resolution with a persistent
+  toggle, restyled sections (hero, about, timeline, certifications,
+  experience, skills, projects, contact, footer), a 1024px nav breakpoint with
+  a working drawer, reduced-motion support, cache-busted assets, and a
+  committed 21-script verification suite in `tools/probes/` documented in
+  `AGENTS.md`.
+- **Hand-offs (not tasks):** a real Lighthouse/axe baseline (unavailable in
+  these sessions; `contrast.mjs` and the probes cover the same surfaces), a
+  Safari/iOS check (no WebKit available), and the missing English About
+  subtitle (a content decision).

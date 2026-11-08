@@ -11,7 +11,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
-        <link rel="stylesheet" href="/assets/css/style.css" />
+        <link rel="stylesheet" href="/assets/css/style.css?v={{ site.time | date: '%s' }}" />
         <meta name="theme-color" id="theme-color" content="#f8f9fb" />
         <script>
             // Resolve the color scheme before first paint to avoid a flash of the wrong theme.
@@ -61,6 +61,6 @@
             {% include contact_section.html %}
         </main>
         {% include footer_section.html %}
-        <script src="/assets/js/script.js"></script>
+        <script src="/assets/js/script.js?v={{ site.time | date: '%s' }}"></script>
     </body>
 </html>
