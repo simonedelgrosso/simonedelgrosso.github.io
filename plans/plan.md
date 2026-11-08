@@ -2,7 +2,7 @@
 
 Status: **In progress.** Created 2026-10-24. Revised 2026-10-24
 after the user answered the open questions.
-Completed: **T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12**. Next: **T13**.
+Completed: **T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13**. Next: **T14**.
 Previous plan: none (`plans/` did not exist before this file).
 
 ## 0. Progress log
@@ -16,23 +16,24 @@ Previous plan: none (`plans/` did not exist before this file).
 | T4 – Hero section | **Done** | `heroprobe.mjs` 16 runs (1440×900 / 768×900 / 375×800 / 320×700 × EN/IT × light/dark): hero 880 at 1440/768, indicator hidden ≤768 and never overlapping the stats, ring `8px` + image 284/240/216, typing advances, counters reach 3/1/3 (after a scroll at 375/320, where the last cards start below the fold), particles 1516–3594 px and recolour on toggle in every run, 0 console/page errors; `overflow.mjs` clean at 320/375 × EN/IT; `contrast.mjs` 311 scanned / 0 failures × 4; `navprobe.mjs` + `navcheck.mjs` unchanged after moving the navbar's `backdrop-filter` to the scrolled/drawer states (documented deviation); Lighthouse `/en/` a11y **93**, CLS **0.002**. See the T4 completion log. |
 | T5 - Section shell | **Done** | `shellprobe.mjs` 16 runs (1440/768/375/320 × EN/IT × light/dark): exactly one `<main>` (child of `<body>`), **0** heading-order skips, the section backgrounds equal the intended base/alt pair **both while `#preloader` is present and after it is removed**, no `.section-title` overflow (all seven fit on one line at 375/320 in both languages), contact `h3` at 19px, 0 console/page errors; real-key-event skip-link flow (one Tab → visible at 8/8, Enter → `#main` focused, `scrollY` 0); `shellnav.mjs` section `offsetTop == rectTop` with `offsetParent = BODY` and the active nav link correct after the wrap; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; `navprobe.mjs` + `navcheck.mjs` unchanged (focus return, 44px hit areas, scrolled glass) with the skip link now the first tab stop; Lighthouse a11y **0.96** EN+IT - `landmark-one-main`, `heading-order` and `skip-link` now pass, only the pre-existing `.project-link` `link-name` (T9) remains; Jekyll 4.4.1 and 3.10.0 builds clean. See the T5 completion log. |
 | T6 - About and Education | **Done** | `t6probe.mjs` **16/16** runs (1440/768/375/320 × EN/IT × light/dark): items hidden before (`is-pending`, opacity 0) and revealed on scroll (opacity 1, `transform: none`, mid-transition 0.72-0.87 at 150ms), no-JS shows both items at opacity 1, reduced motion keeps `transition: none` but still reveals; 3 chips at a uniform 40px with `9999px` radius and 26×26 icon dots; desktop cards staggered, ≤768 a single left-aligned column (66-344 at 375, 66-289 at 320); dot 12px with two rings, 2px centred spine, card `box-shadow` present, 2 grade lines per page, 0 console/page errors; `t6head.mjs` odd-card header/pill inside the card at 375-1280 (EN/IT); `t6noio.mjs` (IntersectionObserver deleted) leaves both items visible; `t6bg.mjs` confirms the card sits one step above the alt section in both schemes; grade guard proven on a throwaway copy (EN 1 / IT 2 with one `grade:` removed); `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; Jekyll 4.4.1 build clean. Lighthouse not re-run (not installed in this session); contrast covered the changed surfaces. See the T6 completion log. |
-
 | T7 - Certifications and Experience | **Done** | `t7probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): 3 columns at 1440/1024 (400px / 309.66px each), 2 at 768, 1 at 375; every row has equal card heights and **identical badge tops**; icon 56×56 at `border-radius: 50%` on the accent tint in both schemes; badge is a 9999px pill (133×28, 600) narrower than the card; cards hidden before (`is-pending`, opacity 0) and revealed on scroll with **no inline styles**; 0 console/page errors; `t7shared.mjs` real mouse hover lifts a card exactly **2px with `scale: none`** and returns, project cards still reveal through the same path, and with `IntersectionObserver` deleted all certification and project cards stay visible; `t7wrap.mjs` on a throwaway copy with one deliberately long title: 2 lines at 1440 / 3 lines at 1024, heights still equal and badges still aligned; `t7count.mjs` hero counters read 3/1/3 (EN) and 3/1/3 (IT); reduced motion `transition: 0s` yet still reveals; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` 312/313 scanned / **0 failures** × 4; `t6probe.mjs` 16/16 unchanged (timeline untouched); **`t7classic.mjs` resolved the long-open 320px/316 classic-scrollbar overflow** (`.certifications-grid` `minmax(300px,1fr)` → `minmax(min(100%,300px),1fr)`; `docW` 316 → 305 == `clientWidth`); Jekyll 4.4.1 and 3.10.0 builds clean, `_site/plans` absent. See the T7 completion log. |
-
 | T8 - Skills as simple tags | **Done** | `t8probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): **11 tags in 3 categories** on every run with the expected translated titles (EN "Programming Languages / Frameworks & Libraries / Markup & Styling", IT "Linguaggi di Programmazione / Frameworks & Librerie / Markup & Styling"), all `<ul class="skill-tags" role="list">` with `list-style: none`, tags 92×35 pills at `9999px` with a non-transparent tint, 13px/500, none crossing its category card; 3 columns at 1440/1024, 1 at 375 (and 1 at 768, unchanged by the pre-existing override); **0 leftover `.skill-bar`/`.skill-progress`/`.skill-item`/`.skill-name`/`data-skill` references** in the built HTML; hover changes only border+colour (`rgba(15,23,42,.08)` → `#4f46e5`, geometry 92×35 unchanged); 320px with a classic scrollbar: `docW 305 == clientW`, no overflow, widest tag 264 < card 289; no-JS renders all 11 tags; 0 console/page errors; `overflow.mjs` clean at 320/375 × EN/IT × light/dark; `contrast.mjs` **0 failures** over 279/280 elements × 4 (down from 312/313 — the 33 bar/name/progress elements no longer exist); `t6probe.mjs` and `t7probe.mjs` still **16/16** after the observer selector change; Jekyll 4.4.1 and 3.10.0 builds clean, no bar markup in parity output, `_site/plans` absent. See the T8 completion log. |
 | T9 - Projects | **Done** | `t9probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): one card, 420×410 (328×434 at 375), centred in the grid at every width (offset 0–0.5px), raised surface + shadow, 200px gradient image panel, 92px `50%` mark disc, overlay hidden at rest, link `aria-label="GitHub: …"` + `rel="noopener noreferrer"` + `target="_blank"` + 56×56 hit area, 4 tech pills at `9999px`/12px, 3 filter pills (`9999px`, ≥38px high, 13px), hierarchy 12/22/15px, hero projects target `1`, 0 console/page errors; **real-click filters** All→Mobile→Web→All toggle `aria-pressed` correctly (Mobile hides the single web card: display `none`), and **real Enter** on a focused filter does the same (`focusedBeforeEnter: mobile`); **real mouse hover** lifts `matrix(1,0,0,1,0,-4)` with `scale` untouched and raises the overlay 0→1, returning on leave; **real Tab walk** reaches `.project-link` with `:focus-visible` true, a `rgb(255,255,255) solid 2px` outline, overlay opacity 1 and the mark faded to 0; throwaway 4-project copy: 3-across at 1440 (equal 434px heights, tech pills on one line) / 2×2 at 1024 / 1 column at 768+375, filters Mobile=3, Web=1, All=4 with correct `aria-pressed`; 320px classic scrollbar `docW 305 == clientW` (card 273, 16–289); no-JS renders the card and the static `aria-pressed`; reduced motion `card 0s`; `overflow.mjs` clean ×8; `contrast.mjs` **0 failures** over 279/280 × 4; `t6probe`/`t7probe`/`t8probe` still **0 failures**; `t9focus2.mjs` cold-state focus (forced `.is-pending`) reveals the card at `opacity 1`/`translate none` with the scrim at `0s` **in the first frame**, and blurring no longer fades it out; `t9rm.mjs` proves reduced motion still zeroes the card transition in the focused **and** focused+hover states (`0s` / `property: none`, lift applied instantly) while normal hover still animates; Jekyll 4.4.1 and 3.10.0 builds clean, `_site/plans` absent. See the T9 completion log. |
-
 | T10 - Contact and Footer | **Done** | `t10probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): 5 contact cards with 44×44 soft accent discs, 12px radius and shadows; the form has 4 controls at **45px** high with a **10px** radius, labels 13px, and a 44px submit; the footer renders 5 social discs (40px, `50%`, hairline), each with a label, `aria-hidden` glyph and `rel="noopener noreferrer"` on the four `target="_blank"` links (5 rels per page including the project link); contact grid 2 columns at ≥769, 1 at ≤768; `docW == clientW` everywhere; 0 console/page errors. **Focus** (real `:focus` on all four controls, both themes): accent border + `rgba(79,70,229,.35)`/`rgba(129,140,248,.45)` ring, `h 45`; focusing a contact link accents the card border and shows `:focus-within`. **Validation**: an empty submit is blocked natively (`valid false`, handler never runs, focus moves to `#name`); a filled submit runs the handler once, resets the form, stays in the same document and produces `Page.frameScheduledNavigation` → `mailto:simonedelgrosso@outlook.it?subject=Hello%20there&body=A%20message%20body.%0A%0A--%0ATest%20User%0A%3Ctest%40example.com%3E`. 320px classic: `docW 305 == clientW`; no-JS renders 5 cards, 4 inputs, 5 social links; Jekyll 4.4.1 + 3.10.0 clean, `_site/plans` absent. See the T10 completion log. |
-
 | T11 - JS-generated UI and reduced motion | **Done** | `t11probe.mjs` / `t11extra.mjs` / `t11nav.mjs`, 0 failures. **Normal motion**: preloader observed with **no inline style**, `rgb(248,249,251)` in light and `rgb(11,13,18)` in dark (equal to the theme's page colour), removed **700 ms after `load`**; particle canvas present; typing runs (`cursorAnim: blink`); counters animate; smooth scroll is 1398 at 60 ms after clicking the button, then 0; the button is `visibility: hidden` at the top with no inline style and gains `.is-visible` after scrolling; progress bar advances (395.8px). **Reduced motion** (`prefers-reduced-motion: reduce`): preloader removed **305 ms after load**, **no canvas**, typing shows `Full-Stack Developer` immediately, `cursorAnim: none`, counters already at their targets (3/1/3), scroll is **instant** (0 at 60 ms), and every audited surface computes `1e-05s` for `transition-duration`/`animation-duration` (scroll-to-top, progress bar, skill tag, social link, stat, button) versus real values (0.25/0.05/0.15 s) without the preference. Drawer still opens/closes with `aria-expanded`, `nav-open` and focus return in both modes. Footer clearance: no overlap at 375 or 320 (`docW 305 == clientW`), and `t11clear.mjs` found none anywhere in 320–768. `contrast.mjs` 0 failures ×4; `overflow.mjs` clean ×8; `t6`/`t7`/`t8`/`t9`/`t10` probes all still 0 failures; Jekyll 4.4.1 + 3.10.0 clean. See the T11 completion log. |
-
 | T12 - Responsive and cross-browser QA | **Done** | **Fixed two pre-existing responsive defects.** (1) Desktop-nav dead zone: the drawer only existed ≤768px, so at 769–899 (EN) / 769–999 (IT) the wordmark measured **0px** and `.nav-controls` sat **off-screen** (right 883–941 vs a 754–885 viewport). The drawer now covers ≤1024px (CSS split out of the layout block, `matchMedia` updated) with a 1025–1199px band at `gap: 8px`/15px. (2) The 320px wordmark clipped by 3px (132 vs 135); the ≤360px gutter is now 12px → **135/135**. Verified: `t12probe.mjs` swept 22 widths × 2 languages — **no document overflow, no truncation, no off-screen controls**, and the `accept` matrix (320/375/768/1024/1440 × EN/IT × light/dark) is **20/20**. `t12nav.mjs`: drawer opens/closes at 900 and 1024 with `aria-expanded` + focus return; inline nav at 1025/1100/1200; resizing 900→1100 while open closes it, clears `nav-open` and moves focus to a nav link. **Firefox 159 (WebDriver BiDi) 20/20** in both themes (via the `theme` storage key, since BiDi has no media emulation) with identical measurements; the drawer's geometry, `inert` on `main`/`footer`, scroll lock and Escape/focus return match Chromium (T3's open questions). Screenshots compared side by side at 1440/1024/375. `contrast.mjs` 0 failures ×4; `overflow.mjs` clean ×8; `t7classic` `docW 305`; `t6`–`t11` probes all still 0 failures; Jekyll 4.4.1 + 3.10.0 clean. Safari/iOS not checked (no device or engine available). See the T12 completion log. |
+| T13 - Update AGENTS.md | **Done** | `AGENTS.md` rewritten: real commands (`jekyll build`, `jekyll serve --livereload`, `jekyll _3.10.0_ build --destination _site-3.10`), the no-Gemfile/`bundle exec` note (verified to fail), an `htmlproofer` install note, new **Theming** and **Layout notes** sections, a **Verification Tooling** table, and a pre-push checklist. **Every documented command was executed**: `jekyll build` 0, parity build 0, `static.mjs` 200, `overflow.mjs` 10/10 widths clean, `t12probe` 44 runs 0 problems, `contrast.mjs` 279 scanned 0 failures, and the `t6probe`→`t6-analyze` flow 0 failures. **Probes committed** (user-approved deviation from "AGENTS.md only"): 21 scripts in `tools/probes/`, all `node --check` clean, Chrome path overridable via `CHROME_PATH`. `_config.yml` now excludes `tools` and `AGENTS.md` — with the old list **`AGENTS.md` was being published** at `/AGENTS.md` (verified by an old-config build), now absent from both builds, as are `plans/` and `tools/`. `.gitignore` gains `_site-3.10/`. Review round fixed six P3s (static.mjs traversal, Node version, script-kind wording, PowerShell temp path, stale headers, t7classic scrollbar guard). See the T13 completion log. |
 
-Verification tooling used (temporary, outside the repo, in
-`%LOCALAPPDATA%\Temp\opencode\`): `shot.mjs` (headless Chrome via CDP,
-per-width full-page screenshots), `themecheck.mjs` (theme-resolution
-matrix), `contrast.mjs` (reveal-forced contrast audit that does not rely
-on Lighthouse), `overflow.mjs` (**strict** overflow audit, `mobile: false`,
+Verification tooling. As of T13 the reusable suite lives in **`tools/probes/`**
+(committed, excluded from the Jekyll build, documented in `AGENTS.md`);
+`overflow.mjs`, `contrast.mjs`, `static.mjs`, the T6–T11 `*probe`/`*-analyze`
+pairs, `t12probe.mjs`, `t12edges.mjs`, `t12nav.mjs`, `t7classic.mjs` and the two
+optional Firefox BiDi scripts are all there. The list below records the full set
+as it was used during the restyle (temporary, in
+`%LOCALAPPDATA%\Temp\opencode\`); entries not in `tools/probes/` were
+screenshot or one-off evidence helpers that were deliberately not committed.
+The list: `contrast.mjs` (reveal-forced contrast audit that does not rely on
+Lighthouse), `overflow.mjs` (**strict** overflow audit, `mobile: false`,
 the tool of record for width checks), `togglecheck.mjs` (theme-toggle
 acceptance checks with real key events), `navshot.mjs` (clipped navbar
 screenshots + nav metrics), `navprobe.mjs` (navbar geometry + mobile menu
@@ -2627,10 +2628,13 @@ no truncation, off-screen control or document overflow at any of those widths.
 - **Lighthouse was not run** (still unavailable). The optional a11y ≥ 95 gate is
   therefore unverified for this task.
 
-### T13 – Update AGENTS.md
-- [ ] **Objective:** Make the repository instructions match reality and the
+### T13 – Update AGENTS.md ✅ Done (2026-11-08)
+- [x] **Objective:** Make the repository instructions match reality and the
   new features.
-- **Files:** `AGENTS.md` only.
+- **Files:** `AGENTS.md` only — **expanded with approval**: the user opted to
+  commit the verification probes, so `tools/probes/` (21 scripts),
+  `_config.yml` (exclude) and `.gitignore` (parity output) are part of this
+  task too. See the deviation note in the completion log.
 - **Changes:**
   - Key Commands: `jekyll serve --livereload` and `jekyll build`, with a note
     that there is no Gemfile, so `bundle exec` doesn't apply. Mention
@@ -2655,6 +2659,122 @@ no truncation, off-screen control or document overflow at any of those widths.
   - The rest of the content is preserved.
 - **Verify:** run `jekyll build` exactly as written in AGENTS.md; review with
   `git diff AGENTS.md`.
+
+**Completion log (T13)**
+
+*What changed.* `AGENTS.md` (rewritten, all previous sections preserved and
+extended):
+- **Key Commands** now match the repo: `gem install jekyll`, `jekyll serve
+  --livereload`, `jekyll build`, and `jekyll _3.10.0_ build --destination
+  _site-3.10` for Pages parity. The `bundle install` / `bundle exec` lines are
+  gone — there is no Gemfile, and `bundle exec jekyll` really does stop with
+  "Could not locate Gemfile or .bundle/ directory" (verified). `htmlproofer` is
+  documented as an extra install.
+- **Repository Structure** gains `tools/probes/` and notes that `style.css`
+  holds both token blocks and `script.js` does the toggle/drawer/reveal.
+- New **Theming** section: `data-color-scheme` on `<html>` (not `body`), the
+  pre-paint script, the `theme` storage key, the two token blocks, and the
+  "prefer semantic tokens" rule with its documented exception (the white ring on
+  the dark project overlay).
+- New **Layout notes** section: the 1024px nav breakpoint (CSS and
+  `matchMedia` must agree), the 1025–1199px compact band, the 768px page-layout
+  breakpoint, and skills-as-tags with the unused `value`.
+- New **Verification Tooling** section: how to start a server, a table of all 13
+  committed checks with what each one asserts, and caveats (Chrome path /
+  `CHROME_PATH`, one-at-a-time ports, UTF-16 output from PowerShell, Firefox
+  BiDi, not a CI suite). `overflow.mjs` is called out as the width tool of
+  record because it uses desktop metrics.
+- **Testing Checklist** uses the real commands and adds the parity build and the
+  `plans/ tools/ AGENTS.md` absence checks.
+- **Common Gotchas** gains the CSS/`matchMedia` sync rule and a pointer to
+  `plans/plan.md` as the source of truth.
+
+`tools/probes/` (21 scripts, ~124 KB) — the curated regression suite: the three
+general tools (`overflow.mjs`, `contrast.mjs`, `static.mjs`), the six
+probe+analyzer pairs from T6–T11, the responsive trio (`t12probe.mjs`,
+`t12edges.mjs`, `t12nav.mjs`), the classic-scrollbar width check
+(`t7classic.mjs`) and the two optional Firefox BiDi scripts. The Chrome path in
+each is now `process.env.CHROME_PATH || 'C:\Program Files\…\chrome.exe'`, so the
+tools are not hard-wired to one machine.
+
+`_config.yml`: `exclude` now covers `tools` and `AGENTS.md`. This fixes a real
+leak — Jekyll copies root files without front matter, so with only `plans`
+excluded, `AGENTS.md` **was** published at `/AGENTS.md`. Verified by building
+with the old exclude list into a temp directory: `_site/AGENTS.md` = `True`,
+`_site/tools` = `False`; with the new list both are `False`.
+
+`.gitignore`: `_site-3.10/`, because the documented parity command writes there.
+
+*Commands run exactly as documented (acceptance).*
+- `jekyll build` → exit 0.
+- `jekyll _3.10.0_ build --destination _site-3.10` → exit 0.
+- Structure: `en/index.html`, `it/index.html`, `sitemap.xml`, `feed.xml`,
+  `apps/piano/index.html` all present; `plans/`, `tools/`, `AGENTS.md` absent
+  from **both** builds.
+- `node tools/probes/static.mjs ./_site 4011` → serves `200`.
+- `node tools/probes/overflow.mjs … 320,375,768,1024,1440 en,it light` → 10 runs,
+  `docW == innerW` in every one.
+- `node tools/probes/t12probe.mjs … widths` → 44 runs, 0 errors, 0 problem runs.
+- `node tools/probes/contrast.mjs … en light` → 279 scanned, 0 failures.
+- `node tools/probes/t6probe.mjs … > t6.json` + `t6-analyze.mjs t6.json` →
+  `errors: 0 []`, `failures 0`.
+- All 21 scripts pass `node --check`; none has a BOM.
+
+*Deviation from the plan's file list (approved).* T13 said `AGENTS.md` only.
+The plan itself asked to *decide with the user* whether to commit the probes;
+the user chose to commit them, so `tools/probes/` plus the two config touches
+are part of this task. Everything else in T13 stayed documentation-only.
+
+*Known limits / notes.*
+- **The probes are Windows/Chrome-oriented.** They assume Chrome at the default
+  path (overridable with `CHROME_PATH`), use fixed CDP ports and write their
+  scratch output into `%LOCALAPPDATA%\Temp\opencode`. They are documented as
+  developer tools, not a CI suite.
+- **21 of the 42 scripts used during the restyle were committed.** The rest are
+  screenshot/one-off evidence helpers (`*shots.mjs`, `*base.mjs`, the
+  reduced-motion and focus-specific probes, the superseded `t12firefox.mjs`/
+  `t12firefox2.mjs`, and `t9-multi.mjs`, which needs a throwaway site copy).
+  The plan still records their results; only the reusable suite is in the repo.
+- **`togglecheck.mjs`, `navprobe.mjs` and `shot.mjs`** (cited by earlier logs)
+  no longer exist — the temp cleanup removed them between sessions. They are
+  **not** in `tools/probes/`; their results remain recorded in the T2/T3 logs
+  but cannot be re-run. T14 may note this in the final summary.
+- **`_site-3.10/` is ignored but still produced on disk** by the documented
+  parity command; delete it after checking.
+
+*Review response (2026-11-08): six P3s, all fixed.* An independent review
+verified the build/exclusion claims (no `plans`/`tools`/`AGENTS.md` in the
+output, sitemap clean, `apps/piano` untouched, `node --check` on all 21, no
+BOMs, every AGENTS.md code claim matching the sources) and raised six
+documentation/robustness issues:
+
+1. **`static.mjs` allowed a path-traversal read.** A percent-encoded backslash
+   (`/%5c..%5c..%5cwin.ini`) decoded to `\..\..\win.ini`, which `join()`
+   resolves as separators on Windows, escaping the served root. Fixed with a
+   `resolve()` + `startsWith(root + sep)` containment check (both the request
+   path and the real path, so a symlinked root still works). Verified live:
+   `%5c..%5c..%5cwindows%5cwin.ini` → **400**, `..%2f..%2fpackage.json` → **400**,
+   `%2e%2e/%2e%2e/AGENTS.md` → **404**, while `/`, `/en/`, the CSS, `/apps/piano/`
+   and `sitemap.xml` still return **200**.
+2. **AGENTS.md said "Node 18+"**, but the Chrome probes use a global
+   `WebSocket`, which only exists from Node 21/22; on 18 they die with
+   `ReferenceError`. Corrected to **Node 22+**.
+3. **The blanket "launches Chrome and prints JSON" sentence** was wrong for
+   `static.mjs`, `t7classic.mjs` and the two Firefox scripts. The intro now
+   describes each kind accurately.
+4. **The `/tmp/t6.json` example** dead-ends on PowerShell. Both forms are now
+   documented (`/tmp` for bash, `$env:TEMP` for PowerShell).
+5. **Stale "(not part of the repo)" headers** in `overflow.mjs`,
+   `contrast.mjs` and `static.mjs` reworded to the committed-suite wording.
+6. **`t7classic.mjs` never asserted its own precondition.** It now calls
+   `Emulation.setScrollbarsHidden({ hidden: false })` and prints a warning when
+   `innerWidth - clientWidth === 0`, instead of silently producing a vacuous
+   audit. Re-ran it: `scrollbar=15` and `docW 305` at 320px, unchanged.
+
+Also taken from the review: `overflow.mjs` now checks `exceptionDetails`
+before parsing (a page-side error used to surface as an opaque `JSON.parse`
+failure), AGENTS.md notes the `%LOCALAPPDATA%` scratch-profile assumption, and
+`.gitignore` gained its missing trailing newline.
 
 ### T14 – Final build verification and cleanup
 - [ ] **Objective:** Confirm the production build and the scope of the diff.

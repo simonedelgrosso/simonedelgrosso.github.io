@@ -8,9 +8,11 @@ url: "https://simonedelgrosso.github.io"
 markdown: kramdown
 timezone: Europe/Rome
 
-# Planning notes must never be published as part of the site.
+# Planning notes and developer tooling must never be published as part of the site.
 exclude:
   - plans
+  - tools
+  - AGENTS.md
 
 plugins:
   - jekyll-feed
