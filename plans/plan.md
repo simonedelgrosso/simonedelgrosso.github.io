@@ -2,7 +2,7 @@
 
 Status: **In progress.** Created 2026-10-24. Revised 2026-10-24
 after the user answered the open questions.
-Completed: **T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11**. Next: **T12**.
+Completed: **T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12**. Next: **T13**.
 Previous plan: none (`plans/` did not exist before this file).
 
 ## 0. Progress log
@@ -25,6 +25,8 @@ Previous plan: none (`plans/` did not exist before this file).
 | T10 - Contact and Footer | **Done** | `t10probe.mjs` **16/16** runs (1440/1024/768/375 × EN/IT × light/dark): 5 contact cards with 44×44 soft accent discs, 12px radius and shadows; the form has 4 controls at **45px** high with a **10px** radius, labels 13px, and a 44px submit; the footer renders 5 social discs (40px, `50%`, hairline), each with a label, `aria-hidden` glyph and `rel="noopener noreferrer"` on the four `target="_blank"` links (5 rels per page including the project link); contact grid 2 columns at ≥769, 1 at ≤768; `docW == clientW` everywhere; 0 console/page errors. **Focus** (real `:focus` on all four controls, both themes): accent border + `rgba(79,70,229,.35)`/`rgba(129,140,248,.45)` ring, `h 45`; focusing a contact link accents the card border and shows `:focus-within`. **Validation**: an empty submit is blocked natively (`valid false`, handler never runs, focus moves to `#name`); a filled submit runs the handler once, resets the form, stays in the same document and produces `Page.frameScheduledNavigation` → `mailto:simonedelgrosso@outlook.it?subject=Hello%20there&body=A%20message%20body.%0A%0A--%0ATest%20User%0A%3Ctest%40example.com%3E`. 320px classic: `docW 305 == clientW`; no-JS renders 5 cards, 4 inputs, 5 social links; Jekyll 4.4.1 + 3.10.0 clean, `_site/plans` absent. See the T10 completion log. |
 
 | T11 - JS-generated UI and reduced motion | **Done** | `t11probe.mjs` / `t11extra.mjs` / `t11nav.mjs`, 0 failures. **Normal motion**: preloader observed with **no inline style**, `rgb(248,249,251)` in light and `rgb(11,13,18)` in dark (equal to the theme's page colour), removed **700 ms after `load`**; particle canvas present; typing runs (`cursorAnim: blink`); counters animate; smooth scroll is 1398 at 60 ms after clicking the button, then 0; the button is `visibility: hidden` at the top with no inline style and gains `.is-visible` after scrolling; progress bar advances (395.8px). **Reduced motion** (`prefers-reduced-motion: reduce`): preloader removed **305 ms after load**, **no canvas**, typing shows `Full-Stack Developer` immediately, `cursorAnim: none`, counters already at their targets (3/1/3), scroll is **instant** (0 at 60 ms), and every audited surface computes `1e-05s` for `transition-duration`/`animation-duration` (scroll-to-top, progress bar, skill tag, social link, stat, button) versus real values (0.25/0.05/0.15 s) without the preference. Drawer still opens/closes with `aria-expanded`, `nav-open` and focus return in both modes. Footer clearance: no overlap at 375 or 320 (`docW 305 == clientW`), and `t11clear.mjs` found none anywhere in 320–768. `contrast.mjs` 0 failures ×4; `overflow.mjs` clean ×8; `t6`/`t7`/`t8`/`t9`/`t10` probes all still 0 failures; Jekyll 4.4.1 + 3.10.0 clean. See the T11 completion log. |
+
+| T12 - Responsive and cross-browser QA | **Done** | **Fixed two pre-existing responsive defects.** (1) Desktop-nav dead zone: the drawer only existed ≤768px, so at 769–899 (EN) / 769–999 (IT) the wordmark measured **0px** and `.nav-controls` sat **off-screen** (right 883–941 vs a 754–885 viewport). The drawer now covers ≤1024px (CSS split out of the layout block, `matchMedia` updated) with a 1025–1199px band at `gap: 8px`/15px. (2) The 320px wordmark clipped by 3px (132 vs 135); the ≤360px gutter is now 12px → **135/135**. Verified: `t12probe.mjs` swept 22 widths × 2 languages — **no document overflow, no truncation, no off-screen controls**, and the `accept` matrix (320/375/768/1024/1440 × EN/IT × light/dark) is **20/20**. `t12nav.mjs`: drawer opens/closes at 900 and 1024 with `aria-expanded` + focus return; inline nav at 1025/1100/1200; resizing 900→1100 while open closes it, clears `nav-open` and moves focus to a nav link. **Firefox 159 (WebDriver BiDi) 20/20** in both themes (via the `theme` storage key, since BiDi has no media emulation) with identical measurements; the drawer's geometry, `inert` on `main`/`footer`, scroll lock and Escape/focus return match Chromium (T3's open questions). Screenshots compared side by side at 1440/1024/375. `contrast.mjs` 0 failures ×4; `overflow.mjs` clean ×8; `t7classic` `docW 305`; `t6`–`t11` probes all still 0 failures; Jekyll 4.4.1 + 3.10.0 clean. Safari/iOS not checked (no device or engine available). See the T12 completion log. |
 
 Verification tooling used (temporary, outside the repo, in
 `%LOCALAPPDATA%\Temp\opencode\`): `shot.mjs` (headless Chrome via CDP,
@@ -111,6 +113,18 @@ modes), `t11shots.mjs` (preloader, footer, button and top-of-page captures) and
 `t11nav.mjs` (mobile drawer under reduced motion, since `navprobe.mjs` was
 removed by the temp cleanup), plus `t11clear.mjs` (scroll-to-top vs social-row
 clearance across 320–768px).
+T12 added: `t12probe.mjs` (22-width × 2-language sweep of `docW`/`clientW`,
+wordmark truncation, off-screen controls, computed nav gap/type, plus an
+`accept` mode for the 20 acceptance combinations), `t12nav.mjs` (drawer
+open/Escape at 900/1024, inline nav at 1025/1100/1200, and the resize-past-
+breakpoint path), `t12navshots.mjs` (navbar strips across the old dead zone),
+and `t12firefox2.mjs`/`t12firefox3.mjs`/`t12ffdrawer.mjs`/`t12ffshots.mjs`/
+`t12crshots.mjs` (headless **Firefox 159 over WebDriver BiDi**: width matrix in
+both themes via the `theme` storage key, drawer geometry, `inert`, and
+side-by-side screenshots), plus `t12edges.mjs` (the 1023/1024/1025 and
+1198/1199/1200/1201 band boundaries). A first attempt at measuring Firefox
+through a same-origin iframe harness inside `_site` was discarded because
+`firefox --screenshot` captures before the iframes finish loading.
 Screenshots: `baseline\` (before), `t1-dark\`, `t1-light\`, `t1-final\`,
 `t1-review*\`, `t1-320*`, `t2-light\`, `t2-nav\`, `navshots\`,
 `navstates*\`, `hero-1440-*`, `hero2-*`, `hero3-*`, `t5shots\`, `t6shots\`,
@@ -1580,7 +1594,7 @@ build exit 0 and `_site/plans` still absent.
 - **Lighthouse was not re-run for T6** (the binary is not installed in this
   session and `npx` refused to fetch it). The change adds no markup, roles or
   focusable elements, and `contrast.mjs` covers the two surfaces that changed;
-  T11/T15 should re-baseline the audit.
+  T11/T14 should re-baseline the audit.
 - `data-year="{{ edu.period }}"` in `_includes/education_section.html` is dead
   markup (`edu.period` is undefined and no script reads it). Left untouched —
   removing it is a markup cleanup outside this task's CSS brief.
@@ -1773,7 +1787,7 @@ still passes 16/16.
   scaling.
 - **Lighthouse was not re-run for T7** (the binary is still not installed in this
   session; `npx` will not fetch it). No markup, roles, headings or focusable
-  elements changed, and `contrast.mjs` covers every changed surface. T11/T15
+  elements changed, and `contrast.mjs` covers every changed surface. T11/T14
   should re-baseline.
 
 *Second independent review (2026-10-29, after the grid fix): no actionable
@@ -1950,7 +1964,7 @@ here or are data-drift concerns rather than defects.
   dynamic.
 - Lighthouse was not re-run (still not installed in this session). The change
   removes 33 elements and adds list semantics (`ul[role=list]` + `li`), so the
-  `list`/`listitem` axe rules change shape; T11/T15 should re-baseline.
+  `list`/`listitem` axe rules change shape; T11/T14 should re-baseline.
 
 ### T9 – Projects ✅ Done (2026-11-08)
 - [x] **Objective:** Refine project cards (gradient icon panel, overlay link,
@@ -2201,7 +2215,7 @@ here and required no change.
 - **Lighthouse was not re-run** (unavailable in this session). The `link-name`
   fix uses the same `aria-label` + `aria-hidden` pattern that T2 used to clear
   the footer icons, and the probe asserts the accessible name exists; a real
-  audit is still outstanding for T11/T15.
+  audit is still outstanding for T11/T14.
 
 ### T10 – Contact and Footer ✅ Done (2026-11-08)
 - [x] **Objective:** Contact rows as elegant cards; a refined form (larger
@@ -2493,8 +2507,8 @@ and the top of the page with no button visible.
   here.
 - **Lighthouse was not re-run** (still unavailable in this session).
 
-### T12 – Responsive and cross-browser QA
-- [ ] **Objective:** Final polish across breakpoints. Add a 1024px breakpoint
+### T12 – Responsive and cross-browser QA ✅ Done (2026-11-08)
+- [x] **Objective:** Final polish across breakpoints. Add a 1024px breakpoint
   if needed.
 - **Files:** `style.css` responsive blocks at around lines 1813–1931.
 - **Acceptance:**
@@ -2503,6 +2517,115 @@ and the top of the page with no button visible.
   - Chromium and Firefox are consistent. Check Safari/iOS if available.
 - **Verify:** manual comparison with the T0 screenshots; Lighthouse
   Accessibility ≥ 95 is optional.
+
+**Completion log (T12)**
+
+*What changed.* Two pre-existing defects were fixed; no other styling moved.
+
+1. **Desktop navigation dead zone (769–~1100px).** At HEAD the hamburger only
+   existed at ≤768px, so across that band the eight inline links squeezed the
+   wordmark to **0px** and pushed `.nav-controls` **off-screen**. Measured
+   before the change: EN `.nav-controls` right edge 883 against viewports of
+   754/785/835/885 at 769/800/850/900, and 941 in IT up to 999; wordmark width 0
+   at every width below 950 (EN) / 1000 (IT). The row needs ~1176px in Italian
+   once the wordmark (186px) and controls (141px) are accounted for, so no
+   amount of tightening makes 769px work.
+
+   - `style.css`: the nav rules were **moved out of** the `max-width: 768px`
+     block into a new `max-width: 1024px` block (the page layout keeps its own
+     768px breakpoint), and a `min-width: 1025px and max-width: 1199px` band
+     sets `.nav-menu { gap: var(--space-8) }` and `.nav-link { font-size:
+     var(--font-size-md) }` so Italian still fits above the drawer.
+   - `script.js`: `matchMedia('(max-width: 768px)')` → `(max-width: 1024px)`, so
+     the breakpoint handler (close on widen, hand focus to a nav link) still
+     agrees with the stylesheet. The two comments naming 768px were updated.
+
+2. **Wordmark clipped at 320px.** It needed 135px and had 132px, so it rendered
+   "Simone Del Gros…". The ≤360px block now uses a 12px container gutter
+   (`--space-12`) instead of 16px, giving 140px of room for a 135px wordmark —
+   no smaller type, no hidden prefix.
+
+*Measured (`t12probe.mjs`).*
+- 22 widths × 2 languages (320, 360, 375, 414, 480, 600, 640, 768, 769, 800,
+  850, 900, 950, 1000, 1024, 1050, 1100, 1150, 1200, 1280, 1440, 1920):
+  `docW == clientW` everywhere, wordmark never truncated, `.nav-controls` never
+  past `clientWidth`, and the nav switches drawer→inline exactly at 1024→1025.
+- Acceptance matrix (320/375/768/1024/1440 × EN/IT × light/dark): **20/20**
+  pass, with the drawer at ≤1024 and the inline bar at 1440.
+- Computed values confirm the band: at 1050/1100/1150 the gap is `8px` and the
+  link font `15px`; at 1200+ it returns to `32px`/`16px`. At 769–1024 the menu
+  reports `visibility: hidden`, `gap: 4px`, and the button is displayed.
+
+*Drawer behaviour at the new breakpoint (`t12nav.mjs`).* At 900 and 1024:
+hamburger visible, menu off-canvas at `left = width`, opens to `left: 0` with
+`aria-expanded="true"` and `nav-open`, Escape closes and returns focus to the
+hamburger. At 1025/1100/1200: hamburger `display: none`, menu inline and
+visible. Resizing 900 → 1100 with the drawer open clears `menuActive`,
+`aria-expanded` and `nav-open`, and moves focus to a `.nav-link` (the T3
+handler, now firing at the new width).
+
+*Firefox (159.0.1, headless, WebDriver BiDi).* BiDi is the only remote protocol
+this Firefox exposes (no geckodriver/Playwright here), and it has no
+`emulation.setEmulatedMedia`, so both themes were exercised through the site's
+own `theme` storage key and the pre-paint script:
+- **20/20** combinations (320/375/768/1024/1440 × EN/IT × light/dark):
+  `docW == clientW`, wordmark `135/135`–`186/186`, controls on-screen,
+  drawer ≤1024 / inline at 1440, and `data-color-scheme` matching the seeded
+  theme in every run.
+- Drawer (`t12ffdrawer.mjs`): `'inert' in HTMLElement.prototype` is **true**;
+  open at 900 gives `menuRect = [0, 69, 900, 831]` against a `[0, 0, 900]`
+  navbar — identical to Chromium, so `backdrop-filter` is creating the same
+  containing block; `main.inert` and `footer.inert` are `true` while open and
+  `false` after Escape; `body` overflow is `hidden`; Escape returns focus to the
+  hamburger. Both T3 "verified in Chromium only" items are now closed.
+- Layout parity: Firefox and Chromium screenshots at 1440/1024/375 (light and
+  dark) match in structure and position; the visible differences are font
+  rasterisation, overlay-vs-classic scrollbars, and the particle canvas
+  (random). Firefox headless uses overlay scrollbars, so its 320px viewport is
+  320px wide — a *less* strict case than Chromium's classic 305px.
+
+*Also verified.* `contrast.mjs` **0 failures** over 279/280 elements × 4;
+`overflow.mjs` clean ×8 at 320/375 × EN/IT × light/dark; `t7classic.mjs` still
+`docW 305 == clientW`; `t6probe`, `t7probe`, `t8probe`, `t9probe`, `t10probe`
+and `t11probe` all still **0 failures** after the breakpoint move;
+`node --check` exit 0; Jekyll 4.4.1 and `jekyll _3.10.0_ build` exit 0;
+`_site/plans` absent; `apps/piano/` untouched.
+
+*Review response (2026-11-08).* An independent review found no runtime defect
+and one documentation error: the reduced-motion comment above the drawer
+override still said "this has to live after the `max-width: 768px` block", but
+T12 moved that `transition` shorthand into the 1024px block, so the comment was
+guarding the wrong rule. Corrected to name the 1024px block and to state that
+the reduced-motion block must stay below it.
+
+The same review noted that the 1199→1200 boundary was not in the measured set.
+`t12edges.mjs` then measured 1023/1024/1025 and 1198/1199/1200/1201 in both
+languages: the drawer ends at exactly 1024 (inline from 1025, `gap: 8px`/15px),
+the compact band ends at exactly 1199 (`gap: 32px`/16px from 1200), and there is
+no truncation, off-screen control or document overflow at any of those widths.
+
+*Known limits / notes.*
+- **Safari/iOS was not checked** — neither a device nor a WebKit engine is
+  available in this environment. Everything else in the matrix is measured, and
+  the CSS used here (`min()`/`clamp()`, `translate`, `inert`, `:focus-within`,
+  `dvh`) is supported by Safari 16.4+ / iOS 16.4+, but that is reasoning, not a
+  test.
+- **The page layout breakpoint is still 768px**, deliberately: only the nav
+  moved to 1024. At 769–1024 the nav is a drawer while the hero, contact and
+  grids stay two-column. That is the intended split (the nav is width-hungry,
+  the layout is not), but it is a visible behaviour change for tablets.
+- **`--navbar-height` is set on the navbar element, not `:root`.** The earlier
+  probes read it from `documentElement` and got an empty string in *both*
+  browsers; the drawer inherits it from the navbar ancestor, and its measured
+  `top` (69px) matches in both engines.
+- **The 1025–1199px compact band is a measured compromise**, not a design
+  preference: Italian needs the smaller gap and type to keep the wordmark
+  whole. If the nav labels change, re-run the width sweep.
+- **No-JS drawer fallback is still absent** (T3 deliberately accepted it, and
+  the plan says "if it is wanted"). Not implemented here because it changes
+  documented behaviour and needs a product decision.
+- **Lighthouse was not run** (still unavailable). The optional a11y ≥ 95 gate is
+  therefore unverified for this task.
 
 ### T13 – Update AGENTS.md
 - [ ] **Objective:** Make the repository instructions match reality and the
@@ -2670,20 +2793,21 @@ and the top of the page with no button visible.
   Fixed with `minmax(min(100%, 300px), 1fr)`. `t7classic.mjs` (classic
   scrollbar, `clientWidth` 305) now reports `scrollWidth` 305 at 320px in both
   languages, with 360/375 columns unchanged (313/328).
-- **Wordmark is ellipsized at 320px** (found in T4, pre-existing):
-  `.nav-logo` is 132px wide but its text needs 135px, so it renders
-  "Simone Del Gros…" (measured `scrollWidth` 135 vs `clientWidth` 132,
-  `text-overflow: ellipsis`, `white-space: nowrap`). T3's log claimed "no
-  truncation" from the element width alone; the ≤360px rule drops the `"> "`
-  decoration and uses 15px, which is not quite enough. A 14px step or a 2px
-  smaller gap would close it. Not fixed in T4 to keep the task scoped.
+- **Wordmark was ellipsized at 320px** (found in T4, pre-existing):
+  `.nav-logo` was 132px wide while its text needs 135px, so it rendered
+  "Simone Del Gros…" (`scrollWidth` 135 vs `clientWidth` 132). **Fixed in T12**:
+  the ≤360px block now uses a 12px container gutter instead of 16px, which
+  gives the wordmark 140px (measured 135/135, no truncation) without shrinking
+  the type further.
 - **Desktop nav dead zone between 769px and ~1100px** (found in T3,
-  pre-existing): the hamburger only appears at ≤768px, so from 769px the
-  eight inline links squeeze the wordmark and push `.nav-controls` out of the
-  viewport. Measured at HEAD and after T3, identical: wordmark width 0px at
-  769 and 900, 117px at 1024 (EN) / 59px (IT), untruncated only from ~1100px.
-  Needs its own task (raise the drawer breakpoint, or shrink the nav gap/type
-  below 1100px). Not fixed in T3 to keep the task scoped.
+  pre-existing): the hamburger only appeared at ≤768px, so from 769px the eight
+  inline links squeezed the wordmark to **0px** and pushed `.nav-controls`
+  **off-screen** (883–941px against a 754–885px viewport: 769–899 for EN and
+  769–999 for IT). **Fixed in T12**: the drawer now covers everything below
+  1025px (its CSS split out of the 768px layout block, `script.js` matchMedia
+  updated to match), and a 1025–1199px band tightens the nav gap to 8px and the
+  labels to 15px so Italian still fits. Measured after: no truncation and no
+  off-screen controls at any width from 320 to 1920, in Chromium and Firefox.
 
 ## 11. Overall acceptance criteria
 

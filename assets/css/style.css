@@ -2389,7 +2389,14 @@ section {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+
+/* Navigation breakpoint (T12). Eight inline links plus the wordmark and the
+   controls need ~1176px in Italian, so between 769px and that point the old
+   desktop bar squeezed the wordmark to 0px and pushed .nav-controls past the
+   viewport. The drawer now covers everything below 1025px; the page layout
+   keeps its own 768px breakpoint below. Measured after the change: no
+   truncation and no off-screen controls at any width. */
+@media (max-width: 1024px) {
   .hamburger {
     display: flex;
   }
@@ -2456,7 +2463,21 @@ section {
   .nav-menu .nav-link.active {
     background: var(--color-secondary);
   }
+}
 
+/* Between the drawer and the point where the full-size bar fits (≈1180px in
+   Italian), tighten the gap and the labels instead of truncating the wordmark. */
+@media (min-width: 1025px) and (max-width: 1199px) {
+  .nav-menu {
+    gap: var(--space-8);
+  }
+
+  .nav-link {
+    font-size: var(--font-size-md);
+  }
+}
+
+@media (max-width: 768px) {
   /* The hero's own top padding already clears the fixed navbar, so the old
      70px container padding double-counted it. */
   .hero {
@@ -2632,14 +2653,22 @@ section {
   .nav-logo {
     font-size: var(--font-size-md);
   }
+
+  /* Even without the prefix the wordmark needs 135px and had 132 at 320px, so
+     the last 3px come from the container gutter rather than a smaller face
+     (T12, measured 135/135 after this). */
+  .nav-container {
+    padding: 0 var(--space-12);
+  }
 }
 
 /* Reduced motion for the mobile drawer. This has to live after the
-   `max-width: 768px` block: that block sets a full `transition` shorthand on
-   `.nav-menu` and again on `.nav-menu.active`, so a `transition-duration` set
-   before it would be reset (and `.nav-menu.active` would out-specify it).
-   Zeroing the delay as well makes the closed state hide the links instantly
-   instead of after the slide. */
+   `max-width: 1024px` nav block (T12 moved the drawer rules there from the old
+   768px block): that block sets a full `transition` shorthand on `.nav-menu`
+   and again on `.nav-menu.active`, so a `transition-duration` set before it
+   would be reset (and `.nav-menu.active` would out-specify it). Keep this block
+   below the nav breakpoint block. Zeroing the delay as well makes the closed
+   state hide the links instantly instead of after the slide. */
 @media (prefers-reduced-motion: reduce) {
   .nav-menu,
   .nav-menu.active {

@@ -48,9 +48,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // breakpoint reset can never disagree about aria-expanded or the scroll lock.
     //
     // Last element focused inside the navbar. The breakpoint handler needs it
-    // because the browser blurs the hamburger (display: none above 768px) before
-    // the matchMedia change event reaches us, so activeElement is already <body>
-    // by then.
+    // because the browser blurs the hamburger (display: none above the nav
+    // breakpoint) before the matchMedia change event reaches us, so
+    // activeElement is already <body> by then.
     let lastNavFocus = null;
 
     function isMobileNavOpen() {
@@ -857,12 +857,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Widening past the breakpoint must not leave the page scroll-locked.
         // It must also not drop focus onto <body>: the hamburger is display:none
-        // above 768px, so a user who had focus on it loses all context. The
+        // above it, so a user who had focus on it loses all context. The
         // drawer's first link is laid out inline there, so hand focus to it.
         // (Focus on a menu link survives on its own: it is the same <a>, still
         // visible on desktop. That is why only the hamburger needs help.)
         if (window.matchMedia) {
-            const mobileNavQuery = window.matchMedia('(max-width: 768px)');
+            const mobileNavQuery = window.matchMedia('(max-width: 1024px)');
             const handleMobileNavBreakpoint = (e) => {
                 if (e.matches) return;
                 const restoreFocus = lastNavFocus === hamburger;
