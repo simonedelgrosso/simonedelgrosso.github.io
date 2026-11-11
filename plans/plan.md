@@ -1,10 +1,13 @@
 # Plan: Modern & elegant restyle of the portfolio
 
-Status: **All planned tasks complete.** Created 2026-10-24. Revised 2026-10-24
-after the user answered the open questions; completed 2026-11-08 with T14.
-Completed: **T0–T14**. Nothing outstanding in this plan; the residual items
-(Safari/iOS, a real Lighthouse run, English About subtitle) are listed in §9/§10
-as hand-offs rather than tasks.
+Status: **All planned tasks complete, one follow-up in progress.** Created
+2026-10-24. Revised 2026-10-24 after the user answered the open questions;
+completed 2026-11-08 with T14.
+Completed: **T0–T14**. The residual items (Safari/iOS, a real Lighthouse run,
+English About subtitle) are listed in §9/§10 as hand-offs rather than tasks.
+**Open:** §14 (post-plan "de-AI" polish) has **two decision rows** still
+unapplied — 5 (timeline spine gradient) and 15 (hero `fadeInUp`) — plus the
+hero's empty-band question noted in its log.
 Previous plan: none (`plans/` did not exist before this file).
 
 ## 0. Progress log
@@ -3168,3 +3171,220 @@ They are now assertions — every chip must stay inside its category card and
 
 Re-verified after the changes: `t8probe` **16/16**, `contrast` **0 failures**
 (301/302 scanned), `t12probe accept` **20/20**, `jekyll build` 0.
+
+## 14. De-AI polish pass — itemised, awaiting selection
+
+Requested by the owner on 2026-11-08: *"subtle signs that show this was AI
+generated… for example, text gradients."* Decisions taken before planning:
+**item by item** (nothing is applied until the rows are ticked) and
+**keep the typing effect, drop the particles**.
+
+**Status: implemented 2026-11-08/11** — the owner answered "all recommended",
+then asked for row 3 ("remove also the gradient under the navbar titles, make it
+flat accent"), the glow removal that became row 8 (corrected: it is the
+**language switcher**, not the theme toggle), and finally row 12 ("remove the
+spinner"). Done: rows **1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14 and 16**.
+Rows **5 and 15** remain **open** (`[ ]`).
+
+Legend: **R** = recommended, **?** = your call, **K** = keep as-is.
+
+### A. Gradients
+
+| # | Tick | Item | Where | Now | Proposed |
+|---|---|---|---|---|---|
+| 1 | `[x]` **R** | Hero name gradient text | `.highlight` (css 1053–1058); markup in `_data/hero.yml` (`<span class="highlight no-wrap">`) | `background-clip: text` + transparent fill over `--portfolio-gradient` | flat `var(--portfolio-primary)`; keep `no-wrap` |
+| 2 | `[x]` **R** | Gradient bar under every section title | `.section-title::after` (1303–1313) | 48×3 gradient pill, centred | remove the decoration (heading + subtitle only) |
+| 3 | `[x]` **R** | Nav active/hover underline | `.nav-link::after` (760–766) | 2px gradient, animates width | flatten to `var(--portfolio-primary)` (keeps the affordance) |
+| 4 | `[x]` **R** | Gradient ring around the hero photo | `.hero-image` (1132–1142) | 8px `linear-gradient` ring + `--shadow-lg` | 1px `--color-card-border` ring on the image, `--shadow-md`, no padding ring |
+| 5 | `[ ]` **?** | Timeline spine | `.timeline::before` (1385–1395) | 2px vertical gradient fading at both ends | flat 2px `--portfolio-primary` at `opacity: .35` (or the border colour) |
+| 6 | `[x]` **R** | Two radial glows behind the hero | `.hero::before` (1008–1015) | two `radial-gradient`s | remove the pseudo-element |
+
+### B. Glows / coloured shadows
+
+| # | Tick | Item | Where | Now | Proposed |
+|---|---|---|---|---|---|
+| 7 | `[x]` **R** | Progress-bar double glow | `#scroll-progress` (610) | `0 0 10px` + `0 0 20px` accent | no shadow |
+| 8 | `[x]` **R** | Language-switcher slider glow (**row corrected**) | `.lang-slider` (863–875) | accent `0 2px 8px` at 50% | removed — the accent circle is enough; the theme toggle next to it never had a glow, so the original row text named the wrong control |
+| 9 | `[x]` **R** | Hero CTA coloured drop shadow | 1117 and 1125 | accent-tinted 28–34px shadows | `--shadow-sm`, hover `--shadow-md` |
+| 10 | `[x]` **R** | Active filter pill glow | `.filter-badge.active` (1821) | accent `0 4px 12px` at 35% | none (the accent fill already reads as active) |
+
+### C. Template motion
+
+| # | Tick | Item | Where | Now | Proposed |
+|---|---|---|---|---|---|
+| 11 | `[x]` **R** | Particle canvas | `createParticles()` (`script.js` 571–737), tokens `--particle-rgb`/`--particle-line-rgb`, canvas styles | 24–48 drifting dots, connecting lines, mouse glow, `themechange` listener | **remove** the function, its call, the tokens and the listener |
+| 12 | `[x]` **R** | Full-screen preloader | `#preloader` + spinner (css 609–642), `createPreloader()` | overlay + spinner, `preloaderActive` gate | **removed** — the overlay existed only to show the spinner; the page now paints straight to content. `preloaderActive` and `triggerHeroCountersIfVisible()` went with it, so counters start on first intersection |
+| 13 | `[x]` **R** | Floating hero photo | `.hero-image` `animation: float 7s infinite` (1141, keyframes 2219) | slow up/down drift | remove the animation |
+| 14 | `[x]` **R** | Bouncing scroll chevron | `.scroll-indicator` (1199–1206), `@keyframes bounce`, markup in `hero_section.html:40–44` | infinite 2s bounce | remove the element and keyframes |
+| 15 | `[ ]` **?** | Hero `fadeInUp` on load | `.hero-text` (1035), keyframes 2175 | 0.8s fade+rise every page load | remove (appear instantly) |
+
+### D. Text / console
+
+| # | Tick | Item | Where | Now | Proposed |
+|---|---|---|---|---|---|
+| 16 | `[x]` **R** | Console branding with emoji + hard-coded hex | `script.js` 1035–1037 | `👋`/`🚀`/`📧` with `#22D3EE`/`#64748B` | one plain line: `console.log('Simone Del Grosso — simonedelgrosso@outlook.it')` (the address from `_data/contact.yml`), no emoji, no colours |
+
+### E. Consequences (applied automatically with their parents)
+
+- If **1–5** are all applied, `--portfolio-gradient` has no consumers left (6
+  references: 2 definitions + 4 uses) → remove the token from both themes.
+- If **11** is applied: `--particle-rgb`, `--particle-line-rgb` (both themes)
+  become dead → remove; `themechange` loses its only listener (keep the
+  dispatch as a documented hook, or drop it — say which).
+- If **12** is applied: `preloaderActive` and `triggerHeroCountersIfVisible()`
+  exist only to defer counters behind the overlay → counters can start on
+  intersection immediately; `t11probe.mjs` currently asserts the preloader's
+  presence and 305–700ms removal, so that probe must be rewritten.
+- If **11** is applied: `t11probe.mjs` also asserts `canvas === true` in normal
+  motion, so that assertion becomes "no canvas".
+- Typing stays (your decision): `@keyframes blink`, the caret and `typeEffect()`
+  are untouched.
+
+### F. Explicitly unchanged
+
+Typography, spacing scale, the indigo accent, both theme token sets, the theme
+toggle, nav + drawer, all cards (certifications/timeline/skills/project/contact),
+the About chips, the skill chips with icons, focus styles, reduced-motion
+support, and every URL/heading/translation.
+
+### Acceptance (per ticked row)
+
+- `rg` proves each removed construct is gone: `background-clip:\s*text`,
+  `--portfolio-gradient`, `radial-gradient(60%`, `@keyframes (float|bounce|fadeInUp)`,
+  `particle`, `0 0 20px`.
+- `contrast.mjs` 0 failures ×4; `overflow.mjs` clean; `t12probe accept` 20/20.
+- `t6probe`/`t7probe`/`t8probe`/`t9probe`/`t10probe` still 0 failures; `t11probe`
+  updated for whichever of 11/12/13 are ticked.
+- Screenshots at 1440/1024/375 × light/dark, EN+IT, compared against the current
+  set before sign-off.
+
+**Tick the rows (or say "all recommended") and I will implement exactly those.**
+
+**Completion log (§14, recommended rows)**
+
+*What changed.* `assets/css/style.css`:
+- `.highlight`: flat `--portfolio-primary` instead of a clipped gradient.
+- `.section-title::after` deleted (the 48×3 gradient bar under every heading),
+  and `.section-title` loses `position: relative` and the 24px margin that
+  reserved space for it (16px now).
+- `.nav-link::after` (added 2026-11-11 on request): flat
+  `var(--portfolio-primary)` instead of the gradient; the 2px underline and its
+  width transition stay. With that, `--portfolio-gradient` had **no consumers
+  left** and was deleted from both theme blocks (its two palette entries,
+  `--color-indigo-*`/`--color-sky-*`, are part of the general colour scale and
+  stay).
+- `.lang-slider` (2026-11-11, requested as "remove the glow for the language
+  switcher"): the accent `0 2px 8px` glow is gone. The `.lang-switch` keeps
+  `--shadow-inset-sm`, which is a 1px inset bevel and not a glow; the theme
+  toggle beside it never had a shadow at all.
+- `.hero::before` deleted (the two radial glows).
+- **Preloader deleted (row 12, 2026-11-11)**: `#preloader`,
+  `#preloader.is-hidden`, `.preloader__spinner` and `@keyframes preloader-spin`
+  (35 lines). Two comments that described it were reworded (the section
+  alternation note still mentions it as history).
+- `.hero-image`: gradient frame + `float` animation → a 6px
+  `--color-surface` mat, hairline border and `--shadow-md`. The mat exists
+  because the avatar artwork has its own dark outline, which read as a heavy
+  ring when the photo sat straight against the page; the overall box is 298px
+  (was 300).
+- `.hero-buttons .btn--primary`: accent-tinted shadows → `--shadow-sm`
+  (hover `--shadow-md`).
+- `#scroll-progress`: no glow. `.filter-badge.active`: no glow.
+- `.scroll-indicator` / `.scroll-arrow` rules deleted (and the ≤768
+  `display: none` companion).
+- `@keyframes bounce` and `@keyframes float` deleted.
+- `--particle-rgb` / `--particle-line-rgb` removed from both theme blocks.
+
+`assets/js/script.js`:
+- `createParticles()` and its call removed (177 lines), plus the `themechange`
+  listener that only it used. The `themechange` **dispatch** stays, with a
+  comment saying it is now an extension hook.
+- `createPreloader()`, `preloaderActive` and `triggerHeroCountersIfVisible()`
+  removed (58 lines). The observer's counter branch no longer bails out while a
+  preloader is up, so hero counters animate on first intersection like every
+  other observed element.
+- The console branding (three `%c` lines with emoji and `#22D3EE`/`#64748B`)
+  becomes one plain line: `Simone Del Grosso — simonedelgrosso@outlook.it`.
+- Stale comments that referenced the canvas were reworded.
+
+`_includes/hero_section.html`: the scroll-indicator markup is gone.
+
+`tools/probes/t11probe.mjs` + `t11-analyze.mjs`: the probe header and the
+assertions now require **both** the canvas and the preloader to be absent. The
+preloader lifecycle checks (sampled mid-life, removed ≤1s after `load`) are
+gone; what remains live is the mid-load sampling (20 × 100 ms, so an overlay
+injected at `DOMContentLoaded` is still caught) plus `afterLoad.preloader ===
+false`. There is no removal-time assertion any more — the probe cannot emit one.
+
+*Verification (executed).*
+- Grep sweep over `style.css`, `script.js` and `_includes/` for
+  `background-clip`, `-webkit-text-fill-color`, `radial-gradient(60%`,
+  `@keyframes bounce|float`, `float 7s`, `bounce 2s`, `createParticles`,
+  `hero-particles-canvas`, `--particle-rgb`, `scroll-indicator`, `0 0 20px`,
+  `22D3EE`, `64748B`, **`portfolio-gradient`** → **all zero**; `preloader` and
+  `spinner` remain only in historical comments.
+- Active nav underline measured in the browser: `About` active at 1440,
+  `::after` reports `backgroundColor` `rgb(79,70,229)` light /
+  `rgb(129,140,248)` dark and `backgroundImage: none` — i.e. the token, not a
+  gradient — with the 46px width intact.
+- Language slider measured in the browser after the glow removal:
+  `boxShadow: none` in both themes (background still `rgb(79,70,229)` /
+  `rgb(129,140,248)`), `.lang-switch` still reports its `--shadow-inset-sm`
+  bevel, and `#theme-toggle` reports `boxShadow: none`.
+- `t11probe` (committed copies) **0 failures**: **no preloader and no canvas in
+  either motion mode**, typing/counters/progress/smooth-scroll unchanged
+  (counters now start on first intersection instead of after the overlay).
+- `contrast.mjs` **0 failures** ×4 (297/298 scanned, down 4 per page from
+  301/302: the removed `scroll-indicator` subtree was three elements and the
+  no-longer-created `#hero-particles-canvas` was the fourth — no text nodes were
+  lost).
+- `overflow.mjs` clean (4 runs), `t12probe accept` **20/20**.
+- `t6probe`, `t7probe`, `t8probe`, `t9probe`, `t10probe` all still **0
+  failures**.
+- `jekyll build` and `jekyll _3.10.0_ build` exit 0; screenshots reviewed at
+  **1024**, 1440 and 375 × light/dark × EN/IT (the 1024 set was added after the
+  review pointed out the acceptance list named it and the first pass had only
+  captured 1440/375).
+
+*Notes.*
+- **The hero now has a visible empty band** where the particles were (~200px at
+  1440×950, between the stats and the section edge). That is a consequence of
+  row 11, not a defect; letting the hero hug its content would be a further
+  layout change (not in §14) and is left for the owner to request.
+- **`themechange` is now dispatched with no in-repo listener.** Kept as a
+  two-line documented hook rather than deleting the event and its `notify`
+  plumbing.
+- Rows 5 (timeline spine) and 15 (hero `fadeInUp`) are untouched. Nothing
+  references `--portfolio-gradient` any more, including row 5's proposal (which
+  specifies a flat line).
+
+*Review response (2026-11-11): four P3s, all documentation/evidence.* An
+independent review found no functional defect — it re-checked that every ticked
+row maps to a concrete edit, that nothing outside `plans/plan.md` references the
+removed constructs, that `style.css` braces balance, that rows 5/12/15 are still
+present, and that the updated `t11-analyze` rejects the canvas in both modes. Its
+four findings:
+
+1. **A stale comment** in `.hero` still justified the bottom padding with the
+   scroll indicator this pass deleted. Reworded: the padding keeps the
+   vertically-centred content off the section edge when `min-height` (not
+   content) sets the height, with a note that the indicator is gone.
+2. **The plan header claimed "Nothing outstanding"** while §14 had three open
+   decision rows at the time. The header now names the open rows and the
+   hero-band question; at the time of writing that was 5, 12 and 15, and row 12
+   was applied later the same day, so the header currently lists 5 and 15.
+3. **The node-count explanation was wrong** — the removed console text was never
+   a DOM node, and the decorations held no text. The 4-per-page delta is the
+   `scroll-indicator` subtree (3 elements) plus the no-longer-created canvas.
+   Corrected, and row 16's proposal cell now shows the shipped address
+   (`outlook.it`, from `_data/contact.yml`) instead of a stale `gmail.com`.
+4. **The 1024 screenshots were missing** although the acceptance list named that
+   width. Captured now (hero + certifications, EN/IT × light/dark) and reviewed;
+   the log says so.
+
+The review also noted that `--color-indigo-400/500` and `--color-sky-400/700`
+are now unreferenced. That is the documented decision (they are palette
+primitives, kept like the rest of the colour scale), so nothing changed.
+`--color-bg-1` lost its last consumer with `.hero::before` in this same pass and
+is kept on the same grounds — palette primitive, noted here so a future
+unused-token sweep knows it was a deliberate keep.

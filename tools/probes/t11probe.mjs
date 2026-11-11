@@ -1,8 +1,9 @@
-// T11 probe: preloader, scroll-to-top, progress bar, and the JS effects under
-// normal vs reduced motion.
-// For each mode: preloader lifetime/theme (sampled mid-life and after removal),
-// canvas presence, typing content, counters, smooth-scroll behaviour, button
-// visibility class, progress bar, footer clearance at 375/320.
+// T11 probe: scroll-to-top, progress bar, and the JS effects under normal vs
+// reduced motion. The preloader and the particle canvas were both removed in
+// §14, so this asserts their absence rather than their lifecycle.
+// For each mode: no preloader, no canvas, typing content, counters,
+// smooth-scroll behaviour, button visibility class, progress bar, footer
+// clearance at 375/320.
 // Usage: node t11probe.mjs <baseUrl>
 import { spawn } from 'node:child_process';
 import { mkdirSync, rmSync } from 'node:fs';
@@ -64,43 +65,23 @@ for (const reduced of [false, true]) {
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false }, sessionId);
   await send('Emulation.setEmulatedMedia', { features }, sessionId);
 
-  // Start navigating without awaiting the load, so the preloader can be sampled
-  // while it is on screen. Record the load event time so removal can be measured
-  // relative to it (the acceptance is "gone within about 1 s after load").
-  await send('Page.addScriptToEvaluateOnNewDocument', {
-    source: 'window.__loadAt = null; addEventListener("load", function () { window.__loadAt = performance.now(); });',
-  }, sessionId);
-  const navStart = Date.now();
+  // The preloader was removed in §14 (row 12): nothing may create one, at any
+  // point. Sample during the load (a regression would inject it at
+  // DOMContentLoaded, i.e. within the first samples) and again after load.
   const navPromise = send('Page.navigate', { url: `${base}/en/` }, sessionId);
 
   let midPreloader = null;
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 20; i++) {
     await sleep(100);
     try {
       midPreloader = await ev(`(function(){
         var p = document.getElementById('preloader');
-        if (!p) return JSON.stringify({ present: false });
-        var cs = getComputedStyle(p);
-        var spin = p.querySelector('.preloader__spinner');
-        return JSON.stringify({ present: true, bg: cs.backgroundColor, opacity: cs.opacity,
-          inlineStyle: p.getAttribute('style'), spinner: !!spin,
-          spinAnim: spin ? getComputedStyle(spin).animationName + ' ' + getComputedStyle(spin).animationDuration : null });
+        return JSON.stringify({ present: !!p, spinner: !!(p && p.querySelector('.preloader__spinner')) });
       })()`);
       if (midPreloader.present) break;
     } catch { /* navigation in flight */ }
   }
   await navPromise;
-
-  // Wait for removal, recording when it happens relative to the load event.
-  let removedAt = null;
-  for (let i = 0; i < 60; i++) {
-    await sleep(100);
-    const state = await ev(`JSON.stringify({ present: !!document.getElementById('preloader'), loadAt: window.__loadAt, now: performance.now() })`);
-    if (!state.present) {
-      removedAt = state.loadAt === null ? null : Math.round(state.now - state.loadAt);
-      break;
-    }
-  }
 
   const afterLoad = await ev(`(function(){
     var b = document.querySelector('.scroll-to-top');
@@ -115,6 +96,7 @@ for (const reduced of [false, true]) {
       buttonOpacity: b ? getComputedStyle(b).opacity : null,
       buttonSize: b ? Math.round(b.getBoundingClientRect().width) : null,
       canvas: !!canvas,
+      preloader: !!document.getElementById('preloader'),
       typing: typing ? typing.textContent : null,
       typingCursor: document.querySelector('.cursor') ? document.querySelector('.cursor').className : null,
       cursorAnim: document.querySelector('.cursor') ? getComputedStyle(document.querySelector('.cursor')).animationName : null,
@@ -147,7 +129,7 @@ for (const reduced of [false, true]) {
   await sleep(1200);
   const settled = await ev(`JSON.stringify({ scrollY: Math.round(scrollY), buttonClass: document.querySelector('.scroll-to-top').className })`);
 
-  out.push({ reduced, preloader: midPreloader, removedAtMs: removedAt, afterLoad, scrolled, justAfterClick, settled });
+  out.push({ reduced, preloader: midPreloader, afterLoad, scrolled, justAfterClick, settled });
 }
 
 // Footer clearance at 375 and 320 (reduced off, classic scrollbar).

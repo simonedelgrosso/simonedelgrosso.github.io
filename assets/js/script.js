@@ -19,14 +19,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterBadges = document.querySelectorAll('.filter-badge');
     const projectCards = document.querySelectorAll('.project-card');
 
-    // Runtime flags
-    let preloaderActive = true;
-
     // Read once at startup. The CSS block at the end of style.css turns off
     // transitions/animations; this flag covers the effects driven from JS
-    // (particle canvas, typing, counters, smooth scrolling). Changing the OS
-    // setting takes effect on the next load, which is the norm for this kind of
-    // preference and keeps the effects from being torn down mid-animation.
+    // (typing, counters, smooth scrolling). Changing the OS setting takes effect
+    // on the next load, which is the norm for this kind of preference and keeps
+    // the effects from being torn down mid-animation.
     const reduceMotion = typeof window.matchMedia === 'function' &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -278,10 +275,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     // Animate stat numbers
                     if (entry.target.classList.contains('stat-number') && !entry.target.classList.contains('animated')) {
-                        // Defer counters until preloader is finished
-                        if (preloaderActive) {
-                            return;
-                        }
                         entry.target.classList.add('animated');
                         // ensure we start from 0 for a smooth experience
                         entry.target.textContent = '0';
@@ -433,64 +426,6 @@ document.addEventListener('DOMContentLoaded', function() {
         syncVisibility();
     }
 
-    // Preloader Function
-    // Markup and styling live in CSS (#preloader / .preloader__spinner); this only
-    // inserts it, then removes it once the page has loaded. The old version
-    // carried a cssText block and injected its own @keyframes, kept the overlay
-    // for a fixed 1.5s and always animated the fade.
-    function createPreloader() {
-        const preloader = document.createElement('div');
-        preloader.id = 'preloader';
-        preloader.setAttribute('aria-hidden', 'true');
-        preloader.innerHTML = '<div class="preloader__spinner"></div>';
-
-        document.body.insertBefore(preloader, document.body.firstChild);
-
-        // Let a very fast load still show the overlay for a moment instead of
-        // flashing it, but never hold the page for longer than this.
-        const MIN_VISIBLE_MS = 250;
-
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                preloader.classList.add('is-hidden');
-                let removed = false;
-                const done = () => {
-                    // Both the transitionend and the safety timeout can fire.
-                    if (removed) return;
-                    removed = true;
-                    preloader.remove();
-                    // Mark preloader as done and trigger pending hero counters if already in view
-                    preloaderActive = false;
-                    triggerHeroCountersIfVisible();
-                };
-                if (reduceMotion) {
-                    // No fade to wait for.
-                    done();
-                } else {
-                    preloader.addEventListener('transitionend', done, { once: true });
-                    // Safety net: if the transition never fires (element already
-                    // gone, transition disabled), remove anyway.
-                    setTimeout(done, 600);
-                }
-            }, MIN_VISIBLE_MS);
-        });
-    }
-
-    // Trigger hero counters if they are already visible when preloader ends
-    function triggerHeroCountersIfVisible() {
-        const numbers = document.querySelectorAll('.hero-stats .stat-number');
-        numbers.forEach(el => {
-            if (el.classList.contains('animated')) return;
-            const rect = el.getBoundingClientRect();
-            const isVisible = rect.top < (window.innerHeight || document.documentElement.clientHeight) && rect.bottom > 0;
-            if (isVisible) {
-                el.classList.add('animated');
-                el.textContent = '0';
-                animateCounter(el);
-            }
-        });
-    }
-
     // Theme toggle (light/dark)
     // The active scheme lives on <html data-color-scheme>, resolved before first paint
     // by the inline script in _layouts/default.html. These helpers only keep it in sync
@@ -509,9 +444,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // `notify` is false for the initial sync: nothing changed, and
-    // createParticles() reads the current tokens when it is created anyway.
-    // Every real state change must notify, on window, for the particle recolor.
+    // `notify` is false for the initial sync: nothing changed.
+    // Every real state change notifies on window so theme-aware widgets can
+    // re-read their tokens (the particle canvas used to be the only listener).
     function applyTheme(scheme, notify) {
         document.documentElement.setAttribute('data-color-scheme', scheme);
 
@@ -535,7 +470,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (notify !== false) {
-            // Must stay on window: createParticles() listens there to re-read its color tokens.
+            // Kept as the documented hook for theme-aware scripts; nothing in
+            // this file listens any more.
             window.dispatchEvent(new CustomEvent('themechange', { detail: { scheme: scheme } }));
         }
     }
@@ -570,183 +506,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 query.addListener(onSchemeChange); // Safari < 14
             }
         }
-    }
-
-    // Add particle effect to hero section with connected faint lines
-    function createParticles() {
-        // Decorative only: with reduced motion the canvas is not created at all,
-        // so there is no loop, no resize listener and nothing repainting.
-        if (reduceMotion) return;
-
-        const hero = document.querySelector('.hero');
-        if (!hero) return;
-
-        const existingCanvas = document.getElementById('hero-particles-canvas');
-        if (existingCanvas) existingCanvas.remove();
-
-        const canvas = document.createElement('canvas');
-        canvas.id = 'hero-particles-canvas';
-        canvas.style.cssText = `
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        `;
-        hero.appendChild(canvas);
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        // Particle colors come from the theme tokens so both schemes stay readable.
-        function readColorTokens() {
-            const styles = getComputedStyle(document.documentElement);
-            return {
-                particle: styles.getPropertyValue('--particle-rgb').trim() || '129, 140, 248',
-                line: styles.getPropertyValue('--particle-line-rgb').trim() || '255, 255, 255'
-            };
-        }
-        let themeColors = readColorTokens();
-        window.addEventListener('themechange', () => {
-            themeColors = readColorTokens();
-        });
-
-        let width = 0;
-        let height = 0;
-        let particles = [];
-        let mouse = { x: -1000, y: -1000, active: false };
-
-        function resize() {
-            width = canvas.width = hero.offsetWidth;
-            height = canvas.height = hero.offsetHeight;
-            initParticles();
-        }
-
-        function initParticles() {
-            particles = [];
-            // Quiet background texture: fewer, smaller dots than the old
-            // 35-70 range. The canvas covers the whole hero, so the count
-            // scales with its area but stays inside 24-48.
-            const count = Math.min(48, Math.max(24, Math.floor((width * height) / 26000)));
-            for (let i = 0; i < count; i++) {
-                particles.push({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    vx: (Math.random() - 0.5) * 0.6,
-                    vy: (Math.random() - 0.5) * 0.6,
-                    bouncePhase: Math.random() * Math.PI * 2,
-                    bounceSpeed: 0.015 + Math.random() * 0.02,
-                    bounceAmp: 0.3 + Math.random() * 0.4,
-                    radius: 1.6 + Math.random() * 1.2,
-                    isHovered: false
-                });
-            }
-        }
-
-        function onMouseMove(e) {
-            const rect = hero.getBoundingClientRect();
-            mouse.x = e.clientX - rect.left;
-            mouse.y = e.clientY - rect.top;
-            mouse.active = true;
-        }
-
-        function onMouseLeave() {
-            mouse.x = -1000;
-            mouse.y = -1000;
-            mouse.active = false;
-        }
-
-        hero.addEventListener('mousemove', onMouseMove);
-        hero.addEventListener('mouseleave', onMouseLeave);
-
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-
-            let hoveredParticle = null;
-            let minMouseDist = Infinity;
-            const hoverRadius = 35;
-
-            for (let i = 0; i < particles.length; i++) {
-                const p = particles[i];
-                p.bouncePhase += p.bounceSpeed;
-                p.x += p.vx;
-                p.y += p.vy + Math.sin(p.bouncePhase) * p.bounceAmp;
-
-                if (p.x < 0) { p.x = 0; p.vx *= -1; }
-                if (p.x > width) { p.x = width; p.vx *= -1; }
-                if (p.y < 0) { p.y = 0; p.vy *= -1; }
-                if (p.y > height) { p.y = height; p.vy *= -1; }
-
-                if (mouse.active) {
-                    const dx = mouse.x - p.x;
-                    const dy = mouse.y - p.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < hoverRadius && dist < minMouseDist) {
-                        minMouseDist = dist;
-                        hoveredParticle = p;
-                    }
-                }
-                p.isHovered = false;
-            }
-
-            if (hoveredParticle) {
-                hoveredParticle.isHovered = true;
-            }
-
-            const maxConnectDist = 130;
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const p1 = particles[i];
-                    const p2 = particles[j];
-                    const dx = p1.x - p2.x;
-                    const dy = p1.y - p2.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < maxConnectDist) {
-                        const isLineHovered = p1.isHovered || p2.isHovered;
-                        const factor = 1 - dist / maxConnectDist;
-
-                        ctx.beginPath();
-                        ctx.moveTo(p1.x, p1.y);
-                        ctx.lineTo(p2.x, p2.y);
-
-                        if (isLineHovered) {
-                            ctx.strokeStyle = `rgba(${themeColors.line}, ${Math.min(0.85, factor * 0.85)})`;
-                            ctx.lineWidth = 2;
-                        } else {
-                            ctx.strokeStyle = `rgba(${themeColors.particle}, ${factor * 0.16})`;
-                            ctx.lineWidth = 1.5;
-                        }
-                        ctx.stroke();
-                    }
-                }
-            }
-
-            for (let i = 0; i < particles.length; i++) {
-                const p = particles[i];
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.isHovered ? p.radius + 1.8 : p.radius, 0, Math.PI * 2);
-
-                if (p.isHovered) {
-                    ctx.fillStyle = `rgb(${themeColors.line})`;
-                    ctx.shadowColor = `rgb(${themeColors.line})`;
-                    ctx.shadowBlur = 10;
-                } else {
-                    ctx.fillStyle = `rgba(${themeColors.particle}, 0.55)`;
-                    ctx.shadowBlur = 0;
-                }
-                ctx.fill();
-                ctx.shadowBlur = 0;
-            }
-
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', resize);
-        resize();
-        requestAnimationFrame(animate);
     }
 
     // Utility functions
@@ -984,12 +743,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize everything
     function init() {
         setupThemeToggle();
-        createPreloader();
         createScrollToTopButton();
         // Ensure hero stat targets are set before observers/animations start
         setHeroStatsTargets();
         createObserver();
-        createParticles();
         setupEventListeners();
         
         // Set current year in footer
@@ -1031,10 +788,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Counters are triggered via IntersectionObserver; avoid double-starts
 
-        // Console welcome message
-        console.log('%c👋 Ciao! Benvenuto nel mio portfolio!', 'color: #22D3EE; font-size: 16px; font-weight: bold;');
-        console.log('%c🚀 Sviluppato da Simone Del Grosso', 'color: #64748B; font-size: 12px;');
-        console.log('%c📧 simonedelgrosso@outlook.it', 'color: #64748B; font-size: 12px;');
+        // Plain console note: no emoji, no hard-coded colours (the console is
+        // not themed, and the old hex values bypassed the token set).
+        console.log('Simone Del Grosso — simonedelgrosso@outlook.it');
     }
 
     // Initialize the application

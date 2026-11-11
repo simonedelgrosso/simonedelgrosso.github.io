@@ -103,9 +103,6 @@
   --portfolio-accent: rgba(79, 70, 229, 0.16);
   --portfolio-dark: #f8f9fb;
   --portfolio-dark-light: #475569;
-  --portfolio-gradient: linear-gradient(135deg, var(--color-indigo-500) 0%, var(--color-sky-700) 100%);
-  --particle-rgb: 79, 70, 229;
-  --particle-line-rgb: 15, 23, 42;
 
   /* Shadows (Light Mode) */
   --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
@@ -254,9 +251,6 @@
   --portfolio-accent: rgba(129, 140, 248, 0.22);
   --portfolio-dark: #0b0d12;
   --portfolio-dark-light: #a8b0c0;
-  --portfolio-gradient: linear-gradient(135deg, var(--color-indigo-400) 0%, var(--color-sky-400) 100%);
-  --particle-rgb: 129, 140, 248;
-  --particle-line-rgb: 255, 255, 255;
 
   /* Shadows (Dark Mode) */
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
@@ -607,45 +601,9 @@ select.form-control {
   width: 0%;
   height: 3px;
   background: var(--portfolio-primary);
-  box-shadow: 0 0 10px var(--portfolio-primary), 0 0 20px color-mix(in srgb, var(--portfolio-primary) 50%, transparent);
   z-index: 1100;
   transition: width 0.05s linear;
   pointer-events: none;
-}
-
-/* Preloader: created by script.js and removed once the page has loaded. The
-   background is the canonical page token, so it follows the active theme. (The
-   old JS read --portfolio-dark, a per-theme alias that already carried the same
-   value as --color-background in both schemes — this just stops relying on the
-   alias.) */
-#preloader {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: grid;
-  place-items: center;
-  background: var(--color-background);
-  opacity: 1;
-  transition: opacity 0.3s var(--ease-standard);
-}
-
-#preloader.is-hidden {
-  opacity: 0;
-}
-
-.preloader__spinner {
-  width: 52px;
-  height: 52px;
-  border: 3px solid var(--color-border);
-  border-top-color: var(--portfolio-primary);
-  border-radius: 50%;
-  animation: preloader-spin 0.9s linear infinite;
-}
-
-@keyframes preloader-spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* Navigation Styles */
@@ -761,7 +719,9 @@ body.nav-open {
   width: 0;
   height: 2px;
   border-radius: var(--radius-full);
-  background: var(--portfolio-gradient);
+  /* Flat accent, like the title underline it replaces: the gradient made the
+     active state look like a landing-page flourish. */
+  background: var(--portfolio-primary);
   transition: width var(--duration-normal) var(--ease-standard);
 }
 
@@ -873,7 +833,7 @@ body.nav-open {
   height: 28px;
   border-radius: 50%;
   background: var(--portfolio-primary);
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--portfolio-primary) 50%, transparent);
+  /* No coloured glow: the accent circle already reads as the selected chip. */
   transition: transform var(--duration-normal) var(--ease-standard);
   pointer-events: none;
   z-index: 1;
@@ -991,27 +951,16 @@ body.nav-open {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* Top padding clears the fixed navbar; the bottom one leaves room for the
-     scroll indicator. The hero keeps the raised surface: it is not part of the
-     content alternation (about starts on --color-background). */
+  /* Top padding clears the fixed navbar; the bottom padding keeps the
+     vertically-centred content off the section edge when the hero is capped by
+     `min-height` rather than by its content (the scroll indicator that used to
+     live there was removed in §14). The hero keeps the raised surface: it is
+     not part of the content alternation (about starts on --color-background). */
   padding: var(--space-96) 0 var(--space-80);
   background: var(--color-surface);
   position: relative;
   overflow: hidden;
   isolation: isolate;
-}
-
-/* Two soft glows instead of a flat tint: indigo from the top-left, accent from
-   the top-right. The alphas live in the theme tokens, so both schemes get their
-   own intensity without a second rule. */
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(60% 55% at 18% 18%, var(--color-bg-1), transparent 72%),
-    radial-gradient(48% 48% at 84% 12%, var(--portfolio-primary-soft), transparent 72%);
-  pointer-events: none;
 }
 
 .hero-container {
@@ -1051,10 +1000,10 @@ body.nav-open {
 }
 
 .highlight {
-  background: var(--portfolio-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  /* The hero name used to be filled with the accent gradient via a clipped
+     background. A flat accent reads as a normal editorial headline and keeps
+     AA contrast in both themes. */
+  color: var(--portfolio-primary);
 }
 
 .typing-container {
@@ -1114,7 +1063,9 @@ body.nav-open {
 }
 
 .hero-buttons .btn--primary {
-  box-shadow: 0 12px 28px -14px var(--portfolio-primary);
+  /* Neutral elevation; a coloured halo under the button was the loudest
+     "landing page" cue in the hero. */
+  box-shadow: var(--shadow-sm);
   transition: transform var(--duration-fast) var(--ease-standard),
     box-shadow var(--duration-fast) var(--ease-standard),
     background-color var(--duration-fast) var(--ease-standard);
@@ -1122,23 +1073,22 @@ body.nav-open {
 
 .hero-buttons .btn--primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 16px 34px -14px var(--portfolio-primary);
+  box-shadow: var(--shadow-md);
 }
 
-/* The box is the gradient ring; the photo sits inside it. 8px of padding plus
-   a 284px image keeps the whole thing at 300px. The ring uses the 400 steps in
-   both schemes: --portfolio-gradient's dark end (sky-700) reads as a heavy
-   outline against a light hero. */
+/* A neutral mat instead of the 8px gradient frame: the photo's own dark outline
+   reads as a heavy ring when it sits straight against the page, so it gets a
+   thin surface-coloured mat and a hairline. No idle float. */
 .hero-image {
   display: flex;
   justify-content: center;
   align-items: center;
   justify-self: center;
-  padding: 8px;
+  padding: 6px;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, var(--color-indigo-400) 0%, var(--color-sky-400) 100%);
-  box-shadow: var(--shadow-lg);
-  animation: float 7s ease-in-out infinite;
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  box-shadow: var(--shadow-md);
 }
 
 .profile-image {
@@ -1194,20 +1144,6 @@ body.nav-open {
   color: var(--color-text-secondary);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
-}
-
-.scroll-indicator {
-  position: absolute;
-  bottom: var(--space-24);
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0.6;
-  animation: bounce 2s infinite;
-}
-
-.scroll-arrow {
-  color: var(--portfolio-primary);
-  font-size: var(--font-size-xl);
 }
 
 .scroll-to-top {
@@ -1275,7 +1211,7 @@ section {
 
 /* The alternating surfaces are explicit classes, not `:nth-child`. The old
    `section:nth-child(odd)` counted <body>'s children, so wrapping the sections
-   in <main> or prepending/removing #preloader (which happens on every load)
+   in <main> (or the runtime preloader that used to be prepended on every load)
    silently flipped the pattern. .section--alt is the raised surface, and the
    sections that carry it reproduce the parity the old rule produced. */
 .section--alt {
@@ -1294,22 +1230,8 @@ section {
   font-weight: var(--font-weight-bold);
   line-height: 1.15;
   letter-spacing: var(--letter-spacing-tight);
-  /* Room for the underline, which hangs below the text box. */
-  margin-bottom: var(--space-24);
-  position: relative;
+  margin-bottom: var(--space-16);
   text-wrap: balance;
-}
-
-.section-title::after {
-  content: "";
-  position: absolute;
-  bottom: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 48px;
-  height: 3px;
-  background: var(--portfolio-gradient);
-  border-radius: var(--radius-full);
 }
 
 .section-subtitle {
@@ -1817,8 +1739,6 @@ section {
   background: var(--portfolio-primary);
   color: var(--color-btn-primary-text);
   border-color: transparent;
-  /* Accent-tinted glow; the old success-tinted one clashed with the indigo accent. */
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--portfolio-primary) 35%, transparent);
 }
 
 .projects-grid {
@@ -2197,37 +2117,6 @@ section {
   }
 }
 
-@keyframes bounce {
-
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0) translateX(-50%);
-  }
-
-  40% {
-    transform: translateY(-10px) translateX(-50%);
-  }
-
-  60% {
-    transform: translateY(-5px) translateX(-50%);
-  }
-}
-
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
 /* Responsive Design */
 
 /* Navigation breakpoint (T12). Eight inline links plus the wordmark and the
@@ -2363,12 +2252,6 @@ section {
 
   .stat {
     padding: var(--space-16) var(--space-12);
-  }
-
-  /* It overlapped the stats block at this width (measured 1132-1163 inside
-     729-1172), and the stats already show that the page continues. */
-  .scroll-indicator {
-    display: none;
   }
 
   .timeline::before {
@@ -2540,10 +2423,10 @@ section {
 
 /* The whole-site catch-all. The blocks above document the intentional cases;
    this one guarantees that no surface added later can animate movement under
-   reduced motion (hover lifts, the drawer, the progress bar, the preloader
-   spinner, the cursor blink). Colours and opacities end up instant too, which
-   is harmless — they are not motion, but there is nothing to gain from keeping
-   a 150 ms fade when the preference is set.
+   reduced motion (hover lifts, the drawer, the progress bar, the cursor blink).
+   Colours and opacities end up instant too, which is harmless — they are not
+   motion, but there is nothing to gain from keeping a 150 ms fade when the
+   preference is set.
 
    The cursor is forced visible: the blink keyframes end on `opacity: 0`, so a
    0.01 ms single iteration would otherwise leave an invisible caret. */

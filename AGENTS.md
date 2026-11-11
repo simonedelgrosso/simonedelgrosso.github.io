@@ -57,7 +57,7 @@ htmlproofer ./_site --disable-external
 ├── it/index.md           # Italian entry (front matter only)
 ├── index.html            # Root redirect + hreflang + language detection
 ├── assets/css/style.css  # Styles, including both theme token blocks
-├── assets/js/script.js   # Theme toggle, nav drawer, reveal, form, preloader
+├── assets/js/script.js   # Theme toggle, nav drawer, reveal, form, scroll UI
 ├── tools/probes/         # Headless-browser verification scripts (excluded from the build)
 └── apps/piano/           # Standalone piano app (plain HTML/JS)
 ```
@@ -71,9 +71,11 @@ htmlproofer ./_site --disable-external
   `dark`). Read failures (private mode) fall back to the OS preference.
 - Token blocks live in `assets/css/style.css`: `:root` is the light set,
   `[data-color-scheme="dark"]` overrides it. Both define the same names.
-- `applyTheme()` in `script.js` keeps the toggle's `aria-pressed`, the
-  `theme-color` meta tag and a `themechange` event (used by the particle canvas
-  to re-read its colours) in sync.
+- `applyTheme()` in `script.js` keeps the toggle's `aria-pressed` and the
+  `theme-color` meta tag in sync, and dispatches a `themechange` event. That
+  event is now just a documented hook for theme-aware scripts: the particle
+  canvas that used to listen to it was removed (§14), so nothing in the shipped
+  JS subscribes.
 - **Prefer semantic tokens** (`--color-text`, `--color-surface`,
   `--color-card-border`, `--shadow-*`, `--space-*`, `--radius-*`) over literal
   hex values. A hard-coded colour is a bug in dark mode unless it is
@@ -164,7 +166,7 @@ node tools/probes/t6-analyze.mjs "$env:TEMP\t6.json"
 | `t8probe.mjs` + `t8-analyze.mjs` | Skills tags: counts, titles, list semantics, containment |
 | `t9probe.mjs` + `t9-analyze.mjs` | Projects: cards, filters (`aria-pressed`), hover, keyboard focus of the overlay link |
 | `t10probe.mjs` + `t10-analyze.mjs` | Contact/footer: control sizes, focus rings, native validation, `mailto:` navigation |
-| `t11probe.mjs` + `t11-analyze.mjs` | Preloader lifetime/theme, particles, typing, counters, reduced motion |
+| `t11probe.mjs` + `t11-analyze.mjs` | No preloader, no particle canvas, typing, counters, reduced motion |
 | `t12probe.mjs <base> [widths\|accept]` | Responsive sweep: `docW` vs `clientW`, wordmark truncation, off-screen controls |
 | `t12edges.mjs` | The exact nav band boundaries (1024/1025 and 1199/1200) |
 | `t12nav.mjs` | Drawer state machine at 900/1024/1025/1100/1200, including resize-while-open |

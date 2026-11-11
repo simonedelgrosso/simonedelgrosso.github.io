@@ -10,30 +10,26 @@ let fail = 0;
 for (const r of d.runs) {
   const problems = [];
   const label = r.reduced ? 'reduced' : 'normal';
-  const p = r.preloader;
-  if (!p || !p.present) problems.push('preloader never observed');
-  else {
-    if (p.inlineStyle) problems.push('preloader has inline style: ' + p.inlineStyle);
-    if (p.bg !== 'rgb(248, 249, 251)') problems.push('preloader bg ' + p.bg + ' (light theme expects #f8f9fb)');
-    if (!p.spinner) problems.push('no spinner element');
-  }
-  if (r.removedAtMs === null) problems.push('preloader never removed');
-  else if (r.removedAtMs > 1000) problems.push('preloader removed after ' + r.removedAtMs + 'ms (>1000)');
+  // The preloader was removed in §14 (row 12): it must never be created, and no
+  // spinner may appear. The probe samples during the load and after it, so a
+  // regression that re-adds the overlay is caught from both sides.
+  if (r.preloader && r.preloader.present) problems.push('preloader created (removed in §14)');
 
   const a = r.afterLoad;
+  if (a.preloader) problems.push('preloader present after load (removed in §14)');
   if (!a.buttonExists) problems.push('no scroll-to-top button');
   if (a.buttonInline) problems.push('button has inline style: ' + a.buttonInline);
   if (a.buttonClass.includes('is-visible')) problems.push('button visible at top of page');
   if (a.buttonVisibility !== 'hidden') problems.push('button visibility ' + a.buttonVisibility);
+  // The particle canvas was removed in the §14 de-AI pass: it must not exist in
+  // either mode, and nothing may recreate it.
+  if (a.canvas) problems.push('particles canvas present (removed in §14)');
   if (r.reduced) {
-    if (a.canvas) problems.push('particles canvas created under reduced motion');
     if (a.typing !== 'Full-Stack Developer') problems.push('typing text ' + JSON.stringify(a.typing));
     if (a.cursorAnim !== 'none') problems.push('cursor animation ' + a.cursorAnim);
     if (JSON.stringify(a.counters) !== JSON.stringify(a.statTargets)) {
       problems.push('counters not final: ' + JSON.stringify(a.counters) + ' vs ' + JSON.stringify(a.statTargets));
     }
-  } else {
-    if (!a.canvas) problems.push('no particles canvas');
   }
 
   const s = r.scrolled;
@@ -55,7 +51,7 @@ for (const r of d.runs) {
   if (problems.length) { fail++; console.log('FAIL', label, problems.join(' | ')); }
   console.log(problems.length ? '     ' : 'ok   ',
     label,
-    'preloader=' + (p && p.present ? p.bg : 'none') + ' removed@' + r.removedAtMs + 'ms-after-load',
+    'preloader=' + (a.preloader ? 'PRESENT' : 'none'),
     'canvas=' + a.canvas,
     'typing=' + JSON.stringify(a.typing),
     'cursorAnim=' + a.cursorAnim,
