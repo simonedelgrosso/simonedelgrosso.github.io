@@ -1,26 +1,26 @@
 it:
   title: "Esperienza"
-  subtitle: "Il mio percorso professionale"
+  subtitle: "Esperienza professionale"
   items:
     - company: "Cluster Reply Roma"
       period: "2023 - Presente"
       role: "Consultant - Full-Stack Developer"
       location: "Roma, Italia"
-      description: "Sviluppo full-stack di soluzioni enterprise per clienti nei settori bancario e della PA, con integrazione di servizi Azure."
+      description: "Sviluppo e manutenzione di applicazioni enterprise per clienti del settore bancario e della Pubblica Amministrazione, con attività che spaziano dalla realizzazione di interfacce web allo sviluppo di servizi backend e all'integrazione con Microsoft Azure."
       achievements:
-        - text: "Sviluppo di applicazioni web scalabili utilizzando ASP.NET, React.js e Angular"
-        - text: "Implementazione di API REST con .NET e C#"
-        - text: "Integrazione con servizi Microsoft Azure"
+        - text: "Sviluppo di applicazioni e servizi backend con C# e .NET."
+        - text: "Progettazione e implementazione di API REST."
+        - text: "Integrazione con servizi Microsoft Azure e database relazionali."
 en:
   title: "Experience"
-  subtitle: "My professional journey"
+  subtitle: "Professional experience"
   items:
-    - company: "Cluster Reply Roma"
-      period: "2023 - Current"
+    - company: "Cluster Reply Rome"
+      period: "2023 - Present"
       role: "Consultant - Full-Stack Developer"
       location: "Rome, Italy"
-      description: "Full-stack development of enterprise solutions for clients in banking and public administration sectors, with Azure services integrations."
+      description: "Development and maintenance of enterprise applications for clients in the banking and public administration sectors, with activities ranging from the creation of web interfaces to the development of backend services and integration with Microsoft Azure."
       achievements:
-        - text: "Development of scalable web applications using ASP.NET, React.js, and Angular"
-        - text: "Implementation of REST APIs with .NET and C#"
-        - text: "Integration with Microsoft Azure services"
+        - text: "Development of applications and backend services using C# and .NET."
+        - text: "Design and implementation of REST APIs."
+        - text: "Integration with Microsoft Azure services and relational databases."

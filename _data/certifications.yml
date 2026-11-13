@@ -15,7 +15,7 @@ items:
 translations:
   it:
     title: "Certificazioni"
-    subtitle: "Certificazioni professionali Microsoft Azure"
+    subtitle: "Certificazioni e formazione tecnica"
   en:
     title: "Certifications"
-    subtitle: "Microsoft Azure professional certifications"
+    subtitle: "Certifications and technical training"

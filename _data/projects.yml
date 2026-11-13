@@ -1,6 +1,6 @@
 it:
   title: "Progetti"
-  subtitle: "Alcuni dei miei progetti personali"
+  subtitle: "Progetti sviluppati nel tempo libero"
   filter_label: "Filtra progetti"
   filter_1: "Tutti"
   filter_2: "Mobile"
@@ -40,7 +40,7 @@ it:
       link: "https://github.com/simonedelgrosso/simonedelgrosso.github.io"
       category: "Web Application"
       title: "Portfolio"
-      description: "Questo portfolio web, creato con tecnologie web moderne per mostrare competenze e progetti."
+      description: "Sito web personale."
       technologies:
         - text: "HTML"
         - text: "CSS"
@@ -88,7 +88,7 @@ en:
       link: "https://github.com/simonedelgrosso/simonedelgrosso.github.io"
       category: "Web Application"
       title: "Portfolio"
-      description: "This web portfolio, built with modern web technologies to showcase skills and projects."
+      description: "Personal website."
       technologies:
         - text: "HTML"
         - text: "CSS"

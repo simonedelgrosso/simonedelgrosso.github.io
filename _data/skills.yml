@@ -39,14 +39,14 @@ items:
 translations:
   it:
     title: "Competenze"
-    subtitle: "Le tecnologie che padroneggio"
+    subtitle: "Tecnologie e strumenti con cui lavoro"
     sections:
       programming_languages: "Linguaggi di Programmazione"
       frameworks: "Frameworks & Librerie"
       markup: "Markup & Styling"
   en:
     title: "Skills"
-    subtitle: "Technologies I work with"
+    subtitle: "Technologies and tools I work with"
     sections:
       programming_languages: "Programming Languages"
       frameworks: "Frameworks & Libraries"

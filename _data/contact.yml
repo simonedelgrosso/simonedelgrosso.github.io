@@ -23,7 +23,7 @@ items:
 translations:
   it:
     title: "Contatti"
-    subtitle: "Collaboriamo insieme!"
+    subtitle: "Hai una domanda o vuoi metterti in contatto?"
     form_field_1: "Nome"
     form_field_2: "Email"
     form_field_3: "Oggetto"
@@ -31,7 +31,7 @@ translations:
     form_button: "Invia"
   en:
     title: "Contact"
-    subtitle: "Let's work together!"
+    subtitle: "Have a question or wnat to contact me?"
     form_field_1: "Name"
     form_field_2: "Email"
     form_field_3: "Subject"

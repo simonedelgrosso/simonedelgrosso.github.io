@@ -1,15 +1,15 @@
 it:
   title: Ciao, sono <span class="highlight no-wrap">Simone Del Grosso</span>
-  subtitle: "Sviluppatore full-stack appassionato di tecnologie moderne e soluzioni innovative"
+  subtitle: "Sviluppatore software con esperienza in applicazioni web e servizi cloud, e un interesse per la sperimentazione di nuove tecnologie."
   contact_button: "Contattami"
   cv_button: "Scarica CV"
   experience: "Anni di Esperienza"
   projects: "Progetti Personali"
   certifications: "Certificazioni"
 en:
-  title: Hi, I am <span class="highlight no-wrap">Simone Del Grosso</span>
-  subtitle: "Full-Stack Developer passionate about modern technologies and innovative solutions"
-  contact_button: "Contact me"
+  title: Hi, I'm <span class="highlight no-wrap">Simone Del Grosso</span>
+  subtitle: "Software developer with experience in web applications and cloud services, and an interest in experimenting with new technologies."
+  contact_button: "Contact Me"
   cv_button: "Download CV"
   experience: "Years of Experience"
   projects: "Personal Projects"
