@@ -31,7 +31,7 @@ translations:
     form_button: "Invia"
   en:
     title: "Contact"
-    subtitle: "Have a question or wnat to contact me?"
+    subtitle: "Have a question or want to contact me?"
     form_field_1: "Name"
     form_field_2: "Email"
     form_field_3: "Subject"
