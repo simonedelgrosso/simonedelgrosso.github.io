@@ -1,20 +1,20 @@
 items:
   programming_languages:
-    - name: "JavaScript"
-      value: 90
-      icon: "fa-brands fa-js"
     - name: "C#"
       value: 85
       icon: "fa-brands fa-microsoft"
+    - name: "SQL"
+      value: 85
+      icon: "fa-solid fa-database"
+    - name: "TypeScript"
+      value: 90
+      icon: "fa-brands fa-typescript"
     - name: "Java"
       value: 70
       icon: "fa-brands fa-java"
     - name: "Python"
       value: 75
-      icon: "fa-brands fa-python"
-    - name: "SQL"
-      value: 85
-      icon: "fa-solid fa-database"
+      icon: "fa-brands fa-python"    
   frameworks:
     - name: "Angular"
       value: 90
