@@ -86,7 +86,7 @@ en:
     - data_category: "web"
       icon: "fas fa-globe"
       link: "https://github.com/simonedelgrosso/simonedelgrosso.github.io"
-      category: "Web Application"
+      category: "Website"
       title: "Portfolio"
       description: "Personal website."
       technologies:
