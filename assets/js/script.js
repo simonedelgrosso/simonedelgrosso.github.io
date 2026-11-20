@@ -30,10 +30,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Typing Effect Configuration
     const phrases = [
         'Full-Stack Developer',
-        'React Developer',
-        'Angular Developer',
         '.NET Developer',
-        'Azure Specialist'
+        'Azure Developer',
+        'Angular Developer',
+        'React Developer',
     ];
     let currentPhraseIndex = 0;
     let currentCharIndex = 0;
